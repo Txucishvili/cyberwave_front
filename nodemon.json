@@ -1,0 +1,4 @@
+{
+    "watch": ["webpack.config.js", "./config", "loader.js"],
+    "exec": "node --inspect start"
+ }

@@ -1,0 +1,97 @@
+{
+  "name": "front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "homepage": "https://example.com",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "webpack-dev-server --mode development",
+    "build": "webpack --mode production",
+    "build:run": "npm run build && http-server --proxy http://localhost:8080? ./dist/app_0.0.1",
+    "dev": "webpack --mode development --hot",
+    "node:dev": "node ./webpack.server.js",
+    "react:build": "NODE_ENV=production react-scripts build"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/fork-ts-checker-webpack-plugin": "^0.4.5",
+    "@types/html-webpack-plugin": "^3.2.5",
+    "@types/lodash": "^4.14.168",
+    "@types/mini-css-extract-plugin": "^1.4.1",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "autoprefixer": "^9.4.3",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^2.0.2",
+    "extract-loader": "^4.0.3",
+    "file-loader": "^5.1.0",
+    "html-loader": "^0.5.5",
+    "lodash": "^4.17.21",
+    "node-sass": "^4.11.0",
+    "nodemon": "^2.0.7",
+    "postcss-loader": "^3.0.0",
+    "raw-loader": "^4.0.1",
+    "react": "^17.0.2",
+    "react-dev-utils": "^11.0.3",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3",
+    "sass-loader": "^7.1.0",
+    "sassync": "^1.0.11",
+    "serializr": "^2.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@babel/runtime": "^7.13.10",
+    "@webpack-cli/serve": "^1.3.1",
+    "eslint": "^7.23.0",
+    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "fork-ts-checker-webpack-plugin": "^6.2.0",
+    "html-webpack-plugin": "4.5.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "style-loader": "^0.23.1",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths-webpack-plugin": "^3.5.1",
+    "typescript": "^4.2.3",
+    "webpack": "4.44.2",
+    "webpack-bundle-analyzer": "^4.4.1",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-dev-server": "3.11.1",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-md5-hash": "0.0.6",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

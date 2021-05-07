@@ -1,0 +1,37 @@
+@mixin initMediaThme($config) {
+  @each $theme in map-keys($config) {
+    $theme-variables: map-get($config, $theme);
+    $prefix: map-get($config, prefix);
+
+    // @media (prefers-color-scheme: $theme) {
+    //   :root {
+
+    //     @each $key,
+    //     $value in $theme-variables {
+    //       --theme#{$key}: #{$value};
+    //     }
+
+    //     @content;
+    //   }
+    // }
+  }
+}
+
+@mixin initThemeClasses() {
+  
+}
+
+$mediaThemes: (
+    light: (
+      --main-color: #cfcfcf,
+      --text-color: #000,
+      --abc-color: orange,
+    ),
+    dark: (--main-color: #000,
+      --text-color: #cfcfcf,
+      --abc-color: orange,
+    ),
+    auto: (--main-color: gray,
+      --text-color: orange,
+      --abc-color: orange,
+    ));

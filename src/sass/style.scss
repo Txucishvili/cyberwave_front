@@ -1,0 +1,184 @@
+// @import 'variables';
+// // @import '../sass/mediaTheme';
+// @import '../../node_modules/sassync/sass/_default/_import';
+// @import '../../node_modules/sassync/sass/_default/_theme/reset';
+
+// /*
+//   // theme types depends on two type 'dark' or 'light' 
+//   // for @media theme
+// */
+
+// $light-theme--main-color: $oc-gray-2;
+// $light-theme--text-color: $oc-gray-9;
+
+// $app-light-theme: (
+//   light: (
+//     --main-color: $light-theme--main-color,
+//     --text-color: $light-theme--text-color,
+//   ),
+//   dark: (
+//     --main-color: $light-theme--main-color,
+//     --text-color: $light-theme--text-color,
+//   )
+// );
+
+
+// $dark-theme--main-color: $oc-gray-9;
+// $dark-theme--text-color: $oc-gray-5;
+
+// $app-dark-theme: (
+//   light: (
+//     --main-color: $dark-theme--main-color,
+//     --text-color: $dark-theme--text-color,
+//   ),
+//   dark: (
+//     --main-color: $dark-theme--main-color,
+//     --text-color: $dark-theme--text-color,
+//   )
+// );
+
+// $appThemes: (
+//   light: $app-light-theme,
+//   dark: $app-dark-theme,
+// );
+
+
+// $_appThemes: (
+//   default: (
+//     light: (
+//       --main-color: #cfcfcf,
+//       --text-color: red,
+//     ),
+//     dark: (
+//       --main-color: #313131,
+//       --text-color: blue,
+//     )
+//   ),
+//   gray: (
+//     light: (
+//       --main-color: $oc-gray-1,
+//       --text-color: $oc-gray-5,
+//     ),
+//     dark: (
+//       --main-color: $oc-gray-9,
+//       --text-color: $oc-gray-5,
+//     )
+//   ),
+//   orange: (
+//     light: (
+//       --main-color: $oc-orange-1,
+//       --text-color: $oc-orange-5,
+//     ),
+//     dark: (
+//       --main-color: $oc-orange-9,
+//       --text-color: $oc-orange-5,
+//     ),
+//     ),
+//     pink: (
+//       light: (
+//         --main-color: $oc-pink-1,
+//         --text-color: $oc-pink-5,
+//       ),
+//       dark: (
+//         --main-color: $oc-pink-9,
+//         --text-color: $oc-pink-5,
+//       )
+//     ),
+//     blue: (
+//       light: (
+//         --main-color: $oc-blue-1,
+//         --text-color: $oc-blue-5,
+//       ),
+//       dark: (
+//         --main-color: $oc-blue-9,
+//         --text-color: $oc-blue-5,
+//       )
+//     )
+// );
+
+// :root {
+//   --theme-dark--main: #cfcfcf;
+//   --theme--main-color: var(--theme-dark--main);
+//   --theme--main-text-color: var(--theme-dark--main);
+//   --theme--navbar-bg-color: var(--theme-dark--main);
+//   --theme--navbar-items-color: var(--theme-dark--main);
+// }
+
+// :root {
+//   html.theme {
+
+//     @each $theme,
+//     $types in $appThemes {
+//       &--#{$theme} {
+//         @each $theme_type,
+//         $theme_values in $types {
+
+//             @each $key,
+//             $value in $theme_values {
+//               --theme#{$key}: #{$value};
+//             }
+
+//         }
+//       }
+//     }
+//   }
+// }
+
+// html {
+//   width: 100%;
+//   height: 100%;
+//   overflow: hidden;
+// }
+
+// html {
+//   color: var(--theme--text-color);
+//   width: 100%;
+//   height: 100%;
+//   overflow: auto;
+//   overflow-x: hidden;
+//   transition: background-color .025s linear;
+//   &.theme {
+//     &--dark {
+//         background-color: red;
+//       }
+//       &--light {
+//         background-color: orange;
+//       }
+//   }
+// }
+
+// a {
+//   color: var(--theme--text-color);
+//   text-decoration: none;
+
+//   &:hover {
+//     text-decoration: underline;
+//   }
+// }
+
+// // @include initMediaThme($mediaThemes);
+
+:root {
+  --theme--main-color: gray;
+}
+
+.theme--light {
+  --theme--main-color: tan;
+
+}
+
+// .theme--dark {
+//   --theme--main-color: gray;
+// }
+
+body {
+  background-color: var(--theme--main-color);
+  overflow: auto;
+  overflow-x: hidden;
+  transition: background-color 25ms linear;
+  opacity: 0;
+}
+
+html {
+  opacity: 0;
+}
