@@ -295,7 +295,7 @@ module.exports = (env) => {
   var isEnvDevelopment = env == "development";
 
 
-  
+  // change
   var jsFiles = ["./src/app/index.tsx"];
   var sassFiles = ["./src/sass/style.scss"];
   var devDep = [];
