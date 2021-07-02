@@ -22,8 +22,12 @@ const webpackDevClientEntry = require.resolve("react-dev-utils/webpackHotDevClie
 const reactRefreshOverlayEntry = require.resolve("react-dev-utils/refreshOverlayInterop");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
-const { forEach } = require("lodash");
-const { type } = require("os");
+const {
+  forEach
+} = require("lodash");
+const {
+  type
+} = require("os");
 
 
 var env = process.env;
@@ -242,13 +246,13 @@ const webpackPluginsConfig = (env) => {
       }),
       new BundleAnalyzerPlugin({
         analyzerMode: 'server',
-  
+
         /**
          * Automatically open report in default browser.
          * @default true
          */
         openAnalyzer: true,
-  
+
         /**
          * If true, Webpack Stats JSON file will be generated in bundles output directory.
          * @default false
@@ -291,6 +295,13 @@ var appConfig = appCfg();
 // console.log("appConfig", appConfig.APP_VERSION);
 // console.log("webpackDevClientEntry", webpackDevClientEntry);
 
+
+
+const {
+  merge
+} = require('webpack-merge');
+
+
 module.exports = (env) => {
   var isEnvDevelopment = env == "development";
 
@@ -307,7 +318,8 @@ module.exports = (env) => {
 
   const returnModules = [].concat(Object.values(modules).map(e => e.toString()));
 
-  console.log('returnModules', returnModules);
+  // console.log('returnModules', returnModules);
+  const shouldUseReactRefresh = env.FAST_REFRESH;
 
 
   if (env == "development") {
@@ -316,10 +328,35 @@ module.exports = (env) => {
     // devDep.push(`webpack-hot-middleware/client?path=http://${'localhost'}:${3001}/__webpack_hmr`);
   }
 
+  const hot = [
+    webpackDevClientEntry
+  ]
+
   var appFiles = Object.assign({}, {
     mode: env,
     name: "app",
-    entry: [].concat(returnModules),
+    entry: [
+      // Include an alternative client for WebpackDevServer. A client's job is to
+      // connect to WebpackDevServer by a socket and get notified about changes.
+      // When you save a file, the client will either apply hot updates (in case
+      // of CSS changes), or refresh the page (in case of JS changes). When you
+      // make a syntax error, this client will display a syntax error overlay.
+      // Note: instead of the default WebpackDevServer client, we use a custom one
+      // to bring better experience for Create React App users. You can replace
+      // the line below with these two lines if you prefer the stock client:
+      //
+      // require.resolve('webpack-dev-server/client') + '?/',
+      // require.resolve('webpack/hot/dev-server'),
+      //
+      // When using the experimental react-refresh integration,
+      // the webpack plugin takes care of injecting the dev client for us.
+      webpackDevClientEntry,
+      // Finally, this is your app's code:
+      './src/app/index.tsx',
+      // We include the app code last so that if there is a runtime error during
+      // initialization, it doesn't blow up the WebpackDevServer client, and
+      // changing JS code would still trigger a refresh.
+    ],
     target: "web",
     devtool: isEnvDevelopment && "cheap-module-source-map",
     output: {
@@ -338,7 +375,7 @@ module.exports = (env) => {
       hashDigestLength: 5,
     },
     module: webpackModulesConfig(env),
-    plugins: webpackPluginsConfig(env),
+    plugins: webpackPluginsConfig('development'),
     resolve: {
       extensions: [".tsx", ".ts", ".js", ".scss"],
       alias: {
@@ -363,10 +400,7 @@ module.exports = (env) => {
     },
   });
   // stats: 'verbose',
-
-  // console.log('----- 1 ----- ', Object.assign({}, reactCFG ));
-  // console.log(' ----- ', Object.assign({}, {...appFiles} ));
-  console.log('aaa');
+  console.log('returnModules', appFiles.entry);
 
   const mergeConfig = Object.assign({}, appFiles, {
     entry: appFiles.entry,
@@ -375,5 +409,8 @@ module.exports = (env) => {
     plugins: [].concat(reactCFG.plugins, appFiles.plugins),
     module: Object.assign(reactCFG.module, appFiles.module),
   });
-  return mergeConfig;
+
+  const output = merge(appFiles);
+
+  return appFiles;
 };

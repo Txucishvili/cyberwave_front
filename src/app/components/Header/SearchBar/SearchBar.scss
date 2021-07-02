@@ -1,0 +1,82 @@
+@import '../../../../sass/root-variables';
+
+.searchBar {
+  &--wrapper {
+    width: 100%;
+    height: $header-height;
+  }
+
+  .search-form {
+    width: 100%;
+    height: 40px;
+    // padding: 3px 3px 3px 20px;
+    border-radius: 46px;
+    background-color: var(--dark-two);
+    position: relative;
+    display: flex;
+
+    .btn-area {
+      padding: 0 3px;
+
+      .btn {
+        min-width: 93px;
+
+        font-family: FiraGO;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.33;
+        letter-spacing: normal;
+        text-align: center;
+        color: var(--white);
+      }
+    }
+
+    .input-area {
+      width: 100%;
+      height: inherit;
+      position: relative;
+
+      .inp-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      input {
+        width: 100%;
+        height: inherit;
+        padding: 0 20px 0 55px;
+
+        background-color: transparent;
+        border: none;
+        outline: none;
+        // position: absolute;
+        // top: 50%;
+        // transform: translateY(-50%);
+        color: #FFF;
+        z-index: 2;
+        font-family: FiraGO;
+        font-size: 12px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.33;
+        letter-spacing: normal;
+        text-align: left;
+
+        &:focus {
+          border: none;
+        }
+
+        &::placeholder {
+          color: var(--steel);
+
+        }
+
+      }
+    }
+  }
+}

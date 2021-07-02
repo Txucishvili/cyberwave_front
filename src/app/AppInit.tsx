@@ -2,18 +2,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import { localStorageKey, Theme, ThemeContext, ThemeContextProvider } from './store/context/ThemeContext';
 import { SessionContextProvider } from './store/context/UserSession.context';
 import { App } from './App';
+import { LayutProvider } from './store/context/LayoutContext';
 
 
 export function AppInit(props: any) {
-    return (
-      <React.Fragment>
+  return (
+    <React.Fragment>
+      <LayutProvider>
         <ThemeContextProvider>
           <SessionContextProvider>
             <App />
           </SessionContextProvider>
         </ThemeContextProvider>
-      </React.Fragment>
-    );
-  }
+      </LayutProvider>
+    </React.Fragment>
+  );
+}
 
-  export default AppInit
+export default AppInit

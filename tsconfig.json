@@ -23,5 +23,13 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "paths": {
+    "@components/*": [
+      "src/app/componennts/*"
+    ],
+    "@context/*": [
+      "src/app/store/context/*"
+    ]
+  }
 }

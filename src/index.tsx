@@ -1,9 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppInit from './app/AppInit';
+import template from'./assets/მთავარი გვერდი.png';
 
 ReactDOM.render(
   <React.StrictMode>
+    <div className="_template" style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      zIndex: 1,
+      opacity: 0.4,
+      display: 'none'
+    }}>
+      <img src={template} alt=""/>
+    </div>
     <AppInit />
   </React.StrictMode>,
   document.getElementById('root')

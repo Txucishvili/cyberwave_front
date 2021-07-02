@@ -2,18 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AppInit from './AppInit';
 
-
-window.addEventListener('load', (e) => {
-  const body = document.documentElement;
-  console.log('----', body);
-
-    body.classList.value = '';
-    body.classList.add('theme');
-    body.classList.add('theme--'+window.localStorage.getItem('themeKey'));
-    // body.body.style.opacity = '1';
-})
-
-
 ReactDOM.render(
   <React.StrictMode>
     <AppInit />

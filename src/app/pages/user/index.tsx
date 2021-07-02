@@ -11,7 +11,34 @@ const UserPage = (props: any, data?: any) => {
     const [theme, setTheme]: any= useContext(ThemeContext);
 
     return (<React.Fragment>
-        <h2><b>Users Page 1</b></h2>
+        <div className="content--grid content--grid--wrap">
+        <div className="content-main content-main--wrap">
+          <div className="content-main--content">
+          <div className="container">
+            <div className="row">
+              <div className="colEl col-sm side-a">
+                <div className="el">a</div>
+              </div>
+              <div className="colEl col-xl side-b">
+                <div className="el">a</div>
+              </div>
+              <div className="colEl col-sm side-c">
+                <div className="el">a</div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div className="content-side">
+          <div className="container">
+            <div className="row">
+              <div className="colOut">
+                col
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </React.Fragment>)
 }
 

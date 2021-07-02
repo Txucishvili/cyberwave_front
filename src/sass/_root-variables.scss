@@ -1,0 +1,38 @@
+$header-height: 80px;
+$side-nav-size-s: 80px;
+
+
+$bps: (
+  mobile: 670px,
+  laptopXL: 1400px,
+  laptopSM: 1240px,
+  laptopSM2: 1024px,
+);
+
+:root {
+  --dark: #1c1e27;
+  --steel: #787d88;
+  --salmon: #ff7d7d;
+  --dark-two: #282d3a;
+  --light-blue-grey: #ced4da;
+  --light-sky-blue: #dee2e6;
+  --dark-three: #202532;
+  --white: #ffffff;
+  --dark-30: rgba(28, 30, 39, 0.3);
+  --white-20: rgba(255, 255, 255, 0.2);
+  --dark-three-30: rgba(32, 37, 50, 0.3);
+  --soft-blue: #4e7cff;
+  --watermelon: #f65164;
+  --gold: #e8b70c;
+  --bright-light-blue: #22c0ff;
+  --pale-grey: #f1f3f5;
+  --white-40: rgba(255, 255, 255, 0.4);
+  --dark-three-20: rgba(32, 37, 50, 0.2);
+  --dark-three-80: rgba(32, 37, 50, 0.8);
+  --steel-30: rgba(120, 125, 136, 0.3);
+}
+
+:root {
+  --header-height: #{$header-height};
+  --side-nav-size-s: #{$side-nav-size-s};
+}

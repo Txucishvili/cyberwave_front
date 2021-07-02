@@ -1,0 +1,241 @@
+@import "sassync";
+@import '../../../sass/root-variables';
+
+#root {
+  // @include size(100%);
+  @include size(inherit);
+
+  // min-width: 100%;
+  // min-height: 100%;
+
+}
+
+.layout {
+  &--wrapper {
+    @include flex;
+    @include size(100%);
+    // overflow: hidden;
+    // position: relative;
+  }
+
+  &.active {
+    .header.header--wrapper {
+      z-index: 3;
+    }
+  }
+}
+
+$gutter-size: 20px;
+
+@function toGutter($size) {
+  @return $gutter-size+$size;
+}
+
+$wrap-size: 1390px;
+
+$sm-col-size: toGutter(320px);
+$sm-xl-size: toGutter(710px);
+$sm-xl-size-min: 510px;
+
+$content-outerside-breakPoint: 1920px - 80px - ($gutter-size * 2);
+$content-outerside-breakPoint: 1390px+$side-nav-size-s+($gutter-size * 4)+140px;
+
+$side-container-size: 372px;
+
+.content--grid {
+  &--wrap {
+    width: 100%;
+    @include flex;
+  }
+
+  .content {
+    &-main {
+      &--wrap {
+        flex: 1;
+        padding: 0 $gutter-size;
+      }
+
+      &--content {
+        max-width: $wrap-size;
+        width: 100%;
+        margin: initial;
+
+        @include max-min(min 1950px) {
+          // TODO: make correct bp
+          margin: 0 auto;
+        }
+
+        @include max-min(max $content-outerside-breakPoint) {
+          margin: 0 auto;
+        }
+
+        @include max-min(max 980px, min 900px) {
+          background-color: red;
+        }
+      }
+    }
+
+    &-side {
+      flex-basis: $side-container-size;
+      flex-shrink: 0;
+      @include flex;
+      margin-left: auto;
+
+      @include max-min(min 1920px) {
+        // margin-left: initial;
+      }
+
+      // todo first mobile
+      &._rsp {
+        @include max-min(max $content-outerside-breakPoint) {
+          // background-color: red;
+          display: none;
+        }
+      }
+
+      >div {
+        width: 100%;
+      }
+
+      .row {
+        width: 100%;
+      }
+    }
+  }
+
+  .container {
+    // overflow: hidden;
+
+    .row {
+      @include flex;
+      margin-left: $gutter-size / -2;
+      margin-right: $gutter-size / -2;
+      // align-items: flex-start; // !!!
+
+      &>* {
+        flex-shrink: 0;
+        padding-left: $gutter-size / 2;
+        padding-right: $gutter-size / 2;
+      }
+
+      .col {
+        &-sm {
+          flex-basis: $sm-col-size;
+          flex-shrink: 0;
+        }
+
+        &-xl {
+          flex-basis: $sm-xl-size;
+          flex-shrink: initial;
+
+          @include max-min(max $wrap-size - ($gutter-size * 2)) {
+            flex-shrink: initial;
+          }
+        }
+      }
+
+    }
+  }
+
+  .colEl {
+    .el {
+      // background-color: #fff;
+    }
+  }
+}
+
+.sticky-side {
+  position: sticky;
+}
+
+.ScrollbarsCustom {
+  .ScrollbarsCustom-TrackY {
+    // top: 0 !important;
+  }
+
+  &.trackYVisible {
+    .ScrollbarsCustom-Scroller {
+      // margin-right: -15px !important;
+    }
+  }
+
+  // !! TODO: !! dirty solutions for layout shaking on 'trackYVisible'  
+  .ScrollbarsCustom-Scroller {
+    margin-right: -1px;
+  }
+
+  .ScrollbarsCustom-Thumb {
+    transition: background-color .12s ease;
+
+    &:hover,
+    &.dragging {
+      background-color: rgba(0, 0, 0, 0.6) !important;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  // width: 15px;
+  // display: none;
+}
+
+
+
+
+// *** root and share classes -- TODO: split
+
+.btn {
+  &--simple {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  &--bordered {
+    height: 34px;
+    padding: 11px 11px;
+    border-radius: 32px;
+    background-color: gray;
+  }
+
+  &._blue {
+    background-color: var(--soft-blue);
+
+    &:hover {
+      background-color: darken(#4e7cff, 5%);
+    }
+  }
+}
+
+.overlay {
+  @include size(100vw);
+  background-color: rgba($oc-black, .25);
+  top: 0;
+  left: 0;
+  position: fixed;
+  // z-index: -1;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  z-index: 5;
+
+  &.active {
+    z-index: 5;
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+  }
+}
+
+
+// #### shareClasses
+.flx {
+  @include flex;
+}
+
+.flxAC{
+  align-items: center;
+}
+
+.fAll {
+  @include flex-all;
+}

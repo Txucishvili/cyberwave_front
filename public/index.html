@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" class="theme theme--light">
-  
-  <head>
-    <meta charset="utf-8" />
-    <!-- <link rel="icon" href="/favicon.ico" /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="/logo192.png" />
-    <!--
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <!-- <link rel="icon" href="/favicon.ico" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="/logo192.png" />
+  <!-- <script src="http://localhost:8097"></script> -->
+
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
-    <base href="/" />
-    <!--
+  <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+  <base href="/" />
+  <!--
       Notice the use of  in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -26,20 +25,31 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
-    <script>
-      (() => {
-        console.log('hello')
-      })();
-    </script>
-    <link rel="stylesheet" href="app-load.css">
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <%= require('html-loader!../src/partial.html').default %>
+  <title>React App</title>
+  <script>
+    (() => {
+      var theme = window.localStorage.getItem('theme');
+      var defaultTheme = 'dark';
+      var themeName;
+      if (!theme) {
+        window.localStorage.setItem('theme', defaultTheme);
+        themeName = defaultTheme;
+      } else {
+        themeName = theme;
+      }
+      document.documentElement.classList.add('theme', 'theme--' + themeName);
+    })();
+  </script>
+  <link rel="stylesheet" href="app-load.css">
 
-    <div id="root"></div>
-    <!--
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <%= require('html-loader!../src/partial.html').default %>
+
+  <div id="root"></div>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -49,15 +59,7 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script>
-      (() => {
 
-        var themeKey = window.localStorage.getItem('themeKey');
-        var html = document.documentElement;
-        console.log('[themeKey]', window.document.childNodes)
+</body>
 
-        html.classList.add(themeKey)
-      })();
-    </script>
-  </body>
 </html>

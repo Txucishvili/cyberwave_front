@@ -172,13 +172,8 @@
 // }
 
 body {
-  background-color: var(--theme--main-color);
+  background-color: red;
   overflow: auto;
   overflow-x: hidden;
   transition: background-color 25ms linear;
-  opacity: 0;
-}
-
-html {
-  opacity: 0;
 }

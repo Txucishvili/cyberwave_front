@@ -1,0 +1,14 @@
+.header {
+  &--wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    // background-color: rgba(#313642, .5);
+    background-color: var(--theme--main-color);
+    
+    z-index: 2;
+  }
+
+}
