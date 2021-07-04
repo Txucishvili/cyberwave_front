@@ -32,6 +32,7 @@
         @include size(100%);
         border-radius: 8px;
         transition: background-color .125s ease-in-out;
+        background-color: transparent;
 
         ._icon {
           @include flex-all;
@@ -56,6 +57,7 @@
       width: 100%;
       @include flex;
       align-items: center;
+      min-width: 80px;
     }
 
     &--list {
@@ -65,6 +67,11 @@
         // @include size(80px);
         height: 80px;
         width: 100%;
+
+        &.loader {
+          @include flex-all;
+          width: 80px;
+        }
 
         a {
           @include size(100%);
@@ -126,7 +133,7 @@
           @include size(30px);
           @include flex-all;
 
-          .icon-wrap {
+          .icon-wrap, ._icon--wrap {
             @include flex-all;
           }
 

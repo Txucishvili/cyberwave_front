@@ -12,7 +12,7 @@ export const initState: LayoutState = {
 };
 
 export const LayoutContext = createContext<[LayoutState, any]>([initState, () => {}]);
-export const useSessionContext = () => useContext(LayoutContext);
+export const useLayoutContext = () => useContext(LayoutContext);
 
 
 function LayoutReducer(state: any, action: any) {

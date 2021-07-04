@@ -16,7 +16,7 @@ class SearchBar extends React.Component {
             <input type="text" placeholder='მოძებნე პოსტები, ტურნირები, მოთამაშეები...' />
           </div>
           <div className="btn-area fAll">
-            <button className="btn btn--simple btn--bordered _blue">
+            <button className="btn btn--simple _blue">
               ძებნა
             </button>
           </div>

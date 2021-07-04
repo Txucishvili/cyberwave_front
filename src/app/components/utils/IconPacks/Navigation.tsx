@@ -1,6 +1,4 @@
 import React from 'react';
-import { SharedIconList } from './Shared';
-
 
 const NavigationIconList: any = {
   controller: <div><svg xmlns="http://www.w3.org/2000/svg" width="28" height="23" viewBox="0 0 28 23">
@@ -82,18 +80,4 @@ const NavigationIconList: any = {
   </svg>
 }
 
-const NavigationIcons = (props: any) => {
-  const { pack, name } = props;
-
-  // TODO: !!!!
-
-  const allList = Object.assign(NavigationIconList, SharedIconList)
-
-  return (
-    <div className="_icon--wrap">
-      {allList[name]}
-    </div>
-  )
-}
-
-export default NavigationIcons;
+export default NavigationIconList;

@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import BlockEl from 'app/components/utils/BlockEl';
+import { useResizeContext } from 'app/store/context/WindowResize';
 import { divide } from 'lodash';
-import React, { useContext, useEffect, useReducer, useRef, useState } from 'react';
+import React, { DOMElement, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
 import Emittr from 'react-scrollbars-custom/dist/types/Emittr';
 const random = require('colors/lib/maps/random');
@@ -23,7 +24,7 @@ function countReducer(state: any, action: any) {
 function CountConsumer(props: any) {
   const scrollbarContext = useContext(ScrollbarContext);
   // console.log('children', scrollbarContext.parentScrollbar?.getScrollState());
-  const {children} = props;
+  const { children } = props;
   const Sc: Scrollbar | any = ScrollbarContext.Consumer;
   const [state, dispatch] = React.useReducer(countReducer, { count: 0 })
   // NOTE: you *might* need to memoize this value
@@ -33,23 +34,23 @@ function CountConsumer(props: any) {
 
   const [scrollState, setState] = useState(scrollbarContext.parentScrollbar?.getScrollState());
 
-  
+
   useEffect(() => {
-      console.log('scrollState', scrollbarContext.parentScrollbar?.getScrollState()?.scrollTop);
+    console.log('scrollState', scrollbarContext.parentScrollbar?.getScrollState()?.scrollTop);
   }, [scrollbarContext.parentScrollbar?.getScrollState().scrollTop])
-  
+
   return (
     <ScrollbarContext.Provider value={{
       parentScrollbar: scrollbarContext.parentScrollbar
     }}>
       {children}
-      <div style={{height: 5000}}>
-      hi
+      <div style={{ height: 5000 }}>
+        hi
       </div>
     </ScrollbarContext.Provider>
   )
 }
-console.log('ScrollbarContext', {ScrollbarContext});
+console.log('ScrollbarContext', { ScrollbarContext });
 
 const HomePage = (props: any) => {
   const scrollbarContext = useContext(ScrollbarContext);
@@ -68,16 +69,17 @@ const HomePage = (props: any) => {
   const [scrollOffset, setscrollOffset]: any = useState(0);
   const targetEl: any = useRef(null);
   const scrollRef: any = useRef(Scrollbar);
-  
+  const [windowSize, setResizeState]: any = useResizeContext();
+
   function scrollBind(e: any) {
     console.log('e', e);
   }
   useEffect(() => {
-//     console.log('scrollbarContext', {
-//       ScrollbarContext,
-//       scrollbarContext,
-//       scrollRef
-//     });
+    //     console.log('scrollbarContext', {
+    //       ScrollbarContext,
+    //       scrollbarContext,
+    //       scrollRef
+    //     });
     if (scrollbarContext.parentScrollbar && scrollbarContext.parentScrollbar.props.onScroll) {
       scrollbarContext?.parentScrollbar?.props?.onScroll.bind(scrollBind);
 
@@ -146,6 +148,24 @@ const HomePage = (props: any) => {
   }, [scrollBehavior]);
 
   useEffect(() => {
+    // console.log('windowSize', windowSize);
+    const sideA: HTMLElement | any = document.getElementById('sideAcontent');
+    const sideB: HTMLElement | any = document.getElementById('sideBcontent');
+    const movableEl: HTMLElement | any = document.getElementById('movableElcontent');
+    // parrent.appendChild(child);
+
+    if (windowSize.innerWidth > 1280) {
+      movableEl.classList.add('sticky-side');
+      sideA.appendChild(movableEl);
+    } else {
+      movableEl.classList.remove('sticky-side');
+      sideB.appendChild(movableEl);
+    }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    // usePortal(childRef, parrentRef);
+  }, [windowSize])
+
+  useEffect(() => {
     // scrollbarContext.parentScrollbar?.eventEmitter.off('scroll', (e) => {
     //   console.log("uunounnt");
     // });
@@ -164,7 +184,7 @@ const HomePage = (props: any) => {
           <div className="content-main--content">
             <div className="container">
               <div className="row">
-                <div className="col-sm side-a">
+                <div className="col-sm side-a" id="sideAcontent">
                   <div className="someEl"
                     style={{
                       height: dividerHeight
@@ -172,6 +192,7 @@ const HomePage = (props: any) => {
                   >
                   </div>
                   <div className="el sticky-side"
+                    id="movableElcontent"
                     ref={targetEl}
                     style={scrollBehaviorStyle}>
                     {/* <p>{scrollBehavior}</p> */}
@@ -200,17 +221,28 @@ const HomePage = (props: any) => {
                 </div>
                 <div className="col-xl side-b">
                   <div className="child_">
+                  <div className="stories flx"
+                    style={{
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    {Array(3).fill(null).map((e, i) => {
+                        return <BlockEl key={i} height="235px" width="165px" />
+                      })}
+                    </div>
                     {newsList}
 
                   </div>
                 </div>
                 <div className="col-sm side-c">
-                  <div className="el">
+                  <div className="sideInside" id="sideBcontent">
+                    
+                    <div className="el">
 
-
-                    {Array(11).fill(null).map((e, i) => {
-                      return <BlockEl key={i} height="60px" />
-                    })}
+                      {Array(11).fill(null).map((e, i) => {
+                        return <BlockEl key={i} height="60px" />
+                      })}
+                    </div>
 
                   </div>
                 </div>
@@ -219,7 +251,7 @@ const HomePage = (props: any) => {
           </div>
         </div>
         <div className="content-side _rsp">
-          <div className="container">
+          <div className="container" id="sideAcontent">
             <div className="ct-side--inside sticky-side"
               style={{
                 top: 90

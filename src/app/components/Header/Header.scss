@@ -1,3 +1,6 @@
+@import 'sassync';
+@import '../../../sass/extends';
+
 .header {
   &--wrapper {
     position: sticky;
@@ -7,8 +10,146 @@
     height: var(--header-height);
     // background-color: rgba(#313642, .5);
     background-color: var(--theme--main-color);
-    
+
     z-index: 2;
+  }
+
+  .logo {
+    &--area {
+      padding: 10px;
+    }
+  }
+
+  .contentInside {
+    height: var(--header-height);
+    padding-right: 15px;
+  }
+
+  .user-area--list {
+
+    >* {
+      margin-left: 20px;
+
+      @include max-min(max 1690px) {
+        margin-left: 10px;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .cointBnt {
+    @include flex-all;
+    padding: 10px 20px;
+    height: 40px;
+    border-radius: 40px;
+    border: solid 1px var(--steel-30);
+    cursor: pointer;
+
+    .name-area {
+      @include flex;
+      flex-direction: column;
+      padding-left: 10px;
+
+      .titler {
+        font-size: 10px;
+        text-align: left;
+        color: var(--light-blue-grey);
+        margin-bottom: 4px;
+      }
+
+      .count {
+        font-size: 12px;
+        text-align: left;
+        color: var(--gold);
+      }
+
+      @include max-min(max 1690px) {
+        .titler {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .userBtn {
+    &--wrap {
+      @include flex-all;
+      padding: 10px 20px;
+      height: 40px;
+      border-radius: 37px;
+      background-color: var(--dark-two);
+      min-width: 200px;
+      max-width: 250px;
+      cursor: pointer;
+      user-select: none;
+
+      @include max-min(max 1690px) {
+        min-width: initial;
+        padding: 10px;
+      }
+
+      &:hover {
+        background-color: var(--dark);
+      }
+    }
+
+    .avatar-area {
+      @include size(26px);
+      border-radius: 100px;
+      border: 1px solid blue;
+      overflow: hidden;
+      // margin-right: 10px;
+
+      img {
+        height: 100%;
+        display: block;
+      }
+    }
+
+    .name-area {
+      font-size: 12px;
+      color: var(--light-blue-grey);
+      margin-left: 10px;
+
+      @include max-min(max 1690px) {
+        display: none;
+      }
+    }
+
+    .droper {
+      margin-left: auto;
+
+      @include max-min(max 1690px) {
+        display: none;
+      }
+
+      ._icon--wrap {
+        @extend %flex-all;
+      }
+    }
+
+  }
+
+
+  .infoSide {
+    .btn {
+      @include max-min(max 1690px) {
+        p {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .hListDivide {
+    @include max-min(max 1690px) {
+      >* {
+        margin-left: 10px;
+      }
+    }
   }
 
 }

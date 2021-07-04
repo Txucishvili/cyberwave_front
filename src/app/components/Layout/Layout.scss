@@ -70,7 +70,16 @@ $side-container-size: 372px;
         }
 
         @include max-min(max 980px, min 900px) {
-          background-color: red;
+          // background-color: red;
+        }
+
+        #sideAcontent.side-a {
+
+          // background-color: red;
+          @include max-min(max 1280px) {
+            // background-color: red;
+            display: none;
+          }
         }
       }
     }
@@ -86,12 +95,13 @@ $side-container-size: 372px;
       }
 
       // todo first mobile
-      &._rsp {
-        @include max-min(max $content-outerside-breakPoint) {
-          // background-color: red;
-          display: none;
-        }
+      // &._rsp {
+      @include max-min(max $content-outerside-breakPoint) {
+        // background-color: red;
+        display: none;
       }
+
+      // }
 
       >div {
         width: 100%;
@@ -100,7 +110,9 @@ $side-container-size: 372px;
       .row {
         width: 100%;
       }
+
     }
+
   }
 
   .container {
@@ -130,6 +142,7 @@ $side-container-size: 372px;
 
           @include max-min(max $wrap-size - ($gutter-size * 2)) {
             flex-shrink: initial;
+            flex: 1;
           }
         }
       }
@@ -180,62 +193,3 @@ $side-container-size: 372px;
 }
 
 
-
-
-// *** root and share classes -- TODO: split
-
-.btn {
-  &--simple {
-    outline: none;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-  }
-
-  &--bordered {
-    height: 34px;
-    padding: 11px 11px;
-    border-radius: 32px;
-    background-color: gray;
-  }
-
-  &._blue {
-    background-color: var(--soft-blue);
-
-    &:hover {
-      background-color: darken(#4e7cff, 5%);
-    }
-  }
-}
-
-.overlay {
-  @include size(100vw);
-  background-color: rgba($oc-black, .25);
-  top: 0;
-  left: 0;
-  position: fixed;
-  // z-index: -1;
-  opacity: 0;
-  transition: opacity .5s ease-in-out;
-  z-index: 5;
-
-  &.active {
-    z-index: 5;
-    opacity: 1;
-    transition: opacity .5s ease-in-out;
-  }
-}
-
-
-// #### shareClasses
-.flx {
-  @include flex;
-}
-
-.flxAC{
-  align-items: center;
-}
-
-.fAll {
-  @include flex-all;
-}

@@ -1,40 +1,48 @@
+import HTTPClient from "API/axios";
 import React, {
   createContext,
   useContext,
+  useEffect,
 } from "react";
 
 export type Session = {
-  isAuthenticated ? : boolean;
+  isAuthenticated?: boolean;
   redirectPath: string;
   sId: string | null;
 }
 
 export const initialSession: Session = {
   redirectPath: '',
-  sId: null
+  sId: null,
 };
 
-export const SessionContext = createContext < [Session, (session: Session) => void] > ([initialSession, () => {}]);
+export const SessionContext = createContext<[Session, (session: Session) => void]>([initialSession, () => { }]);
 export const useSessionContext = () => useContext(SessionContext);
 
 
 function countReducer(state: Session, action: Session | any): any {
-  // console.log('state', {
-  //   state,
-  //   action
-  // });
   return Object.assign({}, state, action);
 }
 
 export const SessionContextProvider: React.FC = (props) => {
-    //   const [sessionState, setSessionState] = useState(initialSession);
-    //   const defaultSessionContext: [Session, typeof setSessionState]  = [sessionState, setSessionState];
+  const [sessionState, setSessionState] = React.useReducer(countReducer, initialSession)
+  const defaultSessionContext: [any, any] = [sessionState, setSessionState];
 
-    const [sessionState, setSessionState] = React.useReducer(countReducer, initialSession)
-    const defaultSessionContext: [any, any] = [sessionState, setSessionState];
+  useEffect(() => {
+    HTTPClient.get('user.json').then(e => {
+      setSessionState(e.data)
+    })
 
+    // setTimeout(() => {
+    //   console.log('logOut');
+    //   setSessionState({
+    //     uID: null,
+    //     avatar: null,
+    //     nickName: null
+    //   })
+    // }, 5000)
 
-    // console.log('defaultSessionContext', defaultSessionContext)
+  }, [])
 
   return (
     <SessionContext.Provider value={defaultSessionContext}>
@@ -43,4 +51,3 @@ export const SessionContextProvider: React.FC = (props) => {
   );
 }
 
-  

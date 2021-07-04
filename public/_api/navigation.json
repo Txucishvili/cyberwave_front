@@ -1,0 +1,27 @@
+[
+  {
+    "title": "News Feed",
+    "path": "/",
+    "icon": "controller"
+  },
+  {
+    "title": "Championship",
+    "path": "/list",
+    "icon": "award"
+  },
+  {
+    "title": "Stream",
+    "path": "/user",
+    "icon": "video"
+  },
+  {
+    "title": "Leader Boards",
+    "path": "/board",
+    "icon": "battleBoard"
+  },
+  {
+    "title": "Battle Field",
+    "path": "/battle",
+    "icon": "battleShip"
+  }
+]

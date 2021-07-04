@@ -1,0 +1,49 @@
+@import 'sassync';
+
+@mixin buttonReset() {
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn {
+  &--none {
+    @include buttonReset;
+  }
+
+  &--simple {
+    @include buttonReset;
+    @include flex-all;
+    
+
+    user-select: none;
+
+    color: var(--light-blue-grey);
+    line-height: 20px;
+    font-size: 14px;
+    height: 40px;
+    padding: 11px 11px;
+    border-radius: 32px;
+    background-color: var(--dark-two);
+
+    &:hover {
+      background-color: var(--dark);
+    }
+  }
+
+  &--circled {
+    border-radius: 100px;
+  }
+
+  &._blue {
+    background-color: var(--soft-blue);
+
+    &:hover {
+      background-color: darken(#4e7cff, 5%);
+    }
+  }
+
+  &--theme {
+    padding: 10px 30px;
+  }
+}

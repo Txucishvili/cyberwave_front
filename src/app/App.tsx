@@ -13,16 +13,18 @@ import { ThemeContext, ThemeContextProvider } from './store/context/ThemeContext
 import NavBar from './components/Navbar/NavBar';
 import Layout from './components/Layout/Layout';
 import Scrollbar from 'react-scrollbars-custom';
+import { useResizeContext } from './store/context/WindowResize';
 // import _ from 'lodash';
 // console.log('a', _.partition([1, 2, 3, 4], n => n % 2));
 
 export function App(props: any) {
   const [theme, setTheme]: any = useContext(ThemeContext);
   const themectx: any = useContext(ThemeContext);
-  // const [activeState, setActiveTheme]: any = useState(theme.themes.find((e: any) => e.name == theme.activeName));
-  // console.log('[app theme]', theme);
-  const datas = [theme, setTheme]
-  // setTheme('gray');
+  const [windowSize, setResizeState]: any = useResizeContext();
+
+  useEffect(() => {
+//     console.log('windowSize', windowSize.innerWidth, windowSize.prevWidth);
+  }, [windowSize.innerWidth])
 
   useEffect(() => {
     // console.log('-------', ThemeContext);
@@ -33,7 +35,7 @@ export function App(props: any) {
   }, [theme, theme.activeKey, theme.activeName]);
 
   const elRef = (e: any) => {
-//     console.log('sccrollbar Ref', e);
+    //     console.log('sccrollbar Ref', e);
   }
 
   const onScroll = (e: any) => {
@@ -51,7 +53,7 @@ export function App(props: any) {
     if (scrollSize == 50) {
 
     }
-    
+
     // console.log('[onScroll]', contentScrollHeight - clientHeight - scrollTop);
   }
 
@@ -66,7 +68,7 @@ export function App(props: any) {
         // scrollbarWidth={27}
         // fallbackScrollbarWidth={27}
         // native
-        thumbXProps={{  
+        thumbXProps={{
           // eslint-disable-next-line react/display-name
           renderer: props => {
             const { elementRef, ...restProps } = props;

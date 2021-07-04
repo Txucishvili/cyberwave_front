@@ -82,6 +82,7 @@ body {
   // overflow: auto;
   // overflow-x: hidden;
   transition: background-color .025s linear;
+  font-family: Roboto;
 }
 
 a {
@@ -94,3 +95,83 @@ a {
 }
 
 // @include initMediaThme($mediaThemes);
+
+
+// *** root and share classes -- TODO: split
+
+.overlay {
+  @include size(100vw);
+  background-color: rgba($oc-black, .25);
+  top: 0;
+  left: 0;
+  position: fixed;
+  // z-index: -1;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  z-index: 5;
+
+  &.active {
+    z-index: 5;
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+  }
+}
+
+
+// #### shareClasses
+.flx {
+  @include flex;
+}
+
+.flxAC {
+  align-items: center;
+}
+
+.flxJC {
+  justify-content: center;
+}
+.flxJE {
+  justify-content: flex-end;
+}
+
+.flxCol {
+  flex-direction: column;
+}
+
+.fAll {
+  @include flex-all;
+}
+
+.infoSide {
+  flex: 1;
+  margin: auto 0;
+}
+
+.hListDivide {
+  > * {
+    margin-left: 4px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+// /* Track */
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--dark);
+  // border-radius: 100px; 
+}
+
+img {
+  display: block;
+}

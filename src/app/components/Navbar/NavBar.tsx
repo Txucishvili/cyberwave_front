@@ -1,13 +1,15 @@
+import HTTPClient from 'API/axios';
 import { LayoutContext } from 'app/store/context/LayoutContext';
 import { ThemeContext } from 'app/store/context/ThemeContext';
-import React, { useContext, useState } from 'react';
+import LoaderBox from 'app/utils/LoaderBox';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useParams, withRouter } from 'react-router-dom';
 import { ScrollbarContext } from 'react-scrollbars-custom';
 import SvgIcon from '../utils/IconPacks';
 import './NavBar.scss';
 
 
-const navList = [
+const navLists = [
   {
     title: 'News Feed',
     path: '/',
@@ -35,11 +37,24 @@ const navList = [
   }
 ];
 
+interface NavListItem {
+  title: string,
+  path: string,
+  icon: string
+}
+
 const NavBar = (props: any) => {
   const [theme, setTheme]: any = useContext(ThemeContext);
   const [navMode, setMode]: [boolean, any] = useState(false);
   const scrollbarContext = useContext(ScrollbarContext);
   const [layoutParams, dispatchLayout] = useContext(LayoutContext);
+  const [navList, setNavList]: [NavListItem[], any] = useState([]);
+
+  useEffect(() => {
+    HTTPClient.get('navigation.json').then(r => {
+      setNavList(r.data);
+    })
+  }, [])
 
   function toggleSideNav() {
     dispatchLayout({
@@ -51,7 +66,7 @@ const NavBar = (props: any) => {
     if (layoutParams.navOpened) {
       dispatchLayout({
         navOpened: false
-      })    
+      })
     }
     // eslint-disable-next-line react-hooks/rules-of-hooks
     // console.log('useParams', scrollbarContext.parentScrollbar.eventEmitter._handlers);
@@ -63,7 +78,7 @@ const NavBar = (props: any) => {
   return (
     <div className={'sideNav nav--wrap ' + (layoutParams.navOpened ? 'opened' : '')}>
       <div className="nav--toggler">
-        <button className="btn btn--simple toggler"
+        <button className="btn btn--none toggler"
           onClick={toggleSideNav}
         >
           <SvgIcon pack='nav' name='burger' />
@@ -71,7 +86,7 @@ const NavBar = (props: any) => {
       </div>
       <div className="nav--area">
         <ul className={'nav--list ' + theme.activeKey}>
-          {navList.map((e, key) => {
+          {navList.length ? navList.map((e, key) => {
             return <li key={key}>
               <NavLink to={e.path}
                 exact
@@ -85,16 +100,20 @@ const NavBar = (props: any) => {
                 <div className="titler">{e.title}</div>
               </NavLink>
             </li>
+          }) : Array(5).fill(null).map((e, k) => {
+            return <li className="loader" key={k}>
+              <LoaderBox styles={{ borderRadius: 100 }} />
+            </li>
           })}
 
         </ul>
       </div>
       <div className="nav--info">
         <div className="nav--info--wrap">
-          <button className="btn btn--simple">
+          <button className="btn btn--simple btn--circled">
             <SvgIcon pack='nav' name='strongMark' />
           </button>
-          <button className="btn btn--simple">
+          <button className="btn btn--simple btn--circled">
             <SvgIcon pack='nav' name='flag' />
           </button>
         </div>
