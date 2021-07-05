@@ -142,6 +142,10 @@ a {
   @include flex-all;
 }
 
+.toRight {
+  margin-left: auto;
+}
+
 .infoSide {
   flex: 1;
   margin: auto 0;

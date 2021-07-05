@@ -5,7 +5,7 @@ import LoaderBox from 'app/utils/LoaderBox';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useParams, withRouter } from 'react-router-dom';
 import { ScrollbarContext } from 'react-scrollbars-custom';
-import SvgIcon from '../utils/IconPacks';
+import SvgIcon from '../../components/utils/IconPacks';
 import './NavBar.scss';
 
 

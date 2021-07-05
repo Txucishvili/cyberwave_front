@@ -20,7 +20,7 @@ const Header = (props: any) => {
     const sideB: any = document.getElementById('sideB');
     const movableEl: any = document.getElementById('movableEl');
 
-    if (windowSize.innerWidth >= 1690) {
+    if (windowSize.innerWidth > 1690) {
       sideB.appendChild(movableEl);
     } else {
       sideA.appendChild(movableEl);

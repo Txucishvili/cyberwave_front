@@ -1,5 +1,5 @@
 @import "sassync";
-@import '../../../sass/root-variables';
+@import '../../sass/root-variables';
 
 #root {
   // @include size(100%);
@@ -59,6 +59,7 @@ $side-container-size: 372px;
         max-width: $wrap-size;
         width: 100%;
         margin: initial;
+        margin: 0 auto;
 
         @include max-min(min 1950px) {
           // TODO: make correct bp
@@ -99,6 +100,13 @@ $side-container-size: 372px;
       @include max-min(max $content-outerside-breakPoint) {
         // background-color: red;
         display: none;
+      }
+
+      // TODO: fix range visibilit for content area 
+      @include max-min(max 1890px, min 1690px) {
+        // background-color: gray;
+        // flex-basis: 1;
+        // flex-shrink: initial;
       }
 
       // }
@@ -191,5 +199,3 @@ $side-container-size: 372px;
   // width: 15px;
   // display: none;
 }
-
-

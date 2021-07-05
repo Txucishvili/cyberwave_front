@@ -1,56 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import BlockEl from 'app/components/utils/BlockEl';
+import ContentGrid from 'app/Layout/contentGrid/contentGrid/contentGrid';
+import ContentSide from 'app/Layout/contentSide/contentSide';
+import ContentColS from 'app/Layout/contentGrid/contentColS/contentColS';
+import ContentColXL from 'app/Layout/contentGrid/contentColXL/contentColXL';
 import { useResizeContext } from 'app/store/context/WindowResize';
 import { divide } from 'lodash';
 import React, { DOMElement, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
-import Emittr from 'react-scrollbars-custom/dist/types/Emittr';
-const random = require('colors/lib/maps/random');
 
-function countReducer(state: any, action: any) {
-  console.log('---', state, action);
-  switch (action.type) {
-    case 'increment': {
-      return { count: state.count + 1 }
-    }
-    case 'decrement': {
-      return { count: state.count - 1 }
-    }
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`)
-    }
-  }
-}
-function CountConsumer(props: any) {
-  const scrollbarContext = useContext(ScrollbarContext);
-  // console.log('children', scrollbarContext.parentScrollbar?.getScrollState());
-  const { children } = props;
-  const Sc: Scrollbar | any = ScrollbarContext.Consumer;
-  const [state, dispatch] = React.useReducer(countReducer, { count: 0 })
-  // NOTE: you *might* need to memoize this value
-  // Learn more in http://kcd.im/optimize-context
-  const value = { state, dispatch }
-  // console.log('state', state);
-
-  const [scrollState, setState] = useState(scrollbarContext.parentScrollbar?.getScrollState());
-
-
-  useEffect(() => {
-    console.log('scrollState', scrollbarContext.parentScrollbar?.getScrollState()?.scrollTop);
-  }, [scrollbarContext.parentScrollbar?.getScrollState().scrollTop])
-
-  return (
-    <ScrollbarContext.Provider value={{
-      parentScrollbar: scrollbarContext.parentScrollbar
-    }}>
-      {children}
-      <div style={{ height: 5000 }}>
-        hi
-      </div>
-    </ScrollbarContext.Provider>
-  )
-}
-console.log('ScrollbarContext', { ScrollbarContext });
 
 const HomePage = (props: any) => {
   const scrollbarContext = useContext(ScrollbarContext);
@@ -131,6 +89,11 @@ const HomePage = (props: any) => {
   useEffect(() => {
     // console.log('[scrollBehavior]', targetEl.current.offsetTop, targetSize);
     if (!targetSize || targetSize == 0) {
+
+      if (scroll <= 115) {
+        // return;
+      }
+
       setTargetSize(targetEl.current.offsetHeight - document.documentElement.clientHeight)
     }
 
@@ -146,6 +109,7 @@ const HomePage = (props: any) => {
       setScrollBehaviorStyle({ bottom: -(targetSize + (scrollOffset)) + 1 })
     }
   }, [scrollBehavior]);
+
 
   useEffect(() => {
     // console.log('windowSize', windowSize);
@@ -177,96 +141,73 @@ const HomePage = (props: any) => {
 
   return <React.Fragment>
     <React.Fragment>
-
-      <div className="content--grid content--grid--wrap">
-
-        <div className="content-main content-main--wrap">
-          <div className="content-main--content">
-            <div className="container">
-              <div className="row">
-                <div className="col-sm side-a" id="sideAcontent">
-                  <div className="someEl"
-                    style={{
-                      height: dividerHeight
-                    }}
-                  >
-                  </div>
-                  <div className="el sticky-side"
-                    id="movableElcontent"
-                    ref={targetEl}
-                    style={scrollBehaviorStyle}>
-                    {/* <p>{scrollBehavior}</p> */}
-
-
-                    {Array(1).fill(null).map((e, i) => {
-                      return <BlockEl key={i} height="176px" />
-                    })}
-
-                    <Scrollbar
-                      // scrollbarWidth={20}
-                      // fallbackScrollbarWidth={0}
-                      style={{ height: 350 }}>
-                      {Array(15).fill(null).map((e, i) => {
-                        return <BlockEl key={i} height="25px" />
-                      })}
-                    </Scrollbar>
-
-                    <br />
-                    {Array(17).fill(null).map((e, i) => {
-                      return <BlockEl key={i} height="55px" />
-                    })}
-                    <div style={{ height: 20, fontSize: 0 }} />
-
-                  </div>
-                </div>
-                <div className="col-xl side-b">
-                  <div className="child_">
-                  <div className="stories flx"
-                    style={{
-                      justifyContent: 'space-between'
-                    }}
-                  >
-                    {Array(3).fill(null).map((e, i) => {
-                        return <BlockEl key={i} height="235px" width="165px" />
-                      })}
-                    </div>
-                    {newsList}
-
-                  </div>
-                </div>
-                <div className="col-sm side-c">
-                  <div className="sideInside" id="sideBcontent">
-                    
-                    <div className="el">
-
-                      {Array(11).fill(null).map((e, i) => {
-                        return <BlockEl key={i} height="60px" />
-                      })}
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
+      <ContentGrid
+        contentSide={<ContentSide />}
+      >
+        <ContentColS side="a" id="sideAcontent">
+          <div className="someEl"
+            style={{
+              height: dividerHeight
+            }}
+          >
           </div>
-        </div>
-        <div className="content-side _rsp">
-          <div className="container" id="sideAcontent">
-            <div className="ct-side--inside sticky-side"
+          <div className="el sticky-side"
+            id="movableElcontent"
+            ref={targetEl}
+            style={scrollBehaviorStyle}>
+            {/* <p>{scrollBehavior}</p> */}
+
+
+            {Array(1).fill(null).map((e, i) => {
+              return <BlockEl key={i} height="176px" />
+            })}
+
+            <Scrollbar
+              // scrollbarWidth={20}
+              // fallbackScrollbarWidth={0}
+              style={{ height: 350 }}>
+              {Array(15).fill(null).map((e, i) => {
+                return <BlockEl key={i} height="25px" />
+              })}
+            </Scrollbar>
+
+            <br />
+            {Array(17).fill(null).map((e, i) => {
+              return <BlockEl key={i} height="55px" />
+            })}
+            <div style={{ height: 20, fontSize: 0 }} />
+
+          </div>
+        </ContentColS>
+        <ContentColXL>
+          <div className="child_">
+            <div className="stories flx"
               style={{
-                top: 90
+                justifyContent: 'space-between'
               }}
             >
-              {/* <Scrollbar
-              style={{ width: '100%', height: 900 }}> */}
-              {Array(15).fill(null).map((e, i) => {
-                return <BlockEl key={i} height="100px" />
+              {Array(4).fill(null).map((e, i) => {
+                return <BlockEl key={i} height="235px" width="165px" />
               })}
-              {/* </Scrollbar> */}
             </div>
+            {newsList}
+
           </div>
-        </div>
-      </div>
+        </ContentColXL>
+        <ContentColS side="c" id="sideBcontent">
+          <div className="sideInside">
+
+            <div className="el">
+
+              {Array(11).fill(null).map((e, i) => {
+                return <BlockEl key={i} height="60px" />
+              })}
+            </div>
+
+          </div>
+        </ContentColS>
+
+      </ContentGrid>
     </React.Fragment>
 
   </React.Fragment>

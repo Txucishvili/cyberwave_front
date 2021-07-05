@@ -7,7 +7,8 @@ interface ButtonProps {
   type: string,
   color: string,
   classnames: string,
-  children: ReactElement
+  children: ReactElement,
+  none: boolean
 }
 
 const Button = (props: ButtonProps | any) => {
@@ -17,7 +18,7 @@ const Button = (props: ButtonProps | any) => {
 
   return(
     <React.Fragment>
-      <button className={classNames}>
+      <button {...props} className={classNames}>
         {props.children}
       </button>
     </React.Fragment>

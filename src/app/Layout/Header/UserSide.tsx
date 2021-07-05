@@ -1,6 +1,6 @@
 import { useResizeContext } from "app/store/context/WindowResize";
 import React, { useEffect, useState } from "react";
-import SvgIcon from "../utils/IconPacks";
+import SvgIcon from "../../components/utils/IconPacks";
 
 import CoinIcon from '../../../assets/icons/coin.png';
 import { useSessionContext } from "app/store/context/UserSession.context";

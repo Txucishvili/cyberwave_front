@@ -1,7 +1,7 @@
+import Button from "app/components/Shared/Button/Button";
 import { useSessionContext } from "app/store/context/UserSession.context";
 import { useResizeContext } from "app/store/context/WindowResize";
 import React, { useEffect } from "react";
-import Button from "../Shared/Button/Button";
 
 const InfoSide = () => {
   const [windowSize, setResizeState]: any = useResizeContext();

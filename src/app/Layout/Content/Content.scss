@@ -18,6 +18,8 @@ $content-divider: 35px;
   &--inside {
     &--wrap {
       padding-top: $content-divider;
+        // overflow: hidden;
+        // position: relative;
     }
   }
 

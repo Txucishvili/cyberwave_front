@@ -10,8 +10,8 @@ import {
 import AppPages from './pages';
 import { SessionContextProvider } from './store/context/UserSession.context';
 import { ThemeContext, ThemeContextProvider } from './store/context/ThemeContext';
-import NavBar from './components/Navbar/NavBar';
-import Layout from './components/Layout/Layout';
+import NavBar from './Layout/Navbar/NavBar';
+import Layout from './Layout/Layout';
 import Scrollbar from 'react-scrollbars-custom';
 import { useResizeContext } from './store/context/WindowResize';
 // import _ from 'lodash';
