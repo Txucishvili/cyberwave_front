@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import AppInit from './app/AppInit';
 import template from'./assets/მთავარი გვერდი.png';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Fragment>
     <div className="_template" style={{
       position: 'absolute',
       top: 0,
@@ -16,7 +16,7 @@ ReactDOM.render(
       <img src={template} alt=""/>
     </div>
     <AppInit />
-  </React.StrictMode>,
+  </Fragment>,
   document.getElementById('root')
 );
 

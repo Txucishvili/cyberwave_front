@@ -1,5 +1,7 @@
 @import 'sassync';
 @import '../../../sass/extends';
+$bp-content-sider: (1920px - 38px) - 90px+10px;
+$bp-content-outerside: 1920px - 80px - (40px * 2);
 
 .header {
   &--wrapper {
@@ -12,6 +14,17 @@
     background-color: var(--theme--main-color);
 
     z-index: 2;
+
+    .content-side {
+      // @include max-min(max $bp-content-outerside) {
+      @include max-min(max 1690px) {
+        // background-color: red;
+        display: none !important;
+      }
+      @include max-min(max $bp-content-sider) {
+        display: none;
+      }
+    }
   }
 
   .logo {

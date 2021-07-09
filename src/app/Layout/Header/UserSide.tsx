@@ -70,7 +70,7 @@ const UserSide = () => {
   const [value, setValue]: any = useState(0);
 
   useEffect(() => {
-    console.log('windowSize', windowSize);
+    // console.log('windowSize', windowSize);
     setValue(windowSize.innerWidth)
   }, [windowSize])
 

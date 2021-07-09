@@ -1,5 +1,6 @@
 @import "sassync";
 @import '../../sass/root-variables';
+@import '../../sass/variables';
 
 #root {
   // @include size(100%);
@@ -31,16 +32,31 @@ $gutter-size: 20px;
   @return $gutter-size+$size;
 }
 
+@function noGutter($size) {
+  @return $size - $gutter-size;
+}
+
 $wrap-size: 1390px;
 
 $sm-col-size: toGutter(320px);
 $sm-xl-size: toGutter(710px);
-$sm-xl-size-min: 510px;
 
-$content-outerside-breakPoint: 1920px - 80px - ($gutter-size * 2);
-$content-outerside-breakPoint: 1390px+$side-nav-size-s+($gutter-size * 4)+140px;
+$sm-xl-size-min: 620px;
+$sm-xl-size-max: 1020px;
 
 $side-container-size: 372px;
+
+$grid-shrink-indicator: #{(1920px - 80px - ($gutter-size * 2) - 1390px - 372px)};
+
+$scroll-indicator: 10px;
+
+$bp-content-outerside: 1920px - 80px - ($gutter-size * 2);
+$bp-content-outerside: 1390px+$side-nav-size-s+($gutter-size * 4)+140px;
+
+$bp-colxl: 80px+(($sm-col-size * 2) + $gutter-size)+$sm-xl-size-min+($gutter-size * 2) - $scroll-indicator;
+
+$bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
+
 
 .content--grid {
   &--wrap {
@@ -52,35 +68,43 @@ $side-container-size: 372px;
     &-main {
       &--wrap {
         flex: 1;
-        padding: 0 $gutter-size;
+        padding-left: $gutter-size;
+        padding-right: $gutter-size;
       }
 
       &--content {
         max-width: $wrap-size;
+        // max-width: 100%;
         width: 100%;
         margin: initial;
         margin: 0 auto;
 
-        @include max-min(min 1950px) {
-          // TODO: make correct bp
-          margin: 0 auto;
+        @include max-min(max 1920px, min $bp-content-sider) {
+          max-width: $wrap-size;
+          // margin: initial;
         }
 
-        @include max-min(max $content-outerside-breakPoint) {
-          margin: 0 auto;
+        @include max-min(max $bp-content-sider) {
+          max-width: 100%;
+          margin: initial;
         }
 
+        // @include max-min(max 1920px, min 1690px) {
+        //   max-width: 100%;
+        //   margin: initial;
+        // }
+
+        // request desktop site bps
         @include max-min(max 980px, min 900px) {
           // background-color: red;
         }
 
         #sideAcontent.side-a {
 
-          // background-color: red;
-          @include max-min(max 1280px) {
-            // background-color: red;
+          @include max-min(max $bp-colxl) {
             display: none;
           }
+
         }
       }
     }
@@ -88,25 +112,155 @@ $side-container-size: 372px;
     &-side {
       flex-basis: $side-container-size;
       flex-shrink: 0;
-      @include flex;
+      // @include flex;
       margin-left: auto;
 
-      @include max-min(min 1920px) {
-        // margin-left: initial;
+      &--wrapper {
+        // flex-basis: $side-container-size;
+        flex-basis: 60px;
+        flex-shrink: 0;
+        // @include flex;
+        margin-left: auto;
+        display: unset;
+
+        // overflow: hidden;
+        // display: none;
+        position: relative;
+        padding-top: $content-divider;
+
+
+        @include max-min(max $bp-content-sider) {
+          flex-basis: 60px;
+          // display: none;
+        }
+
+        .side-toggler {
+          z-index: 111;
+          position: sticky;
+          top: 35px;
+          @include flex;
+          justify-content: flex-end;
+          height: 0px;
+
+          top: var(--header-height);
+          // transform: translate(-20px, 15px);
+          transform: translate(-20px, 0);
+
+          &--wrapper {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            transition: all .125s ease-in-out;
+            transform: rotate(-180deg) translateY(9px);
+          }
+
+          .btn {
+
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+
+        .content-inside {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          display: none;
+
+          &--wrapper {
+            // transition: all .125s ease-in-out;
+
+            @include size(100%)
+          }
+        }
+
+        &.opened {
+          flex-basis: $side-container-size;
+          position: sticky;
+
+          .side-toggler {
+            &--wrapper {
+              width: 40px;
+              height: 40px;
+              transform: rotate(0) translateY(-10px);
+            }
+          }
+        }
+
+
+
+        &.showed {
+          // overflow: hidden;
+
+          .content-inside {
+            display: block;
+
+          }
+
+          .content-inside--wrapper {
+            // margin-right: 372px;
+            transform: translateX(372px);
+            display: block;
+          }
+
+          &.opened {
+            .content-inside--wrapper {
+              // margin-right: 0;
+              transform: translateX(0);
+            }
+          }
+        }
+
+        &.hidden {
+          flex-basis: 60px;
+          z-index: 5;
+          // overflow: hidden;
+          .content-inside {
+            display: block;
+          }
+          .content-inside--wrapper {
+            position: fixed;
+            top: 0;
+            right: -412px;
+            background-color: #12141b;
+            width: $side-container-size + 40;
+            height: 100%;
+            z-index: 100;
+
+            .container {
+              padding-top: calc(var(--header-height) + 20px + (37px / 2));
+              padding-left: 20px;
+              padding-right: 20px;
+            }
+          }
+
+
+          &.opened {
+            .content-inside--wrapper {
+              right: 0;
+            }
+
+            .side-toggler {
+              top: 50;
+
+              &--wrapper {}
+            }
+          }
+        }
       }
 
-      // todo first mobile
-      // &._rsp {
-      @include max-min(max $content-outerside-breakPoint) {
-        // background-color: red;
-        display: none;
-      }
 
+      // TODO: first mobile
       // TODO: fix range visibilit for content area 
-      @include max-min(max 1890px, min 1690px) {
-        // background-color: gray;
-        // flex-basis: 1;
-        // flex-shrink: initial;
+      // ** with no shrink col-x bp max (1890px + 1px)
+      &._rsp {
+
+        @include max-min(max $bp-content-sider) {
+          // display: none;
+        }
       }
 
       // }
@@ -115,9 +269,9 @@ $side-container-size: 372px;
         width: 100%;
       }
 
-      .row {
-        width: 100%;
-      }
+      // .row {
+      //   width: 100%;
+      // }
 
     }
 
@@ -125,6 +279,9 @@ $side-container-size: 372px;
 
   .container {
     // overflow: hidden;
+    // margin-left: -$gutter-size;
+    // margin-right: -$gutter-size;
+    // @include flex;
 
     .row {
       @include flex;
@@ -147,11 +304,20 @@ $side-container-size: 372px;
         &-xl {
           flex-basis: $sm-xl-size;
           flex-shrink: initial;
+          overflow: hidden;
 
-          @include max-min(max $wrap-size - ($gutter-size * 2)) {
+          flex: 1;
+
+          @include max-min(max 1920px, min 1690px) {
+            // flex: 1
+          }
+
+          @include max-min(max $bp-colxl) {
             flex-shrink: initial;
             flex: 1;
           }
+
+
         }
       }
 
@@ -198,4 +364,40 @@ $side-container-size: 372px;
 ::-webkit-scrollbar {
   // width: 15px;
   // display: none;
+}
+
+
+.loaderBox {
+  position: relative;
+  overflow: hidden;
+
+  >div {
+    overflow: hidden;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 0px;
+      background-color: red;
+      top: 0;
+      animation: infinite loader .75s;
+      box-shadow: 0px 0px 20px 5px rgba(#fff, .15);
+    }
+  }
+
+
+}
+
+
+
+@keyframes loader {
+  from {
+    left: -20px;
+  }
+
+  to {
+    left: 120%;
+  }
 }

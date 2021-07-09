@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Router, Switch,
 } from 'react-router-dom';
 import NavBar from './Navbar/NavBar';
 import Content from './Content/Content';
 import './Layout.scss';
 import { Scrollbar } from "react-scrollbars-custom";
 import { LayoutContext } from 'app/store/context/LayoutContext';
-import ContentSide from './contentSide/contentSide';
 
 
 
@@ -27,12 +26,12 @@ const Layout = (props: any) => {
   return (
     <div className={["layout layout--wrapper", hideOver ? 'active' : ''].join(' ')}>
       <Router>
-        <NavBar />
-        <Content />
-        
-        {hideOver ? <div className={['overlay', overlay ? 'active' : ''].join(' ')}
-          onClick={() => dispatchLayout({ navOpened: false })}
-        ></div> : null}
+          <NavBar />
+          <Content {...props} />
+
+          {hideOver ? <div className={['overlay', overlay ? 'active' : ''].join(' ')}
+            onClick={() => dispatchLayout({ navOpened: false })}
+          ></div> : null}
 
       </Router>
 

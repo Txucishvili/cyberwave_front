@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Header.scss';
 import SearchBar from './SearchBar/SearchBar';
 
+
 import { ReactComponent as Logo } from '../../../assets/Cyberpunk_2077_logo.svg';
 import { ReactComponent as Logo2 } from '../../../assets/Cyberpunk_2077_logo_red.svg';
 import { useResizeContext } from 'app/store/context/WindowResize';

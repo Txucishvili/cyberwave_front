@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './App.scss';
 import {
   BrowserRouter as Router,
@@ -14,17 +14,14 @@ import NavBar from './Layout/Navbar/NavBar';
 import Layout from './Layout/Layout';
 import Scrollbar from 'react-scrollbars-custom';
 import { useResizeContext } from './store/context/WindowResize';
+import { ScrollbarContext, ScrollbarProvider } from './store/context/ScrollBarContext';
 // import _ from 'lodash';
 // console.log('a', _.partition([1, 2, 3, 4], n => n % 2));
 
 export function App(props: any) {
   const [theme, setTheme]: any = useContext(ThemeContext);
   const themectx: any = useContext(ThemeContext);
-  const [windowSize, setResizeState]: any = useResizeContext();
-
-  useEffect(() => {
-//     console.log('windowSize', windowSize.innerWidth, windowSize.prevWidth);
-  }, [windowSize.innerWidth])
+  const [scrollState, setScrollState]: any = useState({});
 
   useEffect(() => {
     // console.log('-------', ThemeContext);
@@ -34,9 +31,7 @@ export function App(props: any) {
     window.localStorage.setItem('theme', theme.activeName);
   }, [theme, theme.activeKey, theme.activeName]);
 
-  const elRef = (e: any) => {
-    //     console.log('sccrollbar Ref', e);
-  }
+  const elRef: any = useRef(null);
 
   const onScroll = (e: any) => {
     const {
@@ -50,38 +45,26 @@ export function App(props: any) {
     } = e;
     const scrollSize = contentScrollHeight - clientHeight - scrollTop;
 
-    if (scrollSize == 50) {
+    // setScrollState(e);
 
-    }
+    // console.log('----- [onScrol]', e.scrollTop);
 
-    // console.log('[onScroll]', contentScrollHeight - clientHeight - scrollTop);
   }
 
   return (
     <React.Fragment>
       {/* <Layout /> */}
 
-      <Scrollbar
-        // disableTracksWidthCompensation={true}
-        // permanentTrackY={true}
-        createContext={true}
-        // scrollbarWidth={27}
-        // fallbackScrollbarWidth={27}
-        // native
-        thumbXProps={{
-          // eslint-disable-next-line react/display-name
-          renderer: props => {
-            const { elementRef, ...restProps } = props;
-            return <span {...restProps} ref={elementRef} className="ThUmBX" />;
-          }
-        }}
-        elementRef={elRef}
+      <ScrollbarProvider
         onScroll={onScroll}
-        style={{ width: '100%', height: '100%' }}
       >
-        <Layout />
+        <Layout
+          // onScroll={onScroll}
+          data={'test'}
 
-      </Scrollbar>
+        />
+      </ScrollbarProvider>
+
       {/* <div style={{ display: 'flex' }}>
         {theme.themes.map((el: any, key: any) => {
           // eslint-disable-next-line react/jsx-key

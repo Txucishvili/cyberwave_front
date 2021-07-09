@@ -84,6 +84,11 @@ const NavBar = (props: any) => {
           <SvgIcon pack='nav' name='burger' />
         </button>
       </div>
+
+      {
+//     console.log('[---- NAVBAR]')
+  }
+  
       <div className="nav--area">
         <ul className={'nav--list ' + theme.activeKey}>
           {navList.length ? navList.map((e, key) => {

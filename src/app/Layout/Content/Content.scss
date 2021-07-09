@@ -17,9 +17,13 @@ $content-divider: 35px;
 
   &--inside {
     &--wrap {
-      padding-top: $content-divider;
-        // overflow: hidden;
-        // position: relative;
+
+      // padding-top: $content-divider;
+      // overflow: hidden;
+      // position: relative;
+      .content-main--wrap {
+        padding-top: $content-divider;
+      }
     }
   }
 
