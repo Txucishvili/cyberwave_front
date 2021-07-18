@@ -1,6 +1,7 @@
 import HTTPClient from 'API/axios';
-import { LayoutContext } from 'app/store/context/LayoutContext';
+import { LayoutContext, useLayoutContext } from 'app/store/context/LayoutContext';
 import { ThemeContext } from 'app/store/context/ThemeContext';
+import { useResizeContext } from 'app/store/context/WindowResize';
 import LoaderBox from 'app/utils/LoaderBox';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useParams, withRouter } from 'react-router-dom';
@@ -44,11 +45,13 @@ interface NavListItem {
 }
 
 const NavBar = (props: any) => {
-  const [theme, setTheme]: any = useContext(ThemeContext);
+  // const [theme, setTheme]: any = useContext(ThemeContext);
   const [navMode, setMode]: [boolean, any] = useState(false);
   const scrollbarContext = useContext(ScrollbarContext);
-  const [layoutParams, dispatchLayout] = useContext(LayoutContext);
+  const [layoutParams, dispatchLayout] = useLayoutContext();
   const [navList, setNavList]: [NavListItem[], any] = useState([]);
+
+  // const [window, windowDispatch] = useResizeContext();
 
   useEffect(() => {
     HTTPClient.get('navigation.json').then(r => {
@@ -86,11 +89,11 @@ const NavBar = (props: any) => {
       </div>
 
       {
-//     console.log('[---- NAVBAR]')
-  }
-  
+        // console.log('[---- NAVBAR]')
+      }
+
       <div className="nav--area">
-        <ul className={'nav--list ' + theme.activeKey}>
+        <ul className={'nav--list ' + 'theme.activeKey'}>
           {navList.length ? navList.map((e, key) => {
             return <li key={key}>
               <NavLink to={e.path}

@@ -1,31 +1,10 @@
 @import 'sassync';
 @import '../../../sass/extends';
-$bp-content-sider: (1920px - 38px) - 90px+10px;
-$bp-content-outerside: 1920px - 80px - (40px * 2);
+@import '../../../sass/variables';
+
+$bp-content-outerside: $bp-fixedBar-shrink;
 
 .header {
-  &--wrapper {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: var(--header-height);
-    // background-color: rgba(#313642, .5);
-    background-color: var(--theme--main-color);
-
-    z-index: 2;
-
-    .content-side {
-      // @include max-min(max $bp-content-outerside) {
-      @include max-min(max 1690px) {
-        // background-color: red;
-        display: none !important;
-      }
-      @include max-min(max $bp-content-sider) {
-        display: none;
-      }
-    }
-  }
 
   .logo {
     &--area {
@@ -43,7 +22,7 @@ $bp-content-outerside: 1920px - 80px - (40px * 2);
     >* {
       margin-left: 20px;
 
-      @include max-min(max 1690px) {
+      @include max-min(max $bp-content-outerside) {
         margin-left: 10px;
       }
 
@@ -79,7 +58,7 @@ $bp-content-outerside: 1920px - 80px - (40px * 2);
         color: var(--gold);
       }
 
-      @include max-min(max 1690px) {
+      @include max-min(max $bp-content-outerside) {
         .titler {
           display: none;
         }
@@ -98,11 +77,6 @@ $bp-content-outerside: 1920px - 80px - (40px * 2);
       max-width: 250px;
       cursor: pointer;
       user-select: none;
-
-      @include max-min(max 1690px) {
-        min-width: initial;
-        padding: 10px;
-      }
 
       &:hover {
         background-color: var(--dark);
@@ -127,42 +101,104 @@ $bp-content-outerside: 1920px - 80px - (40px * 2);
       color: var(--light-blue-grey);
       margin-left: 10px;
 
-      @include max-min(max 1690px) {
-        display: none;
-      }
+
     }
 
     .droper {
       margin-left: auto;
-
-      @include max-min(max 1690px) {
-        display: none;
-      }
 
       ._icon--wrap {
         @extend %flex-all;
       }
     }
 
-  }
+    @include max-min(max $bp-content-outerside) {
+      min-width: initial;
+      padding: 10px;
 
-
-  .infoSide {
-    .btn {
-      @include max-min(max 1690px) {
-        p {
-          display: none;
-        }
+      .droper,
+      .name-area {
+        display: none;
       }
+    }
+
+    &._sm {
+      min-width: initial;
+
+      .droper,
+      .name-area {
+        display: none;
+      }
+
     }
   }
 
+
   .hListDivide {
-    @include max-min(max 1690px) {
+    @include max-min(max $bp-content-outerside) {
       >* {
         margin-left: 10px;
       }
     }
   }
 
+  &--wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    // background-color: rgba(#313642, .5);
+    background-color: var(--theme--main-color);
+
+    z-index: 2;
+
+
+    .content-side--wrapper {
+      >* {
+        position: fixed;
+        right: 0;
+        top: 0;
+      }
+      &.opened {}
+
+      &.closed, &:not(.opened) {
+        overflow: hidden;
+        // flex-basis: $side-container-min-size;
+
+        >* {
+          position: fixed;
+          right: 0;
+          top: 0;
+        }
+
+        // @include max-min(max 1892px) {
+        //   flex-basis: 60px;
+        //   background-color: red;
+        // }
+
+        .userBtn {
+          min-width: initial;
+          padding: 10px;
+
+          .droper,
+          .name-area {
+            display: none;
+          }
+        }
+
+      }
+
+      @include max-min(max $bp-content-outerside) {
+        // flex-basis: 60px;
+        overflow: hidden;
+
+        >* {
+          position: fixed;
+          right: 0;
+          top: 0;
+        }
+      }
+    }
+  }
 }

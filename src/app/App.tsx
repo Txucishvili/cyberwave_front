@@ -17,11 +17,12 @@ import { useResizeContext } from './store/context/WindowResize';
 import { ScrollbarContext, ScrollbarProvider } from './store/context/ScrollBarContext';
 // import _ from 'lodash';
 // console.log('a', _.partition([1, 2, 3, 4], n => n % 2));
-
+console.log('------------ [APP] ---------');
 export function App(props: any) {
   const [theme, setTheme]: any = useContext(ThemeContext);
   const themectx: any = useContext(ThemeContext);
   const [scrollState, setScrollState]: any = useState({});
+
 
   useEffect(() => {
     // console.log('-------', ThemeContext);
@@ -92,4 +93,4 @@ export function App(props: any) {
   );
 }
 
-export default { App };
+export default App;

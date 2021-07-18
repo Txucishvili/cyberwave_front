@@ -2,8 +2,6 @@
 import BlockEl from 'app/components/utils/BlockEl';
 import ContentGrid from 'app/Layout/contentGrid/contentGrid/contentGrid';
 import ContentSide from 'app/Layout/ContentSide/contentSide';
-import { useResizeContext } from 'app/store/context/WindowResize';
-import { divide } from 'lodash';
 import React, { DOMElement, Suspense, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
 import NewsFeedSticky from './newsFeedSticky/newsFeedSticky';
@@ -15,12 +13,12 @@ const HomePage = (props: any) => {
 
   return <React.Fragment>
     <ContentGrid
-        contentSide={
-          <NewsFeedFixed />
-        }
-      >
-        <HomePageContent />
-      </ContentGrid>
+      contentSide={
+        <NewsFeedFixed />
+      }
+    >
+      <HomePageContent />
+    </ContentGrid>
   </React.Fragment>
 }
 

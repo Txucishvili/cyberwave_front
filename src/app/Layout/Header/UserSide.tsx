@@ -6,26 +6,31 @@ import CoinIcon from '../../../assets/icons/coin.png';
 import { useSessionContext } from "app/store/context/UserSession.context";
 import HTTPClient from "API/axios";
 import LoaderBox from "app/utils/LoaderBox";
+import withUser from "app/modules/User/UserScheme";
+
+export const UserSideLoader = () => {
+  return (
+    <div className="user-area--list flx">
+      <LoaderBox styles={{ width: 200, height: 40, borderRadius: 35 }} />
+      <LoaderBox styles={{ width: 90, height: 40, borderRadius: 35 }} />
+    </div>
+  )
+}
 
 const CoinButton = (props: any) => {
   const [session, setSession]: any = useSessionContext();
 
   return (
     <div>
-      {
-        session.uID ?
-          <div className="cointBnt">
-            <div className="icon-area">
-              <img src={CoinIcon} alt="" />
-            </div>
-            <div className="name-area flx flxCol">
-              <div className="titler">ბალანსი</div>
-              <div className="count">{session.ballance}</div>
-            </div>
-          </div>
-          :
-          <LoaderBox styles={{ width: 90, height: 40, borderRadius: 35 }} />
-      }
+      <div className="cointBnt">
+        <div className="icon-area">
+          <img src={CoinIcon} alt="" />
+        </div>
+        <div className="name-area flx flxCol">
+          <div className="titler">ბალანსი</div>
+          <div className="count">{session.user.ballance}</div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -34,38 +39,37 @@ const UserButton = (props: any) => {
   const [session, setSession]: any = useSessionContext();
   const { user }: any = session;
 
+  // console.log('session', session);
+
   useEffect(() => {
-    console.log('session', session);
+    // console.log('session', session);
   }, [session])
 
   const onUserClick = () => {
-    console.log('onUserClick')
+    console.log('onUserClick');
+    setSession({ type: 'SET_USER', value: null });
   }
 
   return (
     <div>
-      {session.uID ?
-        <div className="userBtn userBtn--wrap"
-          onClick={onUserClick}
-        >
-          <div className="avatar-area">
-            <img src={session.avatar} alt="" />
-          </div>
-          <div className="name-area">
-            {session.nickName}
-          </div>
-          <div className="droper">
-            <SvgIcon pack="shared" name="arrowDown" />
-          </div>
+      <div className="userBtn userBtn--wrap"
+        onClick={onUserClick}
+      >
+        <div className="avatar-area">
+          <img src={session.user.avatar} alt="" />
         </div>
-        :
-        <LoaderBox styles={{ width: 200, height: 40, borderRadius: 35 }} />
-      }
+        <div className="name-area">
+          {session.user.nickName}
+        </div>
+        <div className="droper">
+          <SvgIcon pack="shared" name="arrowDown" />
+        </div>
+      </div>
     </div>
   )
 }
 
-const UserSide = () => {
+const UserSides = (props: any) => {
   const [windowSize, setResizeState]: any = useResizeContext();
   const [value, setValue]: any = useState(0);
 
@@ -80,9 +84,12 @@ const UserSide = () => {
       <div className="user-area--list flx">
         <CoinButton />
         <UserButton />
+        {props.children}
       </div>
     </div>
   )
 }
+// console.log('------ module', module.id);
+// const UserSide = withUser({ id: module.id, modules: UserSides, lazy: true });
 
-export default UserSide;
+export default UserSides;

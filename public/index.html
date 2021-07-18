@@ -38,6 +38,22 @@
         themeName = theme;
       }
       document.documentElement.classList.add('theme', 'theme--' + themeName);
+      const style = document.createElement('style');
+      const value = (size) => {
+        if (!size) size = window.innerWidth
+        return `
+        :root {
+          --windowSize: ${size}px
+        }
+        `;
+      };
+      style.innerHTML = value(null);
+      document.head.append(style);
+
+      window.addEventListener('resize', (e) => {
+        style.innerHTML = value(window.innerWidth);
+        document.head.append(style);
+      })
     })();
   </script>
   <link rel="stylesheet" href="app-load.css">

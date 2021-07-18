@@ -6,6 +6,7 @@ import { ThemeContext } from '../../store/context/ThemeContext';
 import { useSessionContext } from '../../store/context/UserSession.context';
 
 const ListPage = (props: any) => {
+    console.log('[ListPage]');
     const myData = Array(55).fill(null).map((e, i) => {
         return <BlockEl key={i} height="35px" />
     });

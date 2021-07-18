@@ -9,7 +9,7 @@ const LoadableComponent = Loadable({
 
 
 export default {
-	HomePage: LoadableComponent,
+	HomePage: React.lazy(() => import('./home/index')),
 	ListPage: React.lazy(() => import('./list/index')),
 	UserPage: React.lazy(() => import('./user/index')),
 };

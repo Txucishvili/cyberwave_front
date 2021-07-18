@@ -1,5 +1,7 @@
+import { LoginPrompt } from 'app/components/LoginRegister/LoginRegister';
 import BlockEl from 'app/components/utils/BlockEl';
 import { useScrollbarContext } from 'app/store/context/ScrollBarContext';
+import { useSessionContext } from 'app/store/context/UserSession.context';
 import { ResizeContext } from 'app/store/context/WindowResize';
 import React, { Component, useContext, useEffect, useRef, useState } from 'react';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
@@ -9,6 +11,7 @@ const NewsFeedList = (props: any) => {
   const [posts, setPosts] = useState(7);
   const [addingPosts, setAddPosts] = useState(false);
   const [scrollState, setScrollState] = useScrollbarContext();
+  const [session, setSession]: any = useSessionContext();
 
   useEffect(() => {
     const {
@@ -32,7 +35,9 @@ const NewsFeedList = (props: any) => {
   }, [posts, addingPosts]);
 
   const newsList = Array(posts).fill(null).map((e, i) => {
-    return <BlockEl key={i} height="500px" />
+    return <BlockEl key={i} height="500px">
+               <LoginPrompt />
+      </BlockEl>
   });
 
   // console.log('[HomePage FeedList]');
@@ -48,6 +53,7 @@ const NewsFeedList = (props: any) => {
 
 export const NewsFeedContent = (props: any) => {
   const [posts, setPosts] = useState(7);
+  const [session, setSession]: any = useSessionContext();
 
   //   console.log('[HomePage] [Content]');
 
@@ -95,6 +101,7 @@ export const NewsFeedContent = (props: any) => {
                         height: 35,
                         marginBottom: i == 6 ? 0 : 10
                       }}>
+               <LoginPrompt />
 
                       </div>
                     })}

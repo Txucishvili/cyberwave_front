@@ -1,8 +1,10 @@
+import { LoginPrompt } from 'app/components/LoginRegister/LoginRegister';
 import SectionTitle from 'app/components/sectionTitle/sectionTitle';
 import StickyScroll from 'app/components/stickyScroll/stickyScroll';
 import BlockEl from 'app/components/utils/BlockEl';
 import { ContentCol } from 'app/Layout/contentGrid/contentCol/contentCol';
 import { GridContainer, GridRow } from 'app/Layout/contentGrid/contentGrid/contentGrid';
+import { useSessionContext } from 'app/store/context/UserSession.context';
 import { ResizeContext, useResizeContext } from 'app/store/context/WindowResize';
 import React, { Component, useEffect, useState } from 'react';
 import NewsFeedSticky from '../newsFeedSticky/newsFeedSticky';
@@ -11,14 +13,20 @@ import { NewsFeedContent } from './newsFeedContent';
 
 const NewsFeedSide_A = (props: any) => {
 
+  // console.log('NewsFeedSide_A', );
+  const shrinkSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--bp-layout-shrink-size-2').replace(' ', '').replace('px', ''))
+  // console.log('HomePageContent --------');
+  
+
   return (
-    <ContentCol small className={'col-sm side-a'} id="sideAcontent" >
+  <ContentCol small className={'col-sm side-a'} id="sideAcontent" >
       <ResizeContext.Consumer>
         {val => {
           const [windowSize, setWindowSize] = val;
+          // {console.log('NewsFeedSide_A', )}
           return (
-            windowSize.innerWidth <= 1430 ?
-              <NewsFeedSticky />
+            windowSize.innerWidth <= shrinkSize ?
+              null
               : <StickyScroll>
                 <NewsFeedSticky />
               </StickyScroll>
@@ -32,25 +40,19 @@ const NewsFeedSide_A = (props: any) => {
 const NewsFeedSide_C = (props: any) => {
   const [windowSize, setResizeState]: any = useResizeContext();
   const [sideA, showSideA] = useState(false)
+  const shrinkSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--bp-layout-shrink-size-2').replace(' ', '').replace('px', ''))
+  const [session, setSession]: any = useSessionContext();
 
   let ColSide: any = null;
 
   useEffect(() => {
-    if (windowSize.offsetWidth <= 1430) {
+    // console.log('windowSize', windowSize);
+    if (windowSize.innerWidth <= shrinkSize) {
       showSideA(true);
     } else {
       showSideA(false);
     }
-  }, [])
-
-
-  useEffect(() => {
-    if (windowSize.innerWidth <= 1430) {
-      showSideA(true);
-    } else {
-      showSideA(false);
-    }
-  }, [windowSize])
+  }, [shrinkSize, windowSize])
 
   return (
     <ContentCol className={'col-sm side-c new'} id="sideBcontent">
@@ -71,7 +73,10 @@ const NewsFeedSide_C = (props: any) => {
               </div>
             </SectionTitle>
             {Array(1).fill(null).map((e, i) => {
-              return <BlockEl key={i} height="175px" style={{ marginBottom: 0 }} />
+              return <BlockEl key={i} height="175px" style={{ marginBottom: 0 }}> 
+               <LoginPrompt />
+
+              </BlockEl>
             })}
             <br />
           </div>
@@ -82,7 +87,8 @@ const NewsFeedSide_C = (props: any) => {
               </div>
             </SectionTitle>
             {Array(1).fill(null).map((e, i) => {
-              return <BlockEl key={i} height="175px" />
+              return <BlockEl key={i} height="175px">
+                </BlockEl>
             })}
             <br />
           </div>
@@ -98,7 +104,11 @@ class HomePageContent extends Component<any, any> {
 
   constructor(props: any) {
     super(props);
-    console.log('HomePageContent --------');
+    // console.log('HomePageContent --------');
+  }
+
+  shouldComponentUpdate() {
+    return false;
   }
 
   render() {

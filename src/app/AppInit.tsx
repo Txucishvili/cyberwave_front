@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { localStorageKey, Theme, ThemeContext, ThemeContextProvider } from './store/context/ThemeContext';
+import React from 'react';
+import { ThemeContextProvider } from './store/context/ThemeContext';
 import { SessionContextProvider } from './store/context/UserSession.context';
-import { App } from './App';
 import { LayutProvider } from './store/context/LayoutContext';
 import { ResizeProvider } from './store/context/WindowResize';
 
@@ -13,7 +12,7 @@ export function AppInit(props: any) {
         <ResizeProvider>
           <ThemeContextProvider>
             <SessionContextProvider>
-              <App />
+              {/* <App /> */}
             </SessionContextProvider>
           </ThemeContextProvider>
         </ResizeProvider>

@@ -3,5 +3,6 @@
   "uID": "uID-101",
   "ballance": "101",
   "roles": ["1", "2", "3"],
-  "avatar": "https://image.api.playstation.com/cdn/UP2136/CUSA02727_00/txJA2ygwMgN5uIoSXfifXcRqn2qDNQlJ.png?_version=00_09_000&platform=chihiro&w=960&h=960&bg_color=000000&opacity=100"
+  "avatar2": "https://image.api.playstation.com/cdn/UP2136/CUSA02727_00/txJA2ygwMgN5uIoSXfifXcRqn2qDNQlJ.png?_version=00_09_000&platform=chihiro&w=960&h=960&bg_color=000000&opacity=100",
+  "avatar": "./_api/t.png"
 }

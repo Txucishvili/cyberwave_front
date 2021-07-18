@@ -9,7 +9,7 @@ const BlockEl = (props: any) => {
       borderRadius: 8,
       marginBottom: 20
     }}>
-
+      {props.children}
     </div>
     </Fragment>
 }

@@ -14,7 +14,7 @@ export class ContentCol extends Component<any, any> {
     } else if (this.props.large) {
       this.colSize = 'xl'
     }
-
+// console.log('this.props.className', this.props.className);
     this.classNames = [this.colSize ? 'col-' + this.colSize : ''].concat(this.props.className, this.classNames).join(' ')
   }
 

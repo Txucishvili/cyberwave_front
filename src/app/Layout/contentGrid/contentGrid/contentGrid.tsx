@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './contentGrid.scss';
+import ContentSide from 'app/Layout/ContentSide/contentSide';
 
 export class GridContainer extends Component<any> {
   constructor(props: any) {
@@ -34,7 +35,14 @@ export default class ContentGrid extends Component<any> {
     super(props);
     //     console.log('props', props);
   }
+
+  // shouldComponentUpdate() {
+
+  //   return false;
+  // }
+
   render() {
+    //     console.log('[ContentGrid]');
     return (
       <div className="content--grid content--grid--wrap">
         <div className="content-main content-main--wrap">
@@ -42,7 +50,13 @@ export default class ContentGrid extends Component<any> {
             {this.props.children}
           </div>
         </div>
-        {this.props.contentSide}
+        
+        {!!this.props.contentSide
+          ? <ContentSide from="ContentGrid">
+            {this.props.contentSide}
+          </ContentSide>
+          : null}
+
       </div>
     )
   }

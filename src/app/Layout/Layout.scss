@@ -26,37 +26,11 @@
   }
 }
 
-$gutter-size: 20px;
-
-@function toGutter($size) {
-  @return $gutter-size+$size;
+.content--inside--wrap {
+  .content-side--wrapper {
+    padding-top: $content-divider;
+  }
 }
-
-@function noGutter($size) {
-  @return $size - $gutter-size;
-}
-
-$wrap-size: 1390px;
-
-$sm-col-size: toGutter(320px);
-$sm-xl-size: toGutter(710px);
-
-$sm-xl-size-min: 620px;
-$sm-xl-size-max: 1020px;
-
-$side-container-size: 372px;
-
-$grid-shrink-indicator: #{(1920px - 80px - ($gutter-size * 2) - 1390px - 372px)};
-
-$scroll-indicator: 10px;
-
-$bp-content-outerside: 1920px - 80px - ($gutter-size * 2);
-$bp-content-outerside: 1390px+$side-nav-size-s+($gutter-size * 4)+140px;
-
-$bp-colxl: 80px+(($sm-col-size * 2) + $gutter-size)+$sm-xl-size-min+($gutter-size * 2) - $scroll-indicator;
-
-$bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
-
 
 .content--grid {
   &--wrap {
@@ -74,27 +48,17 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
 
       &--content {
         max-width: $wrap-size;
-        // max-width: 100%;
+        // max-width: calc(var(--windowSize) - 500px);
         width: 100%;
         margin: initial;
         margin: 0 auto;
 
-        @include max-min(max 1920px, min $bp-content-sider) {
-          max-width: $wrap-size;
-          // margin: initial;
+        @include max-min(max $bp-colxl) {
+          // background-color: red;
+          max-width: $sm-col-size + $sm-xl-size - $gutter-size;
         }
 
-        @include max-min(max $bp-content-sider) {
-          max-width: 100%;
-          margin: initial;
-        }
-
-        // @include max-min(max 1920px, min 1690px) {
-        //   max-width: 100%;
-        //   margin: initial;
-        // }
-
-        // request desktop site bps
+        // !!! request desktop site bps
         @include max-min(max 980px, min 900px) {
           // background-color: red;
         }
@@ -116,8 +80,7 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
       margin-left: auto;
 
       &--wrapper {
-        // flex-basis: $side-container-size;
-        flex-basis: 60px;
+        // flex-basis: 0;
         flex-shrink: 0;
         // @include flex;
         margin-left: auto;
@@ -126,24 +89,21 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
         // overflow: hidden;
         // display: none;
         position: relative;
-        padding-top: $content-divider;
 
 
-        @include max-min(max $bp-content-sider) {
-          flex-basis: 60px;
-          // display: none;
+
+        @include max-min(max $bp-fixedBar-shrink) {
+          flex-basis: $side-container-max-size;
+          // background-color: red;
         }
 
         .side-toggler {
           z-index: 111;
           position: sticky;
-          top: 35px;
           @include flex;
           justify-content: flex-end;
           height: 0px;
-
           top: var(--header-height);
-          // transform: translate(-20px, 15px);
           transform: translate(-20px, 0);
 
           &--wrapper {
@@ -155,8 +115,6 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
           }
 
           .btn {
-
-
             position: absolute;
             top: 50%;
             left: 50%;
@@ -168,17 +126,16 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
           width: 100%;
           height: 100%;
           overflow: hidden;
-          display: none;
+          // display: none;
 
           &--wrapper {
-            // transition: all .125s ease-in-out;
-
-            @include size(100%)
+            transition: all .125s ease-in-out;
+            @include size(100%);
+            display: none;
           }
         }
 
         &.opened {
-          flex-basis: $side-container-size;
           position: sticky;
 
           .side-toggler {
@@ -193,47 +150,49 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
 
 
         &.showed {
-          // overflow: hidden;
+          flex-basis: $side-container-min-size;
 
           .content-inside {
-            display: block;
-
-          }
-
-          .content-inside--wrapper {
-            // margin-right: 372px;
-            transform: translateX(372px);
-            display: block;
+            &--wrapper {
+              // margin-right: 372px;
+              transform: translateX(372px);
+              display: block;
+            }
           }
 
           &.opened {
+            flex-basis: $side-container-size;
+
             .content-inside--wrapper {
               // margin-right: 0;
               transform: translateX(0);
+              display: block;
             }
           }
         }
 
         &.hidden {
-          flex-basis: 60px;
+          flex-basis: $side-container-min-size;
           z-index: 5;
+
           // overflow: hidden;
           .content-inside {
             display: block;
-          }
-          .content-inside--wrapper {
-            position: fixed;
-            top: 0;
-            right: -412px;
-            background-color: #12141b;
-            width: $side-container-size + 40;
-            height: 100%;
-            z-index: 100;
 
-            .container {
-              padding-top: calc(var(--header-height) + 20px + (37px / 2));
-              padding-left: 20px;
-              padding-right: 20px;
+            &--wrapper {
+              position: fixed;
+              top: 0;
+              right: -412px;
+              background-color: #12141b;
+              width: $side-container-size + 40;
+              height: 100%;
+              z-index: 100;
+
+              .container {
+                padding-top: calc(var(--header-height) + 20px + (37px / 2));
+                padding-left: 20px;
+                padding-right: 20px;
+              }
             }
           }
 
@@ -241,6 +200,8 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
           &.opened {
             .content-inside--wrapper {
               right: 0;
+              display: block;
+
             }
 
             .side-toggler {
@@ -256,12 +217,7 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
       // TODO: first mobile
       // TODO: fix range visibilit for content area 
       // ** with no shrink col-x bp max (1890px + 1px)
-      &._rsp {
-
-        @include max-min(max $bp-content-sider) {
-          // display: none;
-        }
-      }
+      &._rsp {}
 
       // }
 
@@ -304,20 +260,8 @@ $bp-content-sider: (1920px - 38px) - 90px+$scroll-indicator;
         &-xl {
           flex-basis: $sm-xl-size;
           flex-shrink: initial;
+          // flex-shrink: 0;
           overflow: hidden;
-
-          flex: 1;
-
-          @include max-min(max 1920px, min 1690px) {
-            // flex: 1
-          }
-
-          @include max-min(max $bp-colxl) {
-            flex-shrink: initial;
-            flex: 1;
-          }
-
-
         }
       }
 
