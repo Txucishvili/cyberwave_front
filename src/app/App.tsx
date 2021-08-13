@@ -1,67 +1,22 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useModular } from '@store/context/Modular.context';
+import React, { useEffect } from 'react';
 import './App.scss';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  NavLink, Link
-} from 'react-router-dom';
 
-import AppPages from './pages';
-import { SessionContextProvider } from './store/context/UserSession.context';
-import { ThemeContext, ThemeContextProvider } from './store/context/ThemeContext';
-import NavBar from './Layout/Navbar/NavBar';
 import Layout from './Layout/Layout';
-import Scrollbar from 'react-scrollbars-custom';
-import { useResizeContext } from './store/context/WindowResize';
-import { ScrollbarContext, ScrollbarProvider } from './store/context/ScrollBarContext';
-// import _ from 'lodash';
-// console.log('a', _.partition([1, 2, 3, 4], n => n % 2));
-console.log('------------ [APP] ---------');
+import { ScrollbarProvider } from './store/context/ScrollBarContext';
+
+
 export function App(props: any) {
-  const [theme, setTheme]: any = useContext(ThemeContext);
-  const themectx: any = useContext(ThemeContext);
-  const [scrollState, setScrollState]: any = useState({});
+  console.log('------------ [APP] ---------', props);
 
-
-  useEffect(() => {
-    // console.log('-------', ThemeContext);
-    const body = document.documentElement;
-    body.classList.value = '';
-    body.classList.add('theme', 'theme--' + theme.activeName);
-    window.localStorage.setItem('theme', theme.activeName);
-  }, [theme, theme.activeKey, theme.activeName]);
-
-  const elRef: any = useRef(null);
-
-  const onScroll = (e: any) => {
-    const {
-      clientHeight,
-      clientWidth,
-      contentScrollHeight,
-      contentScrollWidth,
-      scrollHeight,
-      scrollLeft,
-      scrollTop
-    } = e;
-    const scrollSize = contentScrollHeight - clientHeight - scrollTop;
-
-    // setScrollState(e);
-
-    // console.log('----- [onScrol]', e.scrollTop);
-
-  }
 
   return (
     <React.Fragment>
       {/* <Layout /> */}
 
-      <ScrollbarProvider
-        onScroll={onScroll}
-      >
+      <ScrollbarProvider>
         <Layout
-          // onScroll={onScroll}
-          data={'test'}
+          // modular={props.modularScheme}
 
         />
       </ScrollbarProvider>

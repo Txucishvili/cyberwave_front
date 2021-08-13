@@ -1,14 +1,14 @@
-import { LoginPrompt } from 'app/components/LoginRegister/LoginRegister';
-import BlockEl from 'app/components/utils/BlockEl';
-import { useScrollbarContext } from 'app/store/context/ScrollBarContext';
-import { useSessionContext } from 'app/store/context/UserSession.context';
-import { ResizeContext } from 'app/store/context/WindowResize';
+import { LoginPrompt } from '@components/LoginRegister/LoginRegister';
+import BlockEl from '@components/utils/BlockEl';
+import { useScrollbarContext } from '@store/context/ScrollBarContext';
+import { useSessionContext } from '@store/context/UserSession.context';
+import { ResizeContext } from '@store/context/WindowResize';
 import React, { Component, useContext, useEffect, useRef, useState } from 'react';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
 // import './content.scss';
 
 const NewsFeedList = (props: any) => {
-  const [posts, setPosts] = useState(7);
+  const [posts, setPosts] = useState(10);
   const [addingPosts, setAddPosts] = useState(false);
   const [scrollState, setScrollState] = useScrollbarContext();
   const [session, setSession]: any = useSessionContext();
@@ -53,7 +53,7 @@ const NewsFeedList = (props: any) => {
 
 export const NewsFeedContent = (props: any) => {
   const [posts, setPosts] = useState(7);
-  const [session, setSession]: any = useSessionContext();
+  // const [session, setSession]: any = useSessionContext();
 
   //   console.log('[HomePage] [Content]');
 
@@ -63,7 +63,7 @@ export const NewsFeedContent = (props: any) => {
         style={{
           flexWrap: 'wrap',
           overflowX: 'auto',
-          height: 245,
+          height: 270,
           whiteSpace: 'nowrap'
         }}
       >
@@ -73,40 +73,41 @@ export const NewsFeedContent = (props: any) => {
           }}
         >
           <div className="storylist flx">
-            {Array(7).fill(null).map((e, i) => {
+            {Array(114).fill(null).map((e, i) => {
               return <div key={i} className="blockEl" style={{
                 backgroundColor: 'transparent',
                 borderRadius: 8,
                 width: 165,
-                height: 220,
+                height: 260,
                 marginRight: 20,
                 flexBasis: 165,
-                flexShrink: 0
+                flexShrink: 0,
+                marginBottom: 0
               }}>
-                <Scrollbar
+                {/* <Scrollbar
                   style={{
                     height: '100%',
                     width: '100%',
                   }}
-                >
+                > */}
                   {
                     // console.log('[child]')
                   }
                   <div className="storylist">
-                    {Array(7).fill(null).map((e, i) => {
+                    {Array(1).fill(null).map((e, i) => {
                       return <div key={i} className="blockEl" style={{
                         backgroundColor: 'rgb(255 255 255 / 8%)',
                         borderRadius: 8,
                         width: '100%',
-                        height: 35,
+                        height: 235,
                         marginBottom: i == 6 ? 0 : 10
                       }}>
-               <LoginPrompt />
+               {/* <LoginPrompt /> */}
 
                       </div>
                     })}
                   </div>
-                </Scrollbar>
+                {/* </Scrollbar> */}
               </div>
             })}
           </div>

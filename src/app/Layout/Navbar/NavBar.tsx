@@ -1,8 +1,8 @@
-import HTTPClient from 'API/axios';
-import { LayoutContext, useLayoutContext } from 'app/store/context/LayoutContext';
-import { ThemeContext } from 'app/store/context/ThemeContext';
-import { useResizeContext } from 'app/store/context/WindowResize';
-import LoaderBox from 'app/utils/LoaderBox';
+import HTTPClient from '@API/axios/index';
+import { LayoutContext, useLayoutContext } from '@store/context/LayoutContext';
+import { ThemeContext } from '@store/context/ThemeContext';
+import { useResizeContext } from '@store/context/WindowResize';
+import LoaderBox from '@utils/LoaderBox';
 import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useParams, withRouter } from 'react-router-dom';
 import { ScrollbarContext } from 'react-scrollbars-custom';
@@ -14,6 +14,11 @@ const navLists = [
   {
     title: 'News Feed',
     path: '/',
+    icon: 'newsFeed'
+  },
+  {
+    title: 'Games',
+    path: '/games',
     icon: 'controller'
   },
   {

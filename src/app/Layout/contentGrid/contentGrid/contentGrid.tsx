@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './contentGrid.scss';
-import ContentSide from 'app/Layout/ContentSide/contentSide';
+import ContentSide from '@Layout/ContentSide/contentSide';
+import { SessionContext } from '@store/context/UserSession.context';
 
 export class GridContainer extends Component<any> {
   constructor(props: any) {
@@ -44,19 +45,25 @@ export default class ContentGrid extends Component<any> {
   render() {
     //     console.log('[ContentGrid]');
     return (
-      <div className="content--grid content--grid--wrap">
+      <div className={['content--grid content--grid--wrap'].concat(this.props.className).join(' ')}>
         <div className="content-main content-main--wrap">
           <div className="content-main--content">
             {this.props.children}
           </div>
         </div>
-        
-        {!!this.props.contentSide
-          ? <ContentSide from="ContentGrid">
-            {this.props.contentSide}
-          </ContentSide>
+        {this.props.contentSide
+          ? <SessionContext.Consumer>
+            {([session,]) => {
+              if (session.user == null) {
+                return null
+              } else {
+                return <ContentSide from="ContentGrid">
+                  {this.props.contentSide}
+                </ContentSide>
+              }
+            }}
+          </SessionContext.Consumer>
           : null}
-
       </div>
     )
   }

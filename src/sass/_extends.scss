@@ -1,4 +1,32 @@
 
+@import 'sassync';
+
 %flex-all {
   @include flex-all;
+}
+
+@mixin horizontal-divide($size: 10px) {
+  > * {
+    margin-top: $size;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+@mixin vertical-divide($size: 10px) {
+  > * {
+    margin-left: $size;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+%text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

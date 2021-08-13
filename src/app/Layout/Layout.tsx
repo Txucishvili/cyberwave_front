@@ -6,7 +6,7 @@ import NavBar from './Navbar/NavBar';
 import Content from './Content/Content';
 import './Layout.scss';
 import { Scrollbar } from "react-scrollbars-custom";
-import { LayoutContext, useLayoutContext } from 'app/store/context/LayoutContext';
+import { LayoutContext, useLayoutContext } from '@store/context/LayoutContext';
 
 const LayoutOverlay = () => {
   const [layoutParams, dispatchLayout]: any = useLayoutContext();
@@ -28,11 +28,11 @@ const LayoutOverlay = () => {
 
 const Layout = (props: any) => {
   // const [layoutParams, dispatchLayout]: any = useLayoutContext();
-  console.log('------- apppppppp');
+//   console.log('------- apppppppp');
 
   return (
     // <div className={["layout layout--wrapper", hideOver ? 'active' : ''].join(' ')}>
-    <div>
+    <div style={{width: '100%', minHeight: '100vh'}}>
       <Router>
         <NavBar />
         <Content {...props} />

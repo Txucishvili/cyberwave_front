@@ -20,7 +20,7 @@
       overflow: hidden;
       z-index: 8;
 
-      font-family: Roboto;
+      font-family: var(--main-font);
     }
 
     &--toggler {
@@ -81,7 +81,8 @@
           overflow: hidden;
           color: rgb(120, 125, 136);
           text-decoration: none;
-          font-size: 16px;          
+          font-size: 16px;
+          transition: all .125s ease-in-out;
 
           .icon-area {
             @include size(80px);
@@ -94,8 +95,12 @@
           }
 
           svg {
+            max-height: 25px;
+            max-width: 50px;
+
             path {
               transition: fill .125s ease-in-out;
+              fill: var(--steel);
             }
           }
 
@@ -105,9 +110,12 @@
 
             svg {
               path {
-                fill: #FFF;
+                fill: var(--soft-blue);;
               }
             }
+          }
+          &.active {
+            background-color: var(--dark-two);
           }
         }
       }
@@ -133,7 +141,8 @@
           @include size(30px);
           @include flex-all;
 
-          .icon-wrap, ._icon--wrap {
+          .icon-wrap,
+          ._icon--wrap {
             @include flex-all;
           }
 

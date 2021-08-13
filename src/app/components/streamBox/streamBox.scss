@@ -1,0 +1,45 @@
+
+.component-stream-box{
+    
+}
+
+.embla {
+  overflow: hidden;
+  border-radius: 11px;
+}
+
+.embla__container {
+  display: flex;
+  width: 320px;
+}
+
+.embla__slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  margin: 0 15px;
+}
+
+.is-dragging_ {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    height: 100%;
+    width: 2px;
+    background-color: var(--theme--main-color);
+    position: absolute;
+    top: 0;
+    z-index: 5;
+    box-shadow: 0px 0px 20px 10px var(--theme--main-color);
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+}

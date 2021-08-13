@@ -28,3 +28,7 @@ export const ModuleLoader = (props: any) => {
     </div>
   )
 }
+
+export function randomNumber(min, max) { 
+  return Math.random() * (max - min) + min;
+} 

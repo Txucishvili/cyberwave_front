@@ -1,7 +1,8 @@
-import HTTPClient from "API/axios";
-import { useSessionContext } from "app/store/context/UserSession.context";
+import HTTPClient from "@API/axios";
 import React from "react";
+import { useSessionContext } from "@store/context/UserSession.context";
 import Button from "../Shared/Button/Button";
+
 
 export const LoginPrompt = () => {
   const [session, setSession]: any = useSessionContext();
@@ -32,11 +33,13 @@ const LoginRegisterButtons = (props: any) => {
   return (
     <div className="flx">
       <Button onClick={login}>
-        Login
-    </Button>
-      <Button onClick={register}>
-        Register
-    </Button>
+        <p>Login</p>
+      </Button>
+      <div style={{ marginLeft: 10 }}>
+        <Button onClick={register}>
+          <p>Register</p>
+        </Button>
+      </div>
     </div>
   )
 }

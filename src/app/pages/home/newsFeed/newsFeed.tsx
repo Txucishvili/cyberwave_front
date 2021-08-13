@@ -1,11 +1,12 @@
-import { LoginPrompt } from 'app/components/LoginRegister/LoginRegister';
-import SectionTitle from 'app/components/sectionTitle/sectionTitle';
-import StickyScroll from 'app/components/stickyScroll/stickyScroll';
-import BlockEl from 'app/components/utils/BlockEl';
-import { ContentCol } from 'app/Layout/contentGrid/contentCol/contentCol';
-import { GridContainer, GridRow } from 'app/Layout/contentGrid/contentGrid/contentGrid';
-import { useSessionContext } from 'app/store/context/UserSession.context';
-import { ResizeContext, useResizeContext } from 'app/store/context/WindowResize';
+import { LoginPrompt } from '@components/LoginRegister/LoginRegister';
+import SectionTitle from '@components/sectionTitle/sectionTitle';
+import Button from '@components/Shared/Button/Button';
+import StickyScroll from '@components/stickyScroll/stickyScroll';
+import BlockEl from '@components/utils/BlockEl';
+import { ContentCol } from '@Layout/contentGrid/contentCol/contentCol';
+import { GridContainer, GridRow } from '@Layout/contentGrid/contentGrid/contentGrid';
+import { useSessionContext } from '@store/context/UserSession.context';
+import { ResizeContext, useResizeContext } from '@store/context/WindowResize';
 import React, { Component, useEffect, useState } from 'react';
 import NewsFeedSticky from '../newsFeedSticky/newsFeedSticky';
 import './newsFeed.scss';
@@ -16,10 +17,10 @@ const NewsFeedSide_A = (props: any) => {
   // console.log('NewsFeedSide_A', );
   const shrinkSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--bp-layout-shrink-size-2').replace(' ', '').replace('px', ''))
   // console.log('HomePageContent --------');
-  
+
 
   return (
-  <ContentCol small className={'col-sm side-a'} id="sideAcontent" >
+    <ContentCol small className={'col-sm side-a'} id="sideAcontent" >
       <ResizeContext.Consumer>
         {val => {
           const [windowSize, setWindowSize] = val;
@@ -40,6 +41,7 @@ const NewsFeedSide_A = (props: any) => {
 const NewsFeedSide_C = (props: any) => {
   const [windowSize, setResizeState]: any = useResizeContext();
   const [sideA, showSideA] = useState(false)
+  const [shopListSize, setShop] = useState([1])
   const shrinkSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--bp-layout-shrink-size-2').replace(' ', '').replace('px', ''))
   const [session, setSession]: any = useSessionContext();
 
@@ -73,8 +75,8 @@ const NewsFeedSide_C = (props: any) => {
               </div>
             </SectionTitle>
             {Array(1).fill(null).map((e, i) => {
-              return <BlockEl key={i} height="175px" style={{ marginBottom: 0 }}> 
-               <LoginPrompt />
+              return <BlockEl key={i} height="175px" style={{ marginBottom: 0 }}>
+                <LoginPrompt />
 
               </BlockEl>
             })}
@@ -86,10 +88,18 @@ const NewsFeedSide_C = (props: any) => {
               <div className="side-toggler toRight">
               </div>
             </SectionTitle>
-            {Array(1).fill(null).map((e, i) => {
+            <div className="flx flxAC" style={{position: 'fixed', top: 333}}>
+              <div>{shopListSize.length}</div>
+              <div className={'_flx toRight'}>
+            <Button onClick={() => {
+                setShop(oldArray => [...oldArray, 1]);
+              }}>Update</Button></div>
+            </div>
+            {shopListSize.map((e, i) => {
               return <BlockEl key={i} height="175px">
-                </BlockEl>
+              </BlockEl>
             })}
+
             <br />
           </div>
         </StickyScroll>

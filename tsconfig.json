@@ -7,7 +7,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "baseUrl": "./src",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,17 +18,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "noImplicitAny": false,
+    "baseUrl": "./"
   },
-  "include": [
-    "src"
-  ],
-  "paths": {
-    "@components/*": [
-      "src/app/componennts/*"
-    ],
-    "@context/*": [
-      "src/app/store/context/*"
-    ]
-  }
+  "extends": "./tsconfig.base.json"
 }

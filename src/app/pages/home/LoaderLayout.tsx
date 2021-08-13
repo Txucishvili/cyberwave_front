@@ -1,7 +1,7 @@
-import { ContentCol } from 'app/Layout/contentGrid/contentCol/contentCol';
-import ContentGrid, { GridContainer, GridRow } from 'app/Layout/contentGrid/contentGrid/contentGrid';
-import FixedContainer from 'app/Layout/ContentSide/contentSide';
-import LoaderBox from 'app/utils/LoaderBox';
+import { ContentCol } from '@Layout/contentGrid/contentCol/contentCol';
+import ContentGrid, { GridContainer, GridRow } from '@Layout/contentGrid/contentGrid/contentGrid';
+import FixedContainer from '@Layout/ContentSide/contentSide';
+import LoaderBox from '@utils/LoaderBox';
 import React from 'react';
 
 const NewsFeedLoader = (props: any) => {
@@ -17,37 +17,7 @@ const NewsFeedLoader = (props: any) => {
     }
   }
   return <React.Fragment>
-    <ContentGrid
-      contentSide={
-        <FixedContainer
-          className={classNames}
-        >
-          {!classNames.includes('opened')
-            ? Array(1).fill(null).map((e, i) => {
-              return <LoaderBox key={i}
-                styles={{
-                  width: '40px',
-                  height: "40px",
-                  marginBottom: '20px',
-                  borderRadius: 8
-                }}
-              />
-            })
-            : Array(5).fill(null).map((e, i) => {
-              return <LoaderBox key={i}
-                styles={{
-                  width: '100%',
-                  height: "100px",
-                  marginBottom: '20px',
-                  borderRadius: 8
-                }}
-              />
-            })
-          }
-        </FixedContainer>
-      }
-    >
-      <GridContainer>
+<GridContainer>
         <GridRow>
           <ContentCol className="col-sm side-a">
 
@@ -56,7 +26,7 @@ const NewsFeedLoader = (props: any) => {
                 return <LoaderBox key={i}
                   styles={{
                     width: '100%',
-                    height: i == 0 ? "176px" : "100px",
+                    height: i == 0 ? "176px" : "45px",
                     marginBottom: '20px',
                     borderRadius: 8
                   }}
@@ -94,7 +64,6 @@ const NewsFeedLoader = (props: any) => {
           </ContentCol>
         </GridRow>
       </GridContainer>
-    </ContentGrid>
   </React.Fragment>
 }
 

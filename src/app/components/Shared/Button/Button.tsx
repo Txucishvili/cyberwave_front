@@ -3,18 +3,20 @@ import React, { ReactElement } from "react";
 import './Button.scss';
 
 interface ButtonProps {
-  style:  string,
-  type: string,
-  color: string,
-  classnames: string,
-  children: ReactElement,
-  none: boolean
+  style?:  string,
+  type?: string,
+  color?: string,
+  classnames?: string,
+  children?: ReactElement,
+  none?: boolean | undefined
 }
 
 const Button = (props: ButtonProps | any) => {
-  const {style, type, color, classnames} = props;
+  var {style, type, color, classnames, none, simple} = props;
 
-  const classNames = ['btn', 'btn--simple'].concat(classnames).join(' ');
+  simple = simple ? simple : false;
+
+  const classNames = ['btn', !!none ? 'btn--none' : 'btn--simple'].concat(classnames).join(' ');
 
   return(
     <React.Fragment>

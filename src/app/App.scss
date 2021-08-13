@@ -82,7 +82,7 @@ body {
   // overflow: auto;
   // overflow-x: hidden;
   transition: background-color .025s linear;
-  font-family: Roboto;
+  font-family: var(--main-font);
 }
 
 a {
@@ -178,4 +178,14 @@ a {
 
 img {
   display: block;
+}
+
+%text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.txtOvrf {
+  @extend %text-overflow;
 }

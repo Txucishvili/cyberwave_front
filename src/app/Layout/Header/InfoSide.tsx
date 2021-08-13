@@ -1,8 +1,7 @@
-import Button from "app/components/Shared/Button/Button";
-import withUser from "app/modules/User/UserScheme";
-import { useLayoutContext } from "app/store/context/LayoutContext";
-import { useSessionContext } from "app/store/context/UserSession.context";
-import { useResizeContext } from "app/store/context/WindowResize";
+import Button from "@components/Shared/Button/Button";
+import { useLayoutContext } from "@store/context/LayoutContext";
+import { useSessionContext } from "@store/context/UserSession.context";
+import { useResizeContext } from "@store/context/WindowResize";
 import React, { useEffect } from "react";
 
 export const toggleFixedBar = (value: any) => ({

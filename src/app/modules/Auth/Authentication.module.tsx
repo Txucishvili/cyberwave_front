@@ -1,6 +1,6 @@
-import HTTPClient from 'API/axios';
-import { SessionContext } from 'app/store/context/UserSession.context';
-import { ModuleLoader } from 'app/utils/Functions';
+import HTTPClient from '@API/axios';
+import { SessionContext } from '@store/context/UserSession.context';
+import { ModuleLoader } from '@utils/Functions';
 import React, { Component, Suspense } from 'react';
 import loadable from 'react-loadable';
 
@@ -8,14 +8,18 @@ const Loader = () => {
   return <div>Loadiong</div>
 }
 
-import AuthContextProvider from '../../store/context/Auth.context';
 
 const AuthContextLoadable: any = loadable({
-  loader: () => import('../../store/context/Auth.context'),
+  loader: () => import('../../store/context/Modular.context'),
   loading: Loader,
 });
 
-const AppLazy: any = React.lazy(() => import('app/App'));
+const AppLazy: any = React.lazy(() => import('../../App'));
+import App from '../../App';
+import { Provider } from 'react-redux';
+import store from '@store/redux';
+import ModularContextProvider from '@store/context/Modular.context';
+
 
 export default class AuthModule extends Component<any, any> {
 
@@ -23,10 +27,10 @@ export default class AuthModule extends Component<any, any> {
     super(props);
 
     this.state = {
-      isLoaded: false
+      user: null,
+      modular: null
     }
   }
-
 
   componentDidMount() {
     // console.log('[UserSessionContext]', sessionState);
@@ -41,51 +45,33 @@ export default class AuthModule extends Component<any, any> {
     // }
   }
 
-  shouldComponentUpdate(props: any, state: any) {
-    console.log('-=----', props, state);
+  // componentDidUpdate() {
 
-    if (!!props.user && !state.isLoaded) {
-      this.setState({ isLoaded: true });
-    }
-
-    console.log('-----', this.state);
-    return !!this.props.user;
-  }
+  // }
 
   static getDerivedStateFromProps(props: any, state: any) {
-    // ...
-    // console.log('----', { props, state });
-    if (!props.isLoaded) {
-      return false;
-    } else {
-      return true;
-    }
-    return false;
+    // console.log('getDerivedStateFromProps', props, state);
+
+    return {
+      modular: !!props.user ? { module: 1 } : { module: 0 },
+      user: props.user
+    };
   }
+
+  shouldComponentUpdate(props: any, state: any) {
+    // console.log('[AuthModule] shouldComponentUpdate', {props, state});
+
+    return true;
+  }
+
 
   // TODO: add correct module loading !!!!
   render() {
-    console.log('[AuthModule]', this.state);
+    console.log('AuthModule', this.state, this.props);
     return (
-      <div style={{ width: '100%', height: '100%' }}>
-
-        {!this.state.isLoaded
-          ? <Suspense fallback={'loading'}>
-            {
-    console.log('[AuthModule] A')
-            }
-            <AppLazy />
-          </Suspense>
-          : <AuthContextProvider data={this.props.user}>
-            <Suspense fallback={'loading'}>
-              {
-    console.log('[AuthModule] B')
-              }
-              <AppLazy />
-            </Suspense>
-          </AuthContextProvider>
-        }
-      </div>
-    )
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
   }
 }

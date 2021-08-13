@@ -1,31 +1,25 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import React, { createRef, forwardRef, ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import './Header.scss';
 import SearchBar from './SearchBar/SearchBar';
 
 
 import { ReactComponent as Logo } from '../../../assets/Cyberpunk_2077_logo.svg';
-import { ReactComponent as Logo2 } from '../../../assets/Cyberpunk_2077_logo_red.svg';
-import { useResizeContext } from 'app/store/context/WindowResize';
-import ReactDOM, { createPortal } from 'react-dom';
+import { useResizeContext } from '@store/context/WindowResize';
 import InfoSide from './InfoSide';
-// import UserSide from './UserSide';
-import usePortal from 'app/utils/usePortal';
-import { toggleFixedBar, useLayoutContext } from 'app/store/context/LayoutContext';
-import { getComputedStyles } from 'app/utils/Functions';
+import { useLayoutContext } from '@store/context/LayoutContext';
+import { getComputedStyles } from '@utils/Functions';
 
-import ContentGrid from 'app/Layout/contentGrid/contentGrid/contentGrid';
-import { ContentCol } from 'app/Layout/contentGrid/contentCol/contentCol';
-import { GridContainer, GridRow } from 'app/Layout/contentGrid/contentGrid/contentGrid';
-import { ResizeService } from 'app/store/context/WindowResize';
-import AuthSwitch from 'app/utils/Authorized';
-import { useSessionContext } from 'app/store/context/UserSession.context';
-// import UserSides, { UserSideLoader } from './UserSide';
-import LoginRegisterButtons from 'app/components/LoginRegister/LoginRegister';
-import Loadable from 'react-loadable';
-import LoadableC from 'app/utils/Loadable';
-import { UsersModuleLazy } from 'app/modules/User';
-import { LoadableWrap, UserSideLoader } from '../../modules/User';
-
+import ContentGrid from '@Layout/contentGrid/contentGrid/contentGrid';
+import { ContentCol } from '@Layout/contentGrid/contentCol/contentCol';
+import { GridContainer, GridRow } from '@Layout/contentGrid/contentGrid/contentGrid';
+import LoginRegisterButtons from '@components/LoginRegister/LoginRegister';
+import { useSessionContext } from '@store/context/UserSession.context';
+// import AppNoUserComponents, { ModularSwitcher } from '@modules/index';
+import AuthModule from '@modules/Auth/Authentication.module';
+import withModular from '@utils/withModular';
+import ModularContextProvider, { useModular, ModularContext } from '@store/context/Modular.context';
+import UserSides from './UserSide';
+// console.log('AuthModule', AuthModule);
 const HeaderX = (props: any) => {
   const [windowSize, setResizeState]: any = useResizeContext();
   const [layoutState, setLayoutState]: any = useLayoutContext();
@@ -112,43 +106,58 @@ const HeaderX = (props: any) => {
   )
 }
 
-
-// const Loader = () => {
-//   return (<div>Loading</div>)
-// }
-
-// const LoadableC = Loadable({
-//   loader: () => import('./UserSide'),
-//   loading: Loader,
-// })
 const HeaderFixed = (props: any) => {
   // const [layoutState, setLayoutState]: any = useLayoutContext();
-  const [session, setSession]: any = useSessionContext();
-  // console.log('[HeaderFixed]', session);
+  // const [session, setSession] = useSessionContext();
+  const [modular, setModular] = useModular();
+  const [session, setSession] = useSessionContext();
 
+  console.log('[HeaderFixed]', modular);
+
+  let RightArea: any = InfoSide;
+
+
+  // const SwitchView = ModularSwitcher[props.modular.module].HeadSwitch;
+  // console.log('SwitchView', props.modular.module);
+
+  // if (session.user !== null) {
+  //   RightArea = <UsersModuleLazy.HeaderSide></UsersModuleLazy.HeaderSide>
+  // } else {
+  //   RightArea = <AppNoUserComponents.LoginRegisterButton />
+  // }
+
+  const UserView: any = session.user !== null ? <UserSides /> : null;
+  console.log('UserView', UserView);
   return (
     <div
       onClick={() => {
         // setLayoutState(toggleFixedBar(!layoutState.fixedSide))
       }}
     >
+
       <div>
         <div className="contentInside flx flxAC flxJE" id="sideB">
           <div style={{ paddingRight: 10 }}>
             {/* <InfoSide /> */}
           </div>
           <div>
+            {session.user ? <UserSides /> : null}
             {/* <UserSides></UserSides> */}
-            {session.user !== null
+            {/* {session.user !== null
               ?
               <LoadableWrap fallback={<UserSideLoader />}>
                 {!session.user.roles.includes('2')
                   ? <UsersModuleLazy.HeaderSide></UsersModuleLazy.HeaderSide>
                   : <UsersModuleLazy.HeaderSideAdmin></UsersModuleLazy.HeaderSideAdmin>}
               </LoadableWrap>
-              : <LoginRegisterButtons />
-            }
+              : !session.token ? <AppNoUserComponents.LoginRegisterButton /> : null
+            } */}
 
+            {/* <LoadableWrap fallback={<UserSideLoader />}>
+              <RightArea>
+                {props.wrapConfig && props.wrapConfig.merge ? <InfoSide /> : null}
+              </RightArea>
+            </LoadableWrap> */}
           </div>
         </div>
       </div>
@@ -156,12 +165,26 @@ const HeaderFixed = (props: any) => {
   )
 }
 
-// console.log('------------ [HEADER] ------------');
-
 const Header = (props: any) => {
+  const { wrapConfig } = props;
+  const [session, setSession] = useSessionContext();
+  const [modular, setModular] = useModular();
+  // console.log('HeaderFixed', modular);
 
-  // console.log('[HEADER]');
+  // console.log('--- header', modular.scheme);
+  
+ 
+  let RightArea = session.user ? InfoSide : LoginRegisterButtons;
+  // let RightArea;
+  // if (!modular.isLoading) {
+  //   RightArea = modular.scheme.HeaderSide
+  // } else {
+  //   RightArea = null
+  // }
 
+
+  // let RightAreas = ModularSwitcher[wrapConfig.module];
+  // console.log('[RightArea]', RightAreas);
 
   return (
     <div className="header header--wrapper">
@@ -188,7 +211,9 @@ const Header = (props: any) => {
               <SearchBar />
             </ContentCol>
             <ContentCol small className={['side-c flx flxAC flxJE']}>
-              <InfoSide />
+              
+              <RightArea />
+              {/* {wrapConfig && wrapConfig.merge ? null : <InfoSide />} */}
             </ContentCol>
           </GridRow>
         </GridContainer>
@@ -197,4 +222,54 @@ const Header = (props: any) => {
   )
 }
 
-export default Header;
+const HeaderWrapper = (props) => {
+  const [windowSize, setResizeState] = useResizeContext();
+  const [wrapConfig, setWrapConfig]: [{ merge: boolean } | null, any] = useState({
+    merge: window.innerWidth <= 1835
+  });
+  const contentSideRef = useRef();
+  console.log('[HeaderWrapper]');
+
+  // console.log('[HeaderWrapper]');
+
+  useEffect(() => {
+    const targetEl = document.querySelector('#sideB');
+    // console.log('[windowSize]', { targetEl: targetEl?.clientWidth, windowSize });
+
+    // if (wrapConfig == null) {
+    if (windowSize.innerWidth <= 1835) {
+      setWrapConfig({ merge: true })
+    } else {
+      setWrapConfig({ merge: false })
+    }
+    // }
+  }, [windowSize]);
+
+
+  return (
+    <HeaderMemo wrapConfig={wrapConfig} />
+  );
+}
+
+const areEqual = (prevProps, nextProps) => {
+
+  // return true; 
+  // console.log('[areEqual]', prevProps, nextProps);
+  // if (nextProps.modular.module !== prevProps.modular.module) {
+  //   return false;
+  // }
+
+  if (nextProps.wrapConfig !== null && prevProps.wrapConfig !== null) {
+    if (prevProps.wrapConfig.merge !== nextProps.wrapConfig.merge) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const HeaderMemo = React.memo(Header, areEqual);
+
+export default HeaderWrapper;

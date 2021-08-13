@@ -1,10 +1,29 @@
-import { useScrollbarContext } from 'app/store/context/ScrollBarContext';
-import { useResizeContext } from 'app/store/context/WindowResize';
-import React, { Component, useContext, useEffect, useRef, useState } from 'react';
+import { useScrollbarContext } from '@store/context/ScrollBarContext';
+import { useResizeContext } from '@store/context/WindowResize';
+import React, { Component, createRef, Fragment, useContext, useEffect, useRef, useState } from 'react';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
 import Emittr from 'react-scrollbars-custom/dist/types/Emittr';
 import BlockEl from '../utils/BlockEl';
-import './stickyScroll.scss'
+import './stickyScroll.scss';
+
+class StaticComponent extends Component<any, any> {
+
+  constructor(props: any) {
+    super(props);
+  }
+
+  shouldComponentUpdate() {
+    return !false;
+  }
+
+  render() {
+    return (
+      <Fragment>
+        {this.props.children}
+      </Fragment>
+    )
+  }
+}
 
 const StickyScroll = (props: any) => {
   // const scrollbarContext = useContext(ScrollbarContext);
@@ -15,76 +34,137 @@ const StickyScroll = (props: any) => {
   const [dividerHeight, setDivider] = useState(0);
   const [scrollBehavior, setScrollBehavior] = useState('');
   const [scrollBehaviorStyle, setScrollBehaviorStyle]: any = useState({});
-  const [targetSize, setTargetSize]: any = useState(0);
   const [scrollObj, setScrollObj]: any = useState({});
   const [scrollOffset, setscrollOffset]: any = useState(0);
-  const targetEl: any = useRef(null);
+  const targetEl: any = createRef();
+  const [targetSize, setTargetSize]: any = useState(0);
+  const [isSticky, setSticky]: any = useState(0);
 
   const [scrollState, setScrollState] = useScrollbarContext();
+  const [windowSize,] = useResizeContext();
 
   useEffect(() => {
-    const { clientHeight, clientWidth, contentScrollHeight, contentScrollWidth, scrollHeight, scrollLeft, scrollTop } = scrollState;
-    const scrollSize = contentScrollHeight - clientHeight - scrollTop;
+    setscrollOffset(targetEl.current.offsetTop);
 
-    if (!scrollTop) {
-      return;
-    }
-    // setScrollEnd(scrollTop)
-    setScroll(scrollTop)
-    setScrollObj(scrollState)
-    // console.log("[stickyScroll]", scrollTop);
+    // if (targetEl.current.offsetHeight <= (document.documentElement.clientHeight - targetEl.current.offsetTop)) {
+    //   setSticky(false);
+    // }
 
-  }, [scrollState.scrollTop]);
 
-  useEffect(() => {
-    //     console.log(targetEl.current.offsetTop);
-    setscrollOffset(targetEl.current.offsetTop)
+    // const target = targetEl.current;
+
+    // console.log('target,', target);
+
+
+    // // callback for mutation observer
+    // const logMutations = function (mutations) {
+    //   mutations.forEach(function (mutation) {
+    //     console.log(mutation);
+    //     console.log(`${mutation.type} - list updated`);
+    //   });
+    // };
+
+    // // create an observer instance
+    // const observer = new MutationObserver(logMutations);
+
+    // observer.observe(target, { attributes: true });
   }, []);
 
-
+  useEffect(() => {
+    // console.log('change');
+  }, []);
 
   useEffect(() => {
-    if (scroll <= 0) {
-      setScrollStart(0);
-    } else {
-      setScrollStart(scroll);
+    if (targetEl) {
+      const currTarget = targetEl.current.offsetHeight - document.documentElement.clientHeight;
+
+      if (currTarget !== targetSize) {
+        setTargetSize(targetEl.current.offsetHeight - document.documentElement.clientHeight);
+      }
+      if (targetEl.current.offsetHeight <= (document.documentElement.clientHeight - targetEl.current.offsetTop)) {
+        setSticky(false);
+      } else {
+        setSticky(true);
+      }
     }
-    const dir = scroll > scrollStart ? 'down' : 'up'
-    setScrollBehavior(dir)
-    // setscrollOffset(targetEl.current.offsetTop)
-  }, [scroll]);
+
+  }, [windowSize, targetSize, targetEl]);
 
   useEffect(() => {
-    // console.log('[scrollBehavior]', targetEl.current.offsetTop, targetSize);
-    if (targetEl.current.clientHeight <= document.body.clientHeight) {
-      if (scrollBehaviorStyle && !scrollBehaviorStyle.top) {
-        setScrollBehaviorStyle({ top: targetEl.current.offsetTop - 35 });
+
+    if (targetEl) {
+
+      // return;
+      const { clientHeight,
+        clientWidth, contentScrollHeight,
+        contentScrollWidth, scrollHeight, scrollLeft, scrollTop } = scrollState;
+      // const scrollSize = contentScrollHeight - clientHeight - scrollTop;
+
+      // console.log('-------', targetEl.current.offsetHeight);
+      // console.log('-------', targetSize, { scrollTop, contentScrollHeight, contentScrollWidth, scrollHeight });
+      let dir;
+
+      const upTargetSize = targetEl.current.offsetHeight - document.documentElement.clientHeight;
+
+      if (targetEl.current.offsetHeight <= (document.documentElement.clientHeight - scrollOffset)) {
+        targetEl.current.style.top = `${scrollOffset}px`;
+        return;
       }
-      return;
-    }
-    if (!targetSize || targetSize == 0) {
 
-      if (scroll <= 115) {
-        // return;
+      if (typeof scrollTop == 'undefined') {
+        setScrollBehavior('down');
+        return;
       }
 
-      setTargetSize(targetEl.current.offsetHeight - document.documentElement.clientHeight)
+      if (scrollTop <= 0) {
+        setScrollStart(scrollTop);
+      } else {
+        setScrollStart(scrollTop);
+      }
+
+      if (scrollStart !== scrollTop) {
+        const dir = scrollTop > scrollStart ? 'down' : 'up';
+        if (upTargetSize === targetSize) {
+          setScrollBehavior(dir);
+        }
+      }
+
+      // if (!targetSize) {
+      //   setTargetSize(targetEl.current.offsetHeight - document.documentElement.clientHeight);
+      //   if (upTargetSize !== targetSize) {
+      //     console.log('updating', { targetSize, a: document.documentElement.clientHeight, b: targetEl.current.offsetHeight });
+      //     setScrollBehavior('up');
+      //   }
+      // }
     }
 
-    if (targetEl.current.offsetTop == scrollOffset) {
-      setDivider(0)
-    } else {
-      setDivider(targetEl.current.offsetTop - scrollOffset)
-    }
+  }, [scrollState, scrollStart, targetSize, scrollOffset]);
 
-    if (scrollBehavior == 'down') {
-      setScrollBehaviorStyle({ top: -targetSize + 1 });
-    } else {
-      setScrollBehaviorStyle({ bottom: -(targetSize + (scrollOffset)) + 1 })
+  useEffect(() => {
+    if (scrollBehavior && scrollOffset && targetEl) {
+      // console.log('[scrollOffset]', scrollOffset);
+      if (targetEl.current.offsetTop == scrollOffset) {
+        setDivider(0)
+      } else {
+        setDivider(targetEl.current.offsetTop - scrollOffset)
+      }
     }
-  }, [scrollBehavior]);
+  }, [scrollBehavior, scrollOffset, targetEl]);
 
-  // console.log('stickyScroll');
+  useEffect(() => {
+    if (scrollBehavior) {
+      console.log('[scrollBehavior]', scrollBehavior);
+      if (scrollBehavior == 'down') {
+        // console.log('1');
+        setScrollBehaviorStyle({ top: -targetSize });
+      } else if (scrollBehavior == 'up') {
+        // console.log('2');
+        setScrollBehaviorStyle({ bottom: -(targetSize + (scrollOffset)) })
+      }
+    }
+  }, [scrollOffset, scrollBehavior, targetSize])
+
+  // console.log('[fixed]');
 
   return (
     <div className="component-sticky-scroll"
@@ -101,8 +181,9 @@ const StickyScroll = (props: any) => {
         id="movableTarget"
         ref={targetEl}
         style={scrollBehaviorStyle}>
-        {props.children}
-
+        <StaticComponent>
+          {props.children}
+        </StaticComponent>
       </div>
     </div>
   )

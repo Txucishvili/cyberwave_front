@@ -5,19 +5,17 @@ const Loader = () => {
   return (<div>Loading</div>)
 }
 
-const LoadableC = (props: any) => {
-  const { path, loader } = props;
+const _loadComponent = (path: any, loader?: any) => {
 
   const LoadableComponent = Loadable({
-    loader: () => import(path),
-    loading: Loader,
+    loader: () => import(`@components/${path}`),
+    loading: loader ? loader : Loader,
   })
 
-  console.log('LoadableC', path);
+//   console.log('LoadableC', path);
 
-  return(
-    <LoadableComponent />
-  )
+  return LoadableComponent
 }
 
-export default LoadableC;
+
+export default _loadComponent;

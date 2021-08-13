@@ -1,12 +1,11 @@
-import { useResizeContext } from "app/store/context/WindowResize";
+import { useResizeContext } from "@store/context/WindowResize";
 import React, { useEffect, useState } from "react";
 import SvgIcon from "../../components/utils/IconPacks";
 
 import CoinIcon from '../../../assets/icons/coin.png';
-import { useSessionContext } from "app/store/context/UserSession.context";
-import HTTPClient from "API/axios";
-import LoaderBox from "app/utils/LoaderBox";
-import withUser from "app/modules/User/UserScheme";
+import { useSessionContext } from "@store/context/UserSession.context";
+import HTTPClient from "@API/axios";
+import LoaderBox from "@utils/LoaderBox";
 
 export const UserSideLoader = () => {
   return (
@@ -46,8 +45,8 @@ const UserButton = (props: any) => {
   }, [session])
 
   const onUserClick = () => {
-    console.log('onUserClick');
-    setSession({ type: 'SET_USER', value: null });
+    // console.log('onUserClick');
+    setSession({ type: 'LOG_OUT' });
   }
 
   return (
@@ -82,9 +81,9 @@ const UserSides = (props: any) => {
   return (
     <div className="colOut" id="movableEl">
       <div className="user-area--list flx">
+        {props.children}
         <CoinButton />
         <UserButton />
-        {props.children}
       </div>
     </div>
   )

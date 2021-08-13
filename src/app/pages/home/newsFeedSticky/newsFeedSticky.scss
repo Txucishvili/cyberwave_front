@@ -1,4 +1,148 @@
+@import '@sass/extends';
 
-.component-news-feed-sticky{
-    
+.component-news-feed-sticky {
+  .streaming {
+    margin-bottom: 20px;
+    &--head {
+      font-family: var(--main-font);
+      font-size: 14px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.14;
+      margin-bottom: 20px;
+
+      .heads {
+        color: var(--steel);
+
+        .title-about {
+          font-size: 15px;
+        }
+
+        :nth-child(1) {
+          margin-bottom: 8px;
+        }
+
+        ._c {
+          color: var(--watermelon);
+        }
+
+        ._w {
+          color: var(--light-sky-blue);
+        }
+      }
+
+      .arrows-area {
+        @include vertical-divide(10px);
+      }
+
+
+    }
+
+    &--content {
+      .box {
+        max-width: 100%;
+        width: 100%;
+        height: 176px;
+        object-fit: contain;
+        border-radius: 13px;
+        background-color: rgba(255, 255, 255, 0.08);
+        position: relative;
+        overflow: hidden;
+        @extend %flex-all;
+      }
+
+      .video {
+        &-wrap {
+          // position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+
+          ._overlay {
+            background-color: var(--dark-30);
+            transition: background-color .125s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+
+            &:hover {
+              background-color: red;
+            }
+          }
+
+          video {
+            width: inherit;
+            height: inherit;
+          }
+
+          .watch-count {
+            height: 30px;
+            border-radius: 100px;
+            background-color: var(--white-40);
+            padding: 9px 15px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+
+            p {
+              font-size: 13px;
+              font-weight: normal;
+              font-stretch: normal;
+              font-style: normal;
+              letter-spacing: normal;
+              text-align: left;
+              color: var(--white);
+            }
+          }
+
+          &:hover {
+            ._overlay {
+              background-color: transparent;
+              z-index: 1;
+            }
+
+            video {
+              z-index: 2;
+              position: relative;
+            }
+          }
+        }
+      }
+    }
+
+    &--user {
+      margin-top: 20px;
+
+      .title-area {
+        font-family: var(--main-font);
+        font-size: 15px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.07;
+        letter-spacing: 0.45px;
+        text-align: left;
+        color: var(--pale-grey);
+        margin-left: 10px;
+
+        .titler {
+          margin-bottom: 10px;
+        }
+
+        .txtOvrf {
+          max-width: 150px;
+        }
+      }
+    }
+  }
+
+  .right-area {
+    margin-left: auto;
+  }
 }

@@ -52,9 +52,9 @@ class ReproPlugin {
 }
 
 
-const Module = require('./src/app/modules/User/Users.module.js');
+// const Module = require('./src/app/modules/User/Users.module.js');
 
-const UsersModule = serialize(Module);
+// const UsersModule = serialize(Module);
 
 var PrintChunksPlugin = function () { };
 PrintChunksPlugin.prototype.apply = function (compiler) {
@@ -124,12 +124,6 @@ SwaggerPlugin.prototype.apply = async function (compiler) {
   })
 }
 
-
-
-
-
-
-
 function VirtualModuler() { }
 VirtualModuler.prototype.apply = function (compiler) {
   const libPath = 'node_modules/someLib.js';
@@ -196,14 +190,78 @@ VirtualModuler.prototype.apply = function (compiler) {
   //   }
   // })
 }
+const {
+  resolve
+} = require('path');
 
+function resolveTsconfigPathsToAlias({
+  tsconfigPath = './tsconfig.base.json',
+  webpackConfigBasePath = __dirname,
+} = {}) {
+  const {
+    paths
+  } = require(tsconfigPath).compilerOptions;
+
+
+  const aliases = {};
+
+  Object.keys(paths).forEach((item) => {
+    const key = item.replace('/*', '');
+    const value = resolve(webpackConfigBasePath, paths[item][0].replace('/*', '').replace('*', ''));
+
+    aliases[key] = value;
+  });
+
+  return aliases;
+}
+
+
+const aliasesOptions = resolveTsconfigPathsToAlias();
+// console.log('aliases', aliasesOptions);
+const { alias } = require('react-app-rewire-alias')
 
 module.exports = function override(config, env) {
   config.output = {
     ...config.output, // copy all settings
     filename: "static/js/[name].js",
-    chunkFilename: "static/js/[name].chunk.js",
+    chunkFilename: "static/js/[name].chunk.js"
   };
+  config.optimization = {
+    ...config.optimization,
+    moduleIds: 'hashed',
+    splitChunks: {
+      ...config.optimization.splitChunks,
+      chunks: function (chunk) {
+        // exclude `my-excluded-chunk`
+        // console.log('hiiiiiiiiiiiit', chunk);
+        return chunk.name !== 'my-excluded-chunk';
+      },
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      enforceSizeThreshold: 50000,
+      // chunks: 'all',
+      // maxInitialRequests: Infinity,
+      minSize: 5000000,
+      cacheGroups: {
+        // ...config.output.optimization.splitChunks.chnks,
+
+        react: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          chunks: "all",
+          name: "react",
+          enforce: true,
+          minChunks: Infinity
+        },
+        bootstrap: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: "all",
+          name: "bootstrap",
+          enforce: true,
+          minChunks: Infinity
+        },
+      },
+    },
+  }
   config.module = {
     ...config.module,
     rules: [
@@ -211,6 +269,8 @@ module.exports = function override(config, env) {
       // customLoader
     ]
   };
+  // config.resolve.alias = { ...config.resolve.alias, ...aliasesOptions };
+  alias(aliasesOptions)(config);
 
   config.plugins = [
     ...config.plugins,

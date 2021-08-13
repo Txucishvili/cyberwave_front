@@ -1,13 +1,16 @@
-import BlockEl from 'app/components/utils/BlockEl';
-import SvgIcon from 'app/components/utils/IconPacks';
+import BlockEl from '@components/utils/BlockEl';
+import SvgIcon from '@components/utils/IconPacks';
 import React, { Component, Fragment, useEffect, useState } from 'react';
-import SectionTitle from 'app/components/sectionTitle/sectionTitle';
+import SectionTitle from '@components/sectionTitle/sectionTitle';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
-import HTTPClient from 'API/axios';
-import LoaderBox from 'app/utils/LoaderBox';
-import ContentSide from 'app/Layout/ContentSide/contentSide';
-import { toggleFixedBar, useLayoutContext } from 'app/store/context/LayoutContext';
-import { useResizeContext } from 'app/store/context/WindowResize';
+import HTTPClient from '@API/axios';
+import LoaderBox from '@utils/LoaderBox';
+import ContentSide from '@Layout/ContentSide/contentSide';
+import { toggleFixedBar, useLayoutContext } from '@store/context/LayoutContext';
+import { useResizeContext } from '@store/context/WindowResize';
+import { useAppSelector } from '@store/redux';
+import { pushJobs } from '@store/redux/Slices/userJobs.store';
+import { useDispatch } from 'react-redux';
 
 const NewsFeedToggler = (props: any) => {
   const [, setLayoutState]: any = useLayoutContext();
@@ -37,30 +40,81 @@ const NewsFeedToggler = (props: any) => {
 const NewsFeedFixed = (props: any) => {
   const [jobList, setJobs]: any[] = useState([]);
   // const [wSize, setWindowSize] = useResizeContext();
+  const userJobs = useAppSelector(state => state.userJobs.list);
+  const dispatch = useDispatch();
 
   // console.log('[NewsFeedFixed]');
 
   useEffect(() => {
-    getUserWorks('data');
+    getUserWorks();
     // console.log('[ContentSide] ----------');
   }, []);
 
   const getUserWorks = (props?: any) => {
     // console.log('---get---', HTTPClient.get('user-jobs.json'));
     HTTPClient.get('user-jobs.json')
-      .then(resp => {
+      .then((resp: any) => {
         // console.log('resp', resp.data);
-        const a = [];
+        // const a = [];
 
-        for (let index = 0; index < 5; index++) {
-          a.push(...resp.data)
-        }
+        // for (let index = 0; index < 5; index++) {
+        //   a.push(...resp.data)
+        // }
 
         // console.log('a', a);
+        dispatch(pushJobs(resp.data));
 
-        setJobs(a);
       });
   }
+
+  console.log('userJobs', userJobs);
+
+  let ListView;
+
+  if (!userJobs.length) {
+    ListView = (<div>
+      {
+        Array(2).fill(null).map((e, i) => {
+          return <LoaderBox key={i}
+            styles={{
+              width: '100%',
+              height: "100px",
+              marginBottom: '20px',
+              borderRadius: 8
+            }}
+          />
+        })
+      }
+    </div>);
+  } else {
+    ListView = <Scrollbar
+      style={{
+        width: '100%',
+        height: 'calc(100%)',
+      }}
+    >
+      <div className="container">
+
+        <SectionTitle pds>
+          <div className="title">დავალებები</div>
+          <div className="side-toggler toRight">
+          </div>
+        </SectionTitle>
+
+        <div className="ct-side--inside"
+        // hidden={isHidden}
+        >
+
+          {userJobs.map((e: any, i: any) => {
+            return <BlockEl key={i} height="100px" />
+          })}
+        </div>
+
+      </div>
+    </Scrollbar>
+  }
+
+
 
   return (
     <Fragment>
@@ -73,45 +127,7 @@ const NewsFeedFixed = (props: any) => {
         <div className="content-inside--wrapper _rsp"
           style={{}}
         >
-          <Scrollbar
-            style={{
-              width: '100%',
-              height: 'calc(100%)',
-            }}
-          >
-            <div className="container">
-
-              <SectionTitle pds>
-                <div className="title">დავალებები</div>
-                <div className="side-toggler toRight">
-                </div>
-              </SectionTitle>
-
-              <div className="ct-side--inside"
-              // hidden={isHidden}
-              >
-                {/* <Scrollbar
-          style={{ width: '100%', height: 900 }}> */}
-                {
-                  jobList.length
-                    ? jobList.map((e: any, i: any) => {
-                      return <BlockEl key={i} height="100px" />
-                    })
-                    : Array(2).fill(null).map((e, i) => {
-                      return <LoaderBox key={i}
-                        styles={{
-                          width: '100%',
-                          height: "100px",
-                          marginBottom: '20px',
-                          borderRadius: 8
-                        }}
-                      />
-                    })}
-                {/* </Scrollbar> */}
-              </div>
-
-            </div>
-          </Scrollbar>
+          {ListView}
         </div>
       </div>
 

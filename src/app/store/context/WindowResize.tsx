@@ -4,15 +4,25 @@ import React, {
   useEffect,
 } from "react";
 
-export const initState = {
+interface WindowSize {
+  innerWidth: number,
+  innerHeight: number,
+  prevHeight:  number,
+  prevWidth:  number,
+  subs: any
+};
+
+
+export const initState: WindowSize = {
   innerWidth: window.innerWidth,
   innerHeight: window.innerHeight,
   prevHeight: window.innerHeight,
   prevWidth: window.innerWidth,
+  subs: new Subject()
 };
 
-export const ResizeContext = createContext<[any, any]>([initState, () => { }]);
-export const useResizeContext: any = () => useContext(ResizeContext);
+export const ResizeContext = createContext<[WindowSize, (ws: WindowSize) => void]>([initState, () => { }]);
+export const useResizeContext = () => useContext(ResizeContext);
 
 
 function ResizeReducer(state: any, payload: any) {
@@ -36,7 +46,7 @@ function ResizeReducer(state: any, payload: any) {
 
 export const ResizeProvider: React.FC = (props) => {
   const [windowSize, setResizeState] = React.useReducer(ResizeReducer, initState)
-  const defaultContext: [any, any] = [windowSize, setResizeState];
+  const defaultContext = [windowSize, setResizeState];
 
   useEffect(() => {
     window.addEventListener('resize', (e) => {

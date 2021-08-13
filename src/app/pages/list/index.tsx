@@ -1,4 +1,4 @@
-import BlockEl from 'app/components/utils/BlockEl';
+import BlockEl from '@components/utils/BlockEl';
 import React, { useContext, useEffect } from 'react';
 import Scrollbar from 'react-scrollbars-custom';
 // import defaults from 'lodash/defaults';

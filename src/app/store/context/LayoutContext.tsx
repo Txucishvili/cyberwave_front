@@ -78,7 +78,7 @@ function LayoutReducer(state: any, payload: any) {
 
   // }
 
-  console.log('----- state', obj);
+  // console.log('----- state', obj);
 
   return Object.assign({}, state, obj);
 }

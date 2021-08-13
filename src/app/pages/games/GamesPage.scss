@@ -1,0 +1,108 @@
+@import '@sass/root-variables';
+
+.games-page.games-page--wrap {
+  margin-top: calc(-1 * var(--main-content-padding));
+}
+.content-grid {
+  &--c {
+    .content-main {
+      // padding-top: #{46}px;
+      // padding-top: #{0}px;
+    }
+  }
+}
+
+.component-heading-slider {
+  margin-bottom: 30px;
+  margin-left: -20px;
+  margin-right: -20px;
+
+
+  &--wrap {
+    overflow: hidden;
+    margin: 0 20px 0 20px;
+    padding-top: 46px;
+    position: relative;
+  }
+
+  .container-item {
+    width: 100%;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    // padding-top: 46px;
+
+  }
+
+  .sliderItem {
+    position: relative;
+
+    img {
+      position: absolute;
+      top: -46px;
+      right: -70px;
+    }
+  }
+}
+
+
+.embla2 {
+  // overflow: hidden;
+  border-radius: 20px;
+  .embla__container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .embla__slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    margin: 0 15px;
+    // padding: 40px;
+  }
+  
+}
+
+.embla-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
+
+  .dot {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px 0 0;
+    padding: 10px;
+    background-color: transparent;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &::before {
+      content: '';
+      display: block;
+      border-radius: 100px;
+      width: 10px;
+      height: 10px;
+      background-color: var(--white);
+      transition: all .125s ease-in-out;
+    }
+
+    &:hover {
+      &::before {
+        // width: 15px;
+        // height: 15px;
+      }
+    }
+
+    &.active {
+      background-color: var(--white-20);
+    }
+  }
+}
