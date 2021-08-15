@@ -14,6 +14,7 @@
     "node:dev": "node ./webpack.server.js",
     "react:build": "NODE_ENV=production react-scripts build",
     "start:rewired": "react-app-rewired start",
+    "build:rewired": "react-app-rewired build",
     "nodemon": "nodemon --inspect"
   },
   "author": "",
