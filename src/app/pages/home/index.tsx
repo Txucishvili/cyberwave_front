@@ -20,7 +20,7 @@ const HomePage = (props: any) => {
   // return <NewsFeedLoader />;
 
   const dispatch = useDispatch();
-  const [loading, setLoad] = useState(true);
+  const [loading, setLoad] = useState(false);
   const gameList = useAppSelector(state => state.gameList.list);
   const userJobs = useAppSelector(state => state.userJobs.list);
 
@@ -43,7 +43,7 @@ const HomePage = (props: any) => {
 
   useEffect(() => {
     if (!!gameList.length && !!userJobs.length) {
-      setLoad(false);
+      // setLoad(false);
     }
 
     if (!userJobs.length) {
@@ -56,7 +56,9 @@ const HomePage = (props: any) => {
       });
     }
   }, [userJobs, gameList]);
-
+  return <React.Fragment>
+  <HomePageContent />
+</React.Fragment>
   if (loading) {
     return <NewsFeedLoader />
   } else {

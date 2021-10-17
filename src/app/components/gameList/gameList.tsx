@@ -12,7 +12,7 @@ import BlockEl from '@components/utils/BlockEl';
 const GamesListing = (_props) => {
   const [list, setList] = useState([]);
   const [clientHeight, setHeight] = useState(300);
-  const [sliceRange, setSlice] = useState(7);
+  const [sliceRange, setSlice] = useState(20);
   const dispatch = useDispatch();
   const gameList = useAppSelector(state => state.gameList.list);
   // const gameList = selectCount(state => state.gameList);

@@ -35,134 +35,89 @@ const StickyScroll = (props: any) => {
   const [scrollBehavior, setScrollBehavior] = useState('');
   const [scrollBehaviorStyle, setScrollBehaviorStyle]: any = useState({});
   const [scrollObj, setScrollObj]: any = useState({});
-  const [scrollOffset, setscrollOffset]: any = useState(0);
+  const [offsetTop, setOffsetTop]: any = useState(0);
   const targetEl: any = createRef();
   const [targetSize, setTargetSize]: any = useState(0);
-  const [isSticky, setSticky]: any = useState(0);
 
   const [scrollState, setScrollState] = useScrollbarContext();
   const [windowSize,] = useResizeContext();
 
+
+
+  const [targetOpt, setTargetOpt]: any = useState(null);
+  const [scrollTopTargetSize, setScrollTopTargetSize]: any = useState(null);
+
   useEffect(() => {
-    setscrollOffset(targetEl.current.offsetTop);
-
-    // if (targetEl.current.offsetHeight <= (document.documentElement.clientHeight - targetEl.current.offsetTop)) {
-    //   setSticky(false);
-    // }
-
-
-    // const target = targetEl.current;
-
-    // console.log('target,', target);
-
-
-    // // callback for mutation observer
-    // const logMutations = function (mutations) {
-    //   mutations.forEach(function (mutation) {
-    //     console.log(mutation);
-    //     console.log(`${mutation.type} - list updated`);
-    //   });
-    // };
-
-    // // create an observer instance
-    // const observer = new MutationObserver(logMutations);
-
-    // observer.observe(target, { attributes: true });
+    // setOffsetTop(targetEl.current.parentNode.offsetTop);
+    console.log('[init]', targetEl);
+    if (!offsetTop) {
+      setOffsetTop(targetEl.current.parentNode.offsetTop);
+      return;
+    }
   }, []);
 
   useEffect(() => {
-    // console.log('change');
-  }, []);
-
-  useEffect(() => {
-    if (targetEl) {
+    if (targetEl.current) {
       const currTarget = targetEl.current.offsetHeight - document.documentElement.clientHeight;
 
-      if (currTarget !== targetSize) {
-        setTargetSize(targetEl.current.offsetHeight - document.documentElement.clientHeight);
-      }
-      if (targetEl.current.offsetHeight <= (document.documentElement.clientHeight - targetEl.current.offsetTop)) {
-        setSticky(false);
-      } else {
-        setSticky(true);
+      const TargetOpts = {
+        offsetHeight: targetEl.current.offsetHeight,
+        scrollTop: targetEl.current.scrollTop,
+        viewDivide: targetEl.current.offsetHeight >= (document.documentElement.clientHeight - 115) ? Math.abs((115 - (targetEl.current.offsetHeight - (document.documentElement.clientHeight - 115)))) : null,
+      };
+
+      if (targetOpt == null) {
+        setTargetOpt(TargetOpts)
       }
     }
 
-  }, [windowSize, targetSize, targetEl]);
+  }, [windowSize, targetEl, targetOpt]);
 
   useEffect(() => {
 
-    if (targetEl) {
+    if (targetEl.current != null && offsetTop) {
 
       // return;
       const { clientHeight,
         clientWidth, contentScrollHeight,
         contentScrollWidth, scrollHeight, scrollLeft, scrollTop } = scrollState;
-      // const scrollSize = contentScrollHeight - clientHeight - scrollTop;
 
-      // console.log('-------', targetEl.current.offsetHeight);
-      // console.log('-------', targetSize, { scrollTop, contentScrollHeight, contentScrollWidth, scrollHeight });
-      let dir;
 
-      const upTargetSize = targetEl.current.offsetHeight - document.documentElement.clientHeight;
 
-      if (targetEl.current.offsetHeight <= (document.documentElement.clientHeight - scrollOffset)) {
-        targetEl.current.style.top = `${scrollOffset}px`;
+      if (targetEl.current.offsetHeight <= (document.documentElement.clientHeight - offsetTop)) {
+        targetEl.current.style.top = `${offsetTop}px`;
         return;
       }
 
-      if (typeof scrollTop == 'undefined') {
-        setScrollBehavior('down');
-        return;
-      }
+      setScrollStart(scrollTop);
 
-      if (scrollTop <= 0) {
-        setScrollStart(scrollTop);
-      } else {
-        setScrollStart(scrollTop);
-      }
+      console.log('offsetTop', scrollTop);
+
 
       if (scrollStart !== scrollTop) {
         const dir = scrollTop > scrollStart ? 'down' : 'up';
-        if (upTargetSize === targetSize) {
-          setScrollBehavior(dir);
-        }
-      }
-
-      // if (!targetSize) {
-      //   setTargetSize(targetEl.current.offsetHeight - document.documentElement.clientHeight);
-      //   if (upTargetSize !== targetSize) {
-      //     console.log('updating', { targetSize, a: document.documentElement.clientHeight, b: targetEl.current.offsetHeight });
-      //     setScrollBehavior('up');
-      //   }
-      // }
-    }
-
-  }, [scrollState, scrollStart, targetSize, scrollOffset]);
-
-  useEffect(() => {
-    if (scrollBehavior && scrollOffset && targetEl) {
-      // console.log('[scrollOffset]', scrollOffset);
-      if (targetEl.current.offsetTop == scrollOffset) {
-        setDivider(0)
-      } else {
-        setDivider(targetEl.current.offsetTop - scrollOffset)
+        setScrollBehavior(dir);
       }
     }
-  }, [scrollBehavior, scrollOffset, targetEl]);
+
+  }, [scrollState, offsetTop, targetEl]);
+
+
 
   useEffect(() => {
     if (scrollBehavior) {
-      console.log('[scrollBehavior]', scrollBehavior);
+      console.log('[scrollBehavior]', { scrollBehavior, targetSize, targetOpt, top: targetEl.current.offsetTop });
       if (scrollBehavior == 'down') {
-        // console.log('1');
-        setScrollBehaviorStyle({ top: -targetSize });
+        setScrollBehaviorStyle({ top: -(targetEl.current.clientHeight - windowSize.innerHeight) });
+        // console.log('targetEl.current', scrollState.scrollTop);
       } else if (scrollBehavior == 'up') {
-        // console.log('2');
-        setScrollBehaviorStyle({ bottom: -(targetSize + (scrollOffset)) })
+        // setDivider(targetEl.current.offsetTop);
+        // setDivider(scrollState.scrollTop);
+        setScrollBehaviorStyle({ bottom: -(targetSize + (offsetTop)) })
       }
     }
-  }, [scrollOffset, scrollBehavior, targetSize])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offsetTop, scrollBehavior, targetSize, targetOpt])
 
   // console.log('[fixed]');
 

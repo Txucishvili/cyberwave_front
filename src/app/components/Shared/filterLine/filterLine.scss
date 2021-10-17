@@ -25,11 +25,17 @@ $item-padding-size: 30px;
         // margin-left: $item-divide-size - ($item-padding-size * 2);
         height: 100%;
         @include flex-all;
-        padding: 10px $item-padding-size;
+        // padding: 10px $item-padding-size;
+        padding: 0 15px;
         cursor: pointer;
 
         &:hover {
-          background-color: rgba($oc-white, .1);
+          // background-color: rgba($oc-white, .1);
+
+          .item--name {
+            background-color: rgba($oc-white, .1);
+            // padding: 15px;
+          }
         }
       }
 
@@ -42,6 +48,9 @@ $item-padding-size: 30px;
         font-size: 14px;
         font-weight: 600;
         color: var(--light-blue-grey);
+        padding: 10px ($item-padding-size - 15px);
+        border-radius: 12px;
+
       }
 
       &--list {
@@ -54,8 +63,8 @@ $item-padding-size: 30px;
         padding: 8px 8px 16px 8px;
         min-width: 100%;
         border-radius: 0 0 20px 20px;
-        
-        > *  {
+
+        >* {
           margin-bottom: 6px;
 
           &:last-child {
@@ -72,23 +81,30 @@ $item-padding-size: 30px;
 
           &.selected {
             background-color: rgba(#FFF, .25);
+
+       
           }
 
           &:hover {
             background-color: rgba(#FFF, .1);
+
+            &--name {}
           }
         }
       }
 
 
       &.opened {
-        background-color: rgba($oc-white, .1);
+        // background-color: rgba($oc-white, .1);
 
         .item {
           &--wrap {}
 
           &--list {
             display: flex;
+          }
+          &--name {
+            background-color: rgba(#FFF, .25);
           }
         }
 
