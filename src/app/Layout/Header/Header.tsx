@@ -1,4 +1,4 @@
-import React, { createRef, forwardRef, ReactElement, useContext, useEffect, useRef, useState } from 'react';
+import React, { createRef, forwardRef, ReactElement, Suspense, useContext, useEffect, useRef, useState } from 'react';
 import './Header.scss';
 import SearchBar from './SearchBar/SearchBar';
 
@@ -12,13 +12,10 @@ import { getComputedStyles } from '@utils/Functions';
 import ContentGrid from '@Layout/contentGrid/contentGrid/contentGrid';
 import { ContentCol } from '@Layout/contentGrid/contentCol/contentCol';
 import { GridContainer, GridRow } from '@Layout/contentGrid/contentGrid/contentGrid';
-import LoginRegisterButtons from '@components/LoginRegister/LoginRegister';
 import { useSessionContext } from '@store/context/UserSession.context';
 // import AppNoUserComponents, { ModularSwitcher } from '@modules/index';
-import AuthModule from '@modules/Auth/Authentication.module';
-import withModular from '@utils/withModular';
-import ModularContextProvider, { useModular, ModularContext } from '@store/context/Modular.context';
 import UserSides from './UserSide';
+import UserModularScheme from '@modules/User';
 // console.log('AuthModule', AuthModule);
 const HeaderX = (props: any) => {
   const [windowSize, setResizeState]: any = useResizeContext();
@@ -109,25 +106,13 @@ const HeaderX = (props: any) => {
 const HeaderFixed = (props: any) => {
   // const [layoutState, setLayoutState]: any = useLayoutContext();
   // const [session, setSession] = useSessionContext();
-  const [modular, setModular] = useModular();
   const [session, setSession] = useSessionContext();
 
-  console.log('[HeaderFixed]', modular);
+  console.log('[Header] HeaderFixed');
 
-  let RightArea: any = InfoSide;
-
-
-  // const SwitchView = ModularSwitcher[props.modular.module].HeadSwitch;
-  // console.log('SwitchView', props.modular.module);
-
-  // if (session.user !== null) {
-  //   RightArea = <UsersModuleLazy.HeaderSide></UsersModuleLazy.HeaderSide>
-  // } else {
-  //   RightArea = <AppNoUserComponents.LoginRegisterButton />
-  // }
+  let RightArea: any = session.modularScheme?.scheme?.HeaderSide;
 
   const UserView: any = session.user !== null ? <UserSides /> : null;
-  console.log('UserView', UserView);
   return (
     <div
       onClick={() => {
@@ -138,43 +123,28 @@ const HeaderFixed = (props: any) => {
       <div>
         <div className="contentInside flx flxAC flxJE" id="sideB">
           <div style={{ paddingRight: 10 }}>
-            {/* <InfoSide /> */}
+
           </div>
           <div>
-            {session.user ? <UserSides /> : null}
-            {/* <UserSides></UserSides> */}
-            {/* {session.user !== null
-              ?
-              <LoadableWrap fallback={<UserSideLoader />}>
-                {!session.user.roles.includes('2')
-                  ? <UsersModuleLazy.HeaderSide></UsersModuleLazy.HeaderSide>
-                  : <UsersModuleLazy.HeaderSideAdmin></UsersModuleLazy.HeaderSideAdmin>}
-              </LoadableWrap>
-              : !session.token ? <AppNoUserComponents.LoginRegisterButton /> : null
-            } */}
-
-            {/* <LoadableWrap fallback={<UserSideLoader />}>
-              <RightArea>
-                {props.wrapConfig && props.wrapConfig.merge ? <InfoSide /> : null}
-              </RightArea>
-            </LoadableWrap> */}
+            <RightArea ></RightArea>
           </div>
         </div>
       </div>
     </div>
   )
 }
-
+const getComponent = (path) => {
+  const Component = React.lazy(() => import(`${path}`));
+  return Component;
+};
 const Header = (props: any) => {
   const { wrapConfig } = props;
   const [session, setSession] = useSessionContext();
-  const [modular, setModular] = useModular();
-  // console.log('HeaderFixed', modular);
 
-  // console.log('--- header', modular.scheme);
-  
- 
-  let RightArea = session.user ? InfoSide : LoginRegisterButtons;
+  console.log('[Header]');
+
+
+  // let RightArea = session.user != null ? session.modularScheme.scheme.HeaderSide  : LoginRegisterButtons;
   // let RightArea;
   // if (!modular.isLoading) {
   //   RightArea = modular.scheme.HeaderSide
@@ -185,7 +155,9 @@ const Header = (props: any) => {
 
   // let RightAreas = ModularSwitcher[wrapConfig.module];
   // console.log('[RightArea]', RightAreas);
+  let RightArea: any = session.modularScheme?.scheme?.HeaderSide;
 
+  const LC = React.lazy(() => import("../../components/LoginRegister/LoginRegister"));
   return (
     <div className="header header--wrapper">
       <ContentGrid
@@ -211,9 +183,16 @@ const Header = (props: any) => {
               <SearchBar />
             </ContentCol>
             <ContentCol small className={['side-c flx flxAC flxJE']}>
-              
-              <RightArea />
-              {/* {wrapConfig && wrapConfig.merge ? null : <InfoSide />} */}
+              <div className="flx">
+                {/* <Suspense fallback={"Loading"}>
+                  <LC />
+                </Suspense> */}
+                {session.isLoading ? <span>Loading</span> : null}
+                {!!!session.user ?
+
+                  <span><RightArea /></span>
+                  : null}
+              </div>
             </ContentCol>
           </GridRow>
         </GridContainer>
@@ -223,53 +202,10 @@ const Header = (props: any) => {
 }
 
 const HeaderWrapper = (props) => {
-  const [windowSize, setResizeState] = useResizeContext();
-  const [wrapConfig, setWrapConfig]: [{ merge: boolean } | null, any] = useState({
-    merge: window.innerWidth <= 1835
-  });
-  const contentSideRef = useRef();
-  console.log('[HeaderWrapper]');
-
-  // console.log('[HeaderWrapper]');
-
-  useEffect(() => {
-    const targetEl = document.querySelector('#sideB');
-    // console.log('[windowSize]', { targetEl: targetEl?.clientWidth, windowSize });
-
-    // if (wrapConfig == null) {
-    if (windowSize.innerWidth <= 1835) {
-      setWrapConfig({ merge: true })
-    } else {
-      setWrapConfig({ merge: false })
-    }
-    // }
-  }, [windowSize]);
-
 
   return (
-    <HeaderMemo wrapConfig={wrapConfig} />
+    <Header />
   );
 }
-
-const areEqual = (prevProps, nextProps) => {
-
-  // return true; 
-  // console.log('[areEqual]', prevProps, nextProps);
-  // if (nextProps.modular.module !== prevProps.modular.module) {
-  //   return false;
-  // }
-
-  if (nextProps.wrapConfig !== null && prevProps.wrapConfig !== null) {
-    if (prevProps.wrapConfig.merge !== nextProps.wrapConfig.merge) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-const HeaderMemo = React.memo(Header, areEqual);
 
 export default HeaderWrapper;

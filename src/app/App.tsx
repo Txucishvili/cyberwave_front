@@ -1,4 +1,3 @@
-import { useModular } from '@store/context/Modular.context';
 import React, { useEffect } from 'react';
 import './App.scss';
 

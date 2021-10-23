@@ -20,16 +20,19 @@ const RoleDependModules = {
   Admin: 2,
 };
 
-export const ModularSwitcher = {
-  0: {
-    name: 'a',
-    HeadSwitch: LoginRegisterButtons
-  },
-  1: {
-    name: 'b',
-    HeadSwitch: InfoSides
-
-  }
+export type MODULE_SCHEME_TYPES = {
+  HeaderSide: any,
+  RouterSettings?
 }
 
-export default AppNoUserComponents;
+
+export const LoadModularScheme = (moduleName): Promise<any> => {
+  return new Promise((resolve) => {
+    import(
+      /* webpackMode: "lazy" */
+      `@modules/${moduleName}`
+    ).then(r => {
+      resolve(r);
+    });
+  })
+};

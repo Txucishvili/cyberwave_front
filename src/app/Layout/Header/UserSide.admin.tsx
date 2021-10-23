@@ -16,6 +16,7 @@ const UserSideAdmin = (props: any) => {
   return (
     <div>
       <UserSides>
+      <button style={{backgroundColor: "#434e6e"}} className="btn btn--simple "><p>switch</p></button>
       </UserSides>
     </div>
   )

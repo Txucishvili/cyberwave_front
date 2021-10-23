@@ -44,7 +44,7 @@ const gamesPageSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    console.log('builder', builder);
+//     console.log('builder', builder);
     builder.addCase(myAsyncInSlice.pending, (state, action) => {
       const list = ['test'];
       state.isLoading = true;

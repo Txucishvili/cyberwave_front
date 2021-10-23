@@ -1,32 +1,84 @@
 import HTTPClient from "@API/axios";
 import React from "react";
-import { useSessionContext } from "@store/context/UserSession.context";
+import { useSessionContext, userDispatcher , Dispatcher, Session} from "@store/context/UserSession.context";
 import Button from "../Shared/Button/Button";
+import { LoadModularScheme } from "@modules/";
 
 
 export const LoginPrompt = () => {
   const [session, setSession]: any = useSessionContext();
   return (
     <div>
-      {session.isLoggedIn ? 'user' : 'you must login'}
+      {!!session.user ? 'user' : 'you must login'}
     </div>
   )
 }
 
 const LoginRegisterButtons = (props: any) => {
-  const [session, setSession]: any = useSessionContext();
+  const [session, setSession] = useSessionContext();
 
   function login() {
     window.localStorage.setItem('token', 'value');
-    HTTPClient.get('user-simple.json').then(e => {
-      setSession({ type: 'SET_USER', value: e.data });
+    setSession({type: "SET_LOADER", value: true})
+
+    HTTPClient.get('user.json').then(e => {
+      LoadModularScheme('User').then(r => {
+        setSession({
+          type: 'SET_USER',
+          value: {
+            user: e.data,
+            modularScheme: {
+              prefix: 'User1Scheme',
+              scheme: r.default
+            }
+          }
+        })
+      });
     })
   }
 
   function register() {
-    window.localStorage.setItem('token', 'value');
+    window.localStorage.setItem('token', 'value2');
+
+    setSession({type: "SET_LOADER", value: true});
+
+    HTTPClient.get('user-simple.json').then(e => {
+      LoadModularScheme('Admin').then(r => {
+        setSession({
+          type: 'SET_USER',
+          value: {
+            user: e.data,
+            modularScheme: {
+              prefix: 'User2Scheme',
+              scheme: r.default
+            }
+          }
+        })
+      });
+    });
+    
+  }
+
+
+  function logout() {
+    window.localStorage.setItem('token', 'value2');
     HTTPClient.get('user.json').then(e => {
-      setSession({ type: 'SET_USER', value: e.data });
+      import(
+        /* webpackChunkName: "NoRegister" */
+        /* webpackMode: "lazy" */
+        '@modules/Default/index'
+      ).then(r => {
+        setSession({
+          type: 'SET_USER',
+          value: {
+            user: e.data,
+            modularScheme: {
+              prefix: 'User2Scheme',
+              scheme: r.default
+            }
+          }
+        })
+      });
     })
   }
 

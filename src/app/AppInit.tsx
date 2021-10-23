@@ -6,50 +6,27 @@ import { ResizeProvider } from './store/context/WindowResize';
 import App from './App';
 import { Provider } from 'react-redux';
 import store from '@store/redux';
-import ModularContextProvider from '@store/context/Modular.context';
 import HTTPClient from '@API/axios';
+import AppInitHolder from '@store/context/AppInitHolder';
 
 
 export function AppInit(props: any) {
-  const [loaded, setLoad] = useState(false);
-  const [user, setUser] = useState(null);
-  // console.log('-mainap-', loaded);
 
-  useEffect(() => {
-    if (window.localStorage.getItem('token')) {
-      HTTPClient.get('user.json').then(e => {
-        setUser(e.data);
-        setLoad(true);
-      });
-
-    } else {
-      // setSessionState({ type: 'SET_USER', value: null });
-      setUser(null);
-      setLoad(true);
-    }
-  }, []);
-
-  if (loaded) {
-    return (
-      <React.Fragment>
-        {/* {console.log('======')} */}
-        <LayutProvider>
-          <ResizeProvider>
-            <ThemeContextProvider>
-              <SessionContextProvider user={user}>
-                {/* <Provider store={store}> */}
-                {/* <App /> */}
-                {/* </Provider> */}
-              </SessionContextProvider>
-
-            </ThemeContextProvider>
-          </ResizeProvider>
-        </LayutProvider>
-      </React.Fragment >
-    );
-  } else {
-    return null
-  }
+  return (
+    <React.Fragment>
+      <LayutProvider>
+        <ResizeProvider>
+          <ThemeContextProvider>
+            <AppInitHolder token={window.localStorage.getItem('token')}>
+              <Provider store={store}>
+                <App />
+              </Provider>
+            </AppInitHolder>
+          </ThemeContextProvider>
+        </ResizeProvider>
+      </LayutProvider>
+    </React.Fragment >
+  )
 }
 
 export default AppInit

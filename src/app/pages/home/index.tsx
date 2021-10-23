@@ -15,7 +15,7 @@ import { pushJobs } from '@store/redux/Slices/userJobs.store';
 import NewsFeedLoader from './LoaderLayout';
 
 const HomePage = (props: any) => {
-  console.log('[HomePage]');
+  console.log('[HomePage]', );
 
   // return <NewsFeedLoader />;
 

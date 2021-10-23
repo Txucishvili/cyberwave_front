@@ -36,8 +36,8 @@ const NewsFeedList = (props: any) => {
 
   const newsList = Array(posts).fill(null).map((e, i) => {
     return <BlockEl key={i} height="500px">
-               <LoginPrompt />
-      </BlockEl>
+      <LoginPrompt />
+    </BlockEl>
   });
 
   // console.log('[HomePage FeedList]');
@@ -90,23 +90,23 @@ export const NewsFeedContent = (props: any) => {
                     width: '100%',
                   }}
                 > */}
-                  {
-                    // console.log('[child]')
-                  }
-                  <div className="storylist">
-                    {Array(1).fill(null).map((e, i) => {
-                      return <div key={i} className="blockEl" style={{
-                        backgroundColor: 'rgb(255 255 255 / 8%)',
-                        borderRadius: 8,
-                        width: '100%',
-                        height: 235,
-                        marginBottom: i == 6 ? 0 : 10
-                      }}>
-               {/* <LoginPrompt /> */}
+                {
+                  // console.log('[child]')
+                }
+                <div className="storylist">
+                  {Array(1).fill(null).map((e, i) => {
+                    return <div key={i} className="blockEl" style={{
+                      backgroundColor: 'rgb(255 255 255 / 8%)',
+                      borderRadius: 8,
+                      width: '100%',
+                      height: 235,
+                      marginBottom: i == 6 ? 0 : 10
+                    }}>
+                      {/* <LoginPrompt /> */}
 
-                      </div>
-                    })}
-                  </div>
+                    </div>
+                  })}
+                </div>
                 {/* </Scrollbar> */}
               </div>
             })}

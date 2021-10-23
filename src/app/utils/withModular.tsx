@@ -1,25 +1,25 @@
-import {useModular, WithModularShcheme} from '@store/context/Modular.context';
-import React, { Component } from 'react';
+// import {useModular, WithModularShcheme} from '@store/context/Modular.context';
+// import React, { Component } from 'react';
 
 
 
-const withModular = (Wrapped: any) => {
-  // const [modularScheme, setModule] = useModular();
-  const moduleScheme: WithModularShcheme = {
-    moduleID: 1,
-    Views: {}
-  }
+// const withModular = (Wrapped: any) => {
+//   // const [modularScheme, setModule] = useModular();
+//   const moduleScheme: WithModularShcheme = {
+//     moduleID: 1,
+//     Views: {}
+//   }
   
-  console.log('withModular', );
+//   console.log('withModular', );
 
-  class HeaderEl extends Component {
+//   class HeaderEl extends Component {
 
-    render() {
-      return <Wrapped />
-    }
-  };
+//     render() {
+//       return <Wrapped />
+//     }
+//   };
 
-  return HeaderEl;
-}
+//   return HeaderEl;
+// }
 
-export default withModular;
+// export default withModular;

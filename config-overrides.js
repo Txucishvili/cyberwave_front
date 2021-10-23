@@ -2,6 +2,7 @@ const path = require('path');
 var VirtualModulesPlugin = require('webpack-virtual-modules');
 // var VirtualModulesPlugin = require('virtual-module-webpack-plugin');
 var serialize = require('serialize-javascript');
+var ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 const customLoader = {
   test: /\.js$/,
@@ -274,6 +275,9 @@ module.exports = function override(config, env) {
 
   config.plugins = [
     ...config.plugins,
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, 'src/sw.js'),
+    }),
     // new VirtualModuler(),
     // new PrintChunksPlugin(),
     // new SwaggerPlugin()

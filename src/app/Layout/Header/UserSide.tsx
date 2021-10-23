@@ -6,6 +6,7 @@ import CoinIcon from '../../../assets/icons/coin.png';
 import { useSessionContext } from "@store/context/UserSession.context";
 import HTTPClient from "@API/axios";
 import LoaderBox from "@utils/LoaderBox";
+import { LoadModularScheme } from "@modules/";
 
 export const UserSideLoader = () => {
   return (
@@ -18,10 +19,31 @@ export const UserSideLoader = () => {
 
 const CoinButton = (props: any) => {
   const [session, setSession]: any = useSessionContext();
-
+  const OnClick = () => {
+    // console.log('onUserClick');
+    const userDetector = session.user.token == "value2" ? "user" : "user-simple";
+    HTTPClient.get(`${userDetector}.json`).then(r => {
+        LoadModularScheme(
+          session.user.token == "value" ? "Admin"  : "User"
+        ).then(m => {
+          setSession({
+            type: 'SET_USER', 
+            value: {
+              user: r.data,
+              token: '',
+              modularScheme: {
+                prefix: "APPSCHEME",
+                scheme: m.default
+              }
+            }
+          });
+          });
+    });
+    
+  }
   return (
     <div>
-      <div className="cointBnt">
+      <div className="cointBnt" onClick={OnClick}>
         <div className="icon-area">
           <img src={CoinIcon} alt="" />
         </div>
@@ -46,7 +68,20 @@ const UserButton = (props: any) => {
 
   const onUserClick = () => {
     // console.log('onUserClick');
-    setSession({ type: 'LOG_OUT' });
+    LoadModularScheme(
+      'Default'
+    ).then(r => {
+      setSession({
+        type: 'LOG_OUT', value: {
+          user: null,
+          modularScheme: {
+            prefix: "APPSCHEME",
+            scheme: r.default
+          }
+        }
+      });
+
+    });
   }
 
   return (
