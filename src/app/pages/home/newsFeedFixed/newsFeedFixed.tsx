@@ -5,7 +5,6 @@ import SectionTitle from '@components/sectionTitle/sectionTitle';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
 import HTTPClient from '@API/axios';
 import LoaderBox from '@utils/LoaderBox';
-import ContentSide from '@Layout/ContentSide/contentSide';
 import { toggleFixedBar, useLayoutContext } from '@store/context/LayoutContext';
 import { useResizeContext } from '@store/context/WindowResize';
 import { useAppSelector } from '@store/redux';

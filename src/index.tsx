@@ -7,9 +7,11 @@ import template from'./assets/მთავარი გვერდი.png';
 //   navigator.serviceWorker.register('./sw.js');
 // }
 
+const root = document.getElementById('root');
+
 ReactDOM.render(
   <AppInit />,
-  document.getElementById('root')
+  root
 );
 
 // If you want to start measuring performance in your app, pass a function

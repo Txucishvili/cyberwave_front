@@ -1,6 +1,5 @@
 import { ContentCol } from '@Layout/contentGrid/contentCol/contentCol';
 import ContentGrid, { GridContainer, GridRow } from '@Layout/contentGrid/contentGrid/contentGrid';
-import FixedContainer from '@Layout/ContentSide/contentSide';
 import LoaderBox from '@utils/LoaderBox';
 import React from 'react';
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './contentGrid.scss';
-import ContentSide from '@Layout/ContentSide/contentSide';
+import ContentSide from '@Layout/contentSide/contentSide';
 import { SessionContext } from '@store/context/UserSession.context';
 
 export class GridContainer extends Component<any> {

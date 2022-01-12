@@ -4,6 +4,140 @@
 @import 'sassync/sass/_default/_theme/reset';
 @import '../sass/root-variables';
 
+
+// @import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/common/colors";
+
+@import "@blueprintjs/core/src/reset";
+@import "@blueprintjs/core/src/typography";
+@import "@blueprintjs/core/src/accessibility/focus-states";
+
+@import "@blueprintjs/core/src/components/index";
+
+
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+
+
+@import "@blueprintjs/popover2/src/context-menu2";
+@import "@blueprintjs/popover2/src/popover2";
+@import "@blueprintjs/popover2/src/popover2-in-button-group";
+@import "@blueprintjs/popover2/src/popover2-in-control-group";
+@import "@blueprintjs/popover2/src/popover2-in-label";
+@import "@blueprintjs/popover2/src/popover2-in-submenu";
+@import "@blueprintjs/popover2/src/popover2-in-tree";
+@import "@blueprintjs/popover2/src/tooltip2";
+
+
+
+// @import "@blueprintjs/popover2/lib/css/blueprint-popover2";
+@import "@blueprintjs/select/lib/css/blueprint-select.css";
+
+* {
+  outline: none;
+  outline-offset: 0;
+   &:focus {
+     outline-offset: 0;
+     outline: none;
+   }
+}
+
+$item-divide-size: 50px;
+$item-padding-size: 30px;
+.item {
+
+  &--wrap {
+    position: relative;
+    // margin-left: $item-divide-size - ($item-padding-size * 2);
+    height: 100%;
+    @include flex-all;
+    // padding: 10px $item-padding-size;
+    // padding: 0 15px;
+    cursor: pointer;
+
+    &:hover {
+      // background-color: rgba($oc-white, .1);
+
+      .item--name {
+        background-color: rgba($oc-white, .1);
+        // padding: 15px;
+      }
+    }
+  }
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &--name {
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--light-blue-grey);
+    padding: 10px ($item-padding-size - 15px);
+    border-radius: 12px;
+
+  }
+
+  &--list {
+    // display: none;
+    // position: absolute;
+    // top: 100%;
+    // left: 0;
+    flex-direction: column;
+    background-color: var(--dark-two);
+    padding: 8px 8px 16px 8px;
+    min-width: 100%;
+    border-radius: 0 0 20px 20px;
+
+    >* {
+      margin-bottom: 6px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+
+    &--item {
+      white-space: nowrap;
+      display: block;
+      padding: 9px 12px;
+      border-radius: 7px;
+
+      &.selected {
+        background-color: rgba(#FFF, .25);
+
+   
+      }
+
+      &:hover {
+        background-color: rgba(#FFF, .1);
+
+        &--name {}
+      }
+    }
+  }
+
+
+  &.opened {
+    // background-color: rgba($oc-white, .1);
+
+    .item {
+      &--wrap {}
+
+      &--list {
+        display: flex;
+      }
+      &--name {
+        background-color: rgba(#FFF, .25);
+      }
+    }
+
+
+  }
+}
+
 /*
   // theme types depends on two type 'dark' or 'light' 
   // for @media theme

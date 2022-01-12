@@ -13,13 +13,16 @@
     "dev": "webpack --mode development --hot",
     "node:dev": "node ./webpack.server.js",
     "react:build": "NODE_ENV=production react-scripts build",
-    "start:rewired": "react-app-rewired start",
-    "build:rewired": "react-app-rewired build",
+    "rewired:start": "react-app-rewired start",
+    "rewired:build": "react-app-rewired build",
     "nodemon": "nodemon --inspect"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@blueprintjs/core": "^3.52.0",
+    "@blueprintjs/docs-theme": "^3.10.19",
+    "@blueprintjs/popover2": "^0.12.9",
     "@loadable/component": "^5.15.0",
     "@reduxjs/toolkit": "^1.6.1",
     "@types/express": "^4.17.13",

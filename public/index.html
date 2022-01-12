@@ -37,7 +37,7 @@
       } else {
         themeName = theme;
       }
-      document.documentElement.classList.add('theme', 'theme--' + themeName);
+      document.documentElement.classList.add('theme', 'bp3-dark', 'theme--' + themeName);
       const style = document.createElement('style');
       const value = (size) => {
         if (!size) size = window.innerWidth

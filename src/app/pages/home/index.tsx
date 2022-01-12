@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import BlockEl from '@components/utils/BlockEl';
 import ContentGrid from '@Layout/contentGrid/contentGrid/contentGrid';
-import ContentSide from '@Layout/ContentSide/contentSide';
 import React, { DOMElement, Suspense, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import Scrollbar, { ScrollbarContext } from 'react-scrollbars-custom';
 import NewsFeedSticky from './newsFeedSticky/newsFeedSticky';
