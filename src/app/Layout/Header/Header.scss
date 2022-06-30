@@ -1,0 +1,204 @@
+@import 'sassync';
+@import '../../../sass/extends';
+@import '../../../sass/variables';
+
+$bp-content-outerside: $bp-fixedBar-shrink;
+
+.header {
+
+  .logo {
+    &--area {
+      padding: 10px;
+    }
+  }
+
+  .contentInside {
+    height: var(--header-height);
+    padding-right: 15px;
+  }
+
+  .user-area--list {
+
+    >* {
+      margin-left: 20px;
+
+      @include max-min(max $bp-content-outerside) {
+        margin-left: 10px;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .cointBnt {
+    @include flex-all;
+    padding: 10px 20px;
+    height: 40px;
+    border-radius: 40px;
+    border: solid 1px var(--steel-30);
+    cursor: pointer;
+
+    .name-area {
+      @include flex;
+      flex-direction: column;
+      padding-left: 10px;
+
+      .titler {
+        font-size: 10px;
+        text-align: left;
+        color: var(--light-blue-grey);
+        margin-bottom: 4px;
+      }
+
+      .count {
+        font-size: 12px;
+        text-align: left;
+        color: var(--gold);
+      }
+
+      @include max-min(max $bp-content-outerside) {
+        .titler {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .userBtn {
+    &--wrap {
+      @include flex-all;
+      padding: 10px 20px;
+      height: 40px;
+      border-radius: 37px;
+      background-color: var(--dark-two);
+      min-width: 200px;
+      max-width: 250px;
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        background-color: var(--dark);
+      }
+    }
+
+    .avatar-area {
+      @include size(26px);
+      border-radius: 100px;
+      border: 1px solid blue;
+      overflow: hidden;
+      // margin-right: 10px;
+
+      img {
+        height: 100%;
+        display: block;
+      }
+    }
+
+    .name-area {
+      font-size: 12px;
+      color: var(--light-blue-grey);
+      margin-left: 10px;
+
+
+    }
+
+    .droper {
+      margin-left: auto;
+
+      ._icon--wrap {
+        @extend %flex-all;
+      }
+    }
+
+    @include max-min(max $bp-content-outerside) {
+      min-width: initial;
+      padding: 10px;
+
+      .droper,
+      .name-area {
+        display: none;
+      }
+    }
+
+    &._sm {
+      min-width: initial;
+
+      .droper,
+      .name-area {
+        display: none;
+      }
+
+    }
+  }
+
+
+  .hListDivide {
+    @include max-min(max $bp-content-outerside) {
+      >* {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  &--wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    // background-color: rgba(#313642, .5);
+    background-color: var(--theme--main-color);
+
+    z-index: 2;
+
+
+    .content-side--wrapper {
+      >* {
+        position: fixed;
+        right: 0;
+        top: 0;
+      }
+      &.opened {}
+
+      &.closed, &:not(.opened) {
+        overflow: hidden;
+        // flex-basis: $side-container-min-size;
+
+        >* {
+          position: fixed;
+          right: 0;
+          top: 0;
+        }
+
+        // @include max-min(max 1892px) {
+        //   flex-basis: 60px;
+        //   background-color: red;
+        // }
+
+        .userBtn {
+          min-width: initial;
+          padding: 10px;
+
+          .droper,
+          .name-area {
+            display: none;
+          }
+        }
+
+      }
+
+      @include max-min(max $bp-content-outerside) {
+        // flex-basis: 60px;
+        overflow: hidden;
+
+        >* {
+          position: fixed;
+          right: 0;
+          top: 0;
+        }
+      }
+    }
+  }
+}

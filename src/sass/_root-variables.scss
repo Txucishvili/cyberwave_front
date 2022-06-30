@@ -1,5 +1,6 @@
 $header-height: 80px;
 $side-nav-size-s: 80px;
+$main-content-padding: 35;
 
 
 $bps: (
@@ -34,5 +35,13 @@ $bps: (
 
 :root {
   --header-height: #{$header-height};
+  --main-content-padding: #{$main-content-padding}px;
   --side-nav-size-s: #{$side-nav-size-s};
+}
+
+// FONTS
+:root {
+  --main-font: Roboto;
+  --font-firago: FiraGO;
+  --font-roboto: Roboto;
 }

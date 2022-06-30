@@ -9,6 +9,7 @@
 .btn {
   &--none {
     @include buttonReset;
+    background-color: transparent;
   }
 
   &--simple {
@@ -22,7 +23,7 @@
     line-height: 20px;
     font-size: 14px;
     height: 40px;
-    padding: 11px 11px;
+    padding: 11px 25px;
     border-radius: 32px;
     background-color: var(--dark-two);
 
@@ -33,6 +34,7 @@
 
   &--circled {
     border-radius: 100px;
+    padding: 10px;
   }
 
   &._blue {
@@ -45,5 +47,9 @@
 
   &--theme {
     padding: 10px 30px;
+  }
+
+  &:disabled {
+    opacity: .5;
   }
 }

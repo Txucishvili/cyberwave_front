@@ -5,3 +5,46 @@
 //     '-': 1280,
 //     '-': 1024,
 // );
+
+$content-divider: 35px;
+
+
+$gutter-size: 20px;
+
+@function toGutter($size) {
+  @return $gutter-size+$size;
+}
+
+@function noGutter($size) {
+  @return $size - $gutter-size;
+}
+
+$wrap-size: 1390px;
+
+$sm-col-size: toGutter(320px);
+$sm-xl-size: toGutter(710px);
+
+$sm-xl-size-min: 620px;
+$sm-xl-size-max: 1020px;
+
+$side-container-size: 372px;
+
+$side-container-min-size: 60px;
+$side-container-max-size: 140px;
+
+// indicators
+$grid-shrink-indicator: (1920px - 80px - ($gutter-size * 2) - 1390px - 372px);
+$scroll-indicator: 10px;
+
+// BreakPoints
+$bp-colxl: 80px+(($sm-col-size * 2) + $gutter-size)+$sm-xl-size-min+($gutter-size * 2) - $scroll-indicator+60px;
+
+$bp-fixedBar-shrink-noShrink: 1920px - $grid-shrink-indicator+$scroll-indicator;
+
+// * if needed to shrink layout content
+$bp-fixedBar-shrink: 1920px - $grid-shrink-indicator - (710px - $sm-xl-size-min)+$scroll-indicator;
+
+:root {
+  --bp-layout-shrink-size: #{$bp-fixedBar-shrink};
+  --bp-layout-shrink-size-2: #{$bp-colxl};
+}

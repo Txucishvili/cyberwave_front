@@ -1,0 +1,36 @@
+$content-divider: var(--main-content-padding);
+
+.content {
+  &--wrapper {
+    padding-left: var(--side-nav-size-s);
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    // position: relative;
+
+
+    // for root level (html, body and content) sizing dissable
+
+    // height: 100%; 
+    // overflow-y: auto;
+    z-index: 1;
+  }
+
+  &--inside {
+    &--wrap {
+
+      // padding-top: $content-divider;
+      // overflow: hidden;
+      // position: relative;
+      .content-main--wrap {
+        padding-top: $content-divider;
+      }
+    }
+  }
+
+  .child {
+    height: 1800px;
+  }
+}

@@ -2,6 +2,11 @@
   {
     "title": "News Feed",
     "path": "/",
+    "icon": "newsFeed"
+  },
+  {
+    "title": "Games",
+    "path": "/games",
     "icon": "controller"
   },
   {

@@ -7,7 +7,7 @@ const LoaderBox: React.FC<any> = (props: any) => {
   const mergeStyles = Object.assign({
     width: 25,
     height: 25,
-    backgroundColor: 'gray'
+    backgroundColor: 'rgb(18 20 27)'
   }, styles)
 
   return (

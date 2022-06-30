@@ -17,11 +17,11 @@ export const localStorageKey = 'theme';
 const themes: any = {
   dark: {
     name: 'dark',
-    classPrefix: 'theme--dark',
+    classPrefix: 'theme--dark bp3-dark',
   },
   light: {
     name: 'light',
-    classPrefix: 'theme--light',
+    classPrefix: 'theme--light bp3-light',
   }
 };
 

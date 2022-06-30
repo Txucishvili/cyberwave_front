@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@modules/*": [
+        "./src/app/modules/*"
+      ],
+      "@components/*": [
+        "./src/app/components/*"
+      ],
+      "@pages/*": [
+        "./src/app/pages/*"
+      ],
+      "@store/*": [
+        "./src/app/store/*"
+      ],
+      "@utils/*": [
+        "./src/app/utils/*"
+      ],
+      "@Layout/*": [
+        "./src/app/Layout/*"
+      ],
+      "@API/*": [
+        "./src/API/*"
+      ],
+      "@assets/*": [
+        "./src/assets/*"
+      ],
+      "@sass/*": [
+        "./src/sass/*"
+      ]
+    }
+  },
+  "include": [
+    "./",
+    "./src",
+    "./server"
+  ]
+}

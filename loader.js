@@ -1,5 +1,5 @@
-const appConfig = require('./config/config');
-console.log('-----', appConfig);
+// const appConfig = require('./config/config');
+// console.log('-----', appConfig);
 
 module.exports = function (result, sourceMaps, meta) {
     // console.log('[--]', {
@@ -8,7 +8,9 @@ module.exports = function (result, sourceMaps, meta) {
     //     meta
     // });
     const changed = result == result.toString().replace('Extra Module', 'CHANGED MODULE');
-    const newOutput = changed;
+    const newOutput = {
+        result, sourceMaps, meta
+    };
     console.log('-----', newOutput);
 
     this.callback(

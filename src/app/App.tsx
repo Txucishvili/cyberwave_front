@@ -1,87 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  NavLink, Link
-} from 'react-router-dom';
 
-import AppPages from './pages';
-import { SessionContextProvider } from './store/context/UserSession.context';
-import { ThemeContext, ThemeContextProvider } from './store/context/ThemeContext';
-import NavBar from './components/Navbar/NavBar';
-import Layout from './components/Layout/Layout';
-import Scrollbar from 'react-scrollbars-custom';
-import { useResizeContext } from './store/context/WindowResize';
-// import _ from 'lodash';
-// console.log('a', _.partition([1, 2, 3, 4], n => n % 2));
+import Layout from './Layout/Layout';
+import { ScrollbarProvider } from './store/context/ScrollBarContext';
+
 
 export function App(props: any) {
-  const [theme, setTheme]: any = useContext(ThemeContext);
-  const themectx: any = useContext(ThemeContext);
-  const [windowSize, setResizeState]: any = useResizeContext();
+  console.log('------------ [APP] ---------', props);
 
-  useEffect(() => {
-//     console.log('windowSize', windowSize.innerWidth, windowSize.prevWidth);
-  }, [windowSize.innerWidth])
-
-  useEffect(() => {
-    // console.log('-------', ThemeContext);
-    const body = document.documentElement;
-    body.classList.value = '';
-    body.classList.add('theme', 'theme--' + theme.activeName);
-    window.localStorage.setItem('theme', theme.activeName);
-  }, [theme, theme.activeKey, theme.activeName]);
-
-  const elRef = (e: any) => {
-    //     console.log('sccrollbar Ref', e);
-  }
-
-  const onScroll = (e: any) => {
-    const {
-      clientHeight,
-      clientWidth,
-      contentScrollHeight,
-      contentScrollWidth,
-      scrollHeight,
-      scrollLeft,
-      scrollTop
-    } = e;
-    const scrollSize = contentScrollHeight - clientHeight - scrollTop;
-
-    if (scrollSize == 50) {
-
-    }
-
-    // console.log('[onScroll]', contentScrollHeight - clientHeight - scrollTop);
-  }
 
   return (
     <React.Fragment>
       {/* <Layout /> */}
 
-      <Scrollbar
-        // disableTracksWidthCompensation={true}
-        // permanentTrackY={true}
-        createContext={true}
-        // scrollbarWidth={27}
-        // fallbackScrollbarWidth={27}
-        // native
-        thumbXProps={{
-          // eslint-disable-next-line react/display-name
-          renderer: props => {
-            const { elementRef, ...restProps } = props;
-            return <span {...restProps} ref={elementRef} className="ThUmBX" />;
-          }
-        }}
-        elementRef={elRef}
-        onScroll={onScroll}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <Layout />
+      <ScrollbarProvider>
+        <Layout
+          // modular={props.modularScheme}
 
-      </Scrollbar>
+        />
+      </ScrollbarProvider>
+
       {/* <div style={{ display: 'flex' }}>
         {theme.themes.map((el: any, key: any) => {
           // eslint-disable-next-line react/jsx-key
@@ -109,4 +47,4 @@ export function App(props: any) {
   );
 }
 
-export default { App };
+export default App;

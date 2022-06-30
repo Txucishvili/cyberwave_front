@@ -1,0 +1,352 @@
+@import "sassync";
+@import '../../sass/root-variables';
+@import '../../sass/variables';
+
+#root {
+  // @include size(100%);
+  @include size(inherit);
+
+  // min-width: 100%;
+  // min-height: 100%;
+
+}
+
+.layout {
+  &--wrapper {
+    @include flex;
+    @include size(100%);
+    // overflow: hidden;
+    // position: relative;
+  }
+
+  &.active {
+    .header.header--wrapper {
+      z-index: 3;
+    }
+  }
+}
+
+.content--inside--wrap {
+  flex: 1;
+  .content-side--wrapper {
+    padding-top: $content-divider;
+  }
+}
+
+.content--grid {
+  &--wrap {
+    width: 100%;
+    height: 100%;
+    @include flex;
+  }
+
+  .content {
+    &-main {
+      &--wrap {
+        flex: 1;
+        padding-left: $gutter-size;
+        padding-right: $gutter-size;
+      }
+
+      &--content {
+        max-width: $wrap-size;
+        // max-width: calc(var(--windowSize) - 500px);
+        width: 100%;
+        margin: initial;
+        margin: 0 auto;
+
+        @include max-min(max $bp-colxl) {
+          // background-color: red;
+          max-width: $sm-col-size + $sm-xl-size - $gutter-size;
+        }
+
+        // !!! request desktop site bps
+        @include max-min(max 980px, min 900px) {
+          // background-color: red;
+        }
+
+        #sideAcontent.side-a {
+
+          @include max-min(max $bp-colxl) {
+            display: none;
+          }
+
+        }
+      }
+      &--c {
+        
+      }
+    }
+
+    &-side {
+      flex-basis: $side-container-size;
+      flex-shrink: 0;
+      // @include flex;
+      margin-left: auto;
+
+      &--wrapper {
+        // flex-basis: 0;
+        flex-shrink: 0;
+        // @include flex;
+        margin-left: auto;
+        display: unset;
+
+        // overflow: hidden;
+        // display: none;
+        position: relative;
+
+
+
+        @include max-min(max $bp-fixedBar-shrink) {
+          flex-basis: $side-container-max-size;
+          // background-color: red;
+        }
+
+        .side-toggler {
+          z-index: 111;
+          position: sticky;
+          @include flex;
+          justify-content: flex-end;
+          height: 0px;
+          top: var(--header-height);
+          transform: translate(-20px, 0);
+
+          &--wrapper {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            transition: all .125s ease-in-out;
+            transform: rotate(-180deg) translateY(9px);
+          }
+
+          .btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+
+        .content-inside {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          // display: none;
+
+          &--wrapper {
+            transition: all .125s ease-in-out;
+            @include size(100%);
+            display: none;
+          }
+        }
+
+        &.opened {
+          position: sticky;
+
+          .side-toggler {
+            &--wrapper {
+              width: 40px;
+              height: 40px;
+              transform: rotate(0) translateY(-10px);
+            }
+          }
+        }
+
+
+
+        &.showed {
+          flex-basis: $side-container-min-size;
+
+          .content-inside {
+            &--wrapper {
+              // margin-right: 372px;
+              transform: translateX($side-container-size);
+              display: block;
+            }
+          }
+
+          &.opened {
+            flex-basis: $side-container-size;
+
+            .content-inside--wrapper {
+              // margin-right: 0;
+              transform: translateX(0);
+              display: block;
+            }
+          }
+        }
+
+        &.hidden {
+          flex-basis: $side-container-min-size;
+          z-index: 5;
+
+          // overflow: hidden;
+          .content-inside {
+            display: block;
+
+            &--wrapper {
+              position: fixed;
+              top: 0;
+              right: -412px;
+              background-color: #12141b;
+              width: $side-container-size + 40;
+              height: 100%;
+              z-index: 100;
+
+              .container {
+                padding-top: calc(var(--header-height) + 20px + (37px / 2));
+                padding-left: 20px;
+                padding-right: 20px;
+              }
+            }
+          }
+
+
+          &.opened {
+            .content-inside--wrapper {
+              right: 0;
+              display: block;
+
+            }
+
+            .side-toggler {
+              top: 50;
+
+              &--wrapper {}
+            }
+          }
+        }
+      }
+
+
+      // TODO: first mobile
+      // TODO: fix range visibilit for content area 
+      // ** with no shrink col-x bp max (1890px + 1px)
+      &._rsp {}
+
+      // }
+
+      >div {
+        width: 100%;
+      }
+
+      // .row {
+      //   width: 100%;
+      // }
+
+    }
+
+  }
+
+  .container {
+    // overflow: hidden;
+    // margin-left: -$gutter-size;
+    // margin-right: -$gutter-size;
+    // @include flex;
+
+    .row {
+      @include flex;
+      margin-left: $gutter-size / -2;
+      margin-right: $gutter-size / -2;
+      // align-items: flex-start; // !!!
+
+      &>* {
+        flex-shrink: 0;
+        padding-left: $gutter-size / 2;
+        padding-right: $gutter-size / 2;
+      }
+
+      .col {
+        &-sm {
+          flex-basis: $sm-col-size;
+          flex-shrink: 0;
+        }
+
+        &-xl {
+          flex-basis: $sm-xl-size;
+          flex-shrink: initial;
+          // flex-shrink: 0;
+          overflow: hidden;
+        }
+      }
+
+    }
+  }
+
+  .colEl {
+    .el {
+      // background-color: #fff;
+    }
+  }
+}
+
+.sticky-side {
+  position: sticky;
+}
+
+.ScrollbarsCustom {
+  .ScrollbarsCustom-TrackY {
+    // top: 0 !important;
+  }
+
+  &.trackYVisible {
+    .ScrollbarsCustom-Scroller {
+      // margin-right: -15px !important;
+    }
+  }
+
+  // !! TODO: !! dirty solutions for layout shaking on 'trackYVisible'  
+  .ScrollbarsCustom-Scroller {
+    margin-right: -1px;
+  }
+
+  .ScrollbarsCustom-Thumb {
+    transition: background-color .12s ease;
+
+    &:hover,
+    &.dragging {
+      background-color: rgba(0, 0, 0, 0.6) !important;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  // width: 15px;
+  // display: none;
+}
+
+
+.loaderBox {
+  position: relative;
+  overflow: hidden;
+
+  >div {
+    overflow: hidden;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 0px;
+      background-color: red;
+      top: 0;
+      animation: infinite loader .55s;
+      box-shadow: 0px 0px 20px 5px rgba(#fff, .15);
+    }
+  }
+
+
+}
+
+
+
+@keyframes loader {
+  from {
+    left: -20px;
+  }
+
+  to {
+    left: 120%;
+  }
+}

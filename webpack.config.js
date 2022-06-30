@@ -1,416 +1,222 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const WebpackMd5Hash = require("webpack-md5-hash");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const webpack = require("webpack");
-const CopyPlugin = require("copy-webpack-plugin");
-// const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpackPlugin");
-const fs = require("fs");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const safePostCssParser = require("postcss-safe-parser");
-const TerserPlugin = require("terser-webpack-plugin");
-const {
-  BundleAnalyzerPlugin
-} = require("webpack-bundle-analyzer");
-const resolve = require("resolve");
-var appCfg = require("./config/config");
-const paths = require("react-scripts/config/paths");
-const reactCFG = require("react-scripts/config/webpack.config")(process.env.NODE_ENV == 'development' ? 'development' : 'production');
-const webpackDevClientEntry = require.resolve("react-dev-utils/webpackHotDevClient");
-const reactRefreshOverlayEntry = require.resolve("react-dev-utils/refreshOverlayInterop");
-const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
-const {
-  forEach
-} = require("lodash");
-const {
-  type
-} = require("os");
+const path = require('path');
+const webpack = require('webpack');
+const clientLoaders = require('./webpack/loaders');
+const babelLoader = require('./webpack/loaders/babel.loader');
+const StatsWebpackPlugin = require('stats-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
+const fs = require('fs');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+const dist = path.join(__dirname, 'dist');
+const SRC_DIR = path.join(__dirname, './');
+
+var hotMiddlewareScript =
+	'webpack-hot-middleware/client?path=/__webpack_hmr';
 
 
-var env = process.env;
-const OUTPUT_DIR = "build";
-
-const customLoader = [{
-  test: /\.js$/,
-  use: [{
-    loader: path.resolve("./loader.js"),
-    options: {
-      name: "[name].[ext]",
-      outputPath: (url, resourcePath, context) => {
-        // console.log('url', url);
-        // console.log('context', context);
-        // console.log('resourcePath', resourcePath);
-
-        return "test";
-      },
-    },
-  }, ],
-}, ];
-
-const webpackModulesConfig = (env) => {
-  return {
-    rules: [{
-        test: /\.(css|s[ac]ss)$/,
-        use: [{
-            loader: MiniCssExtractPlugin.loader,
-          },
-          {
-            loader: "css-loader",
-            options: {
-              importLoaders: 2,
-              sourceMap: true,
-            },
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              plugins: () => [require("autoprefixer")],
-              sourceMap: true,
-            },
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: true,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(png|jpe?g|gif)$/i,
-        use: [{
-          loader: "file-loader",
-          options: {
-            name: "[name].[ext]",
-            outputPath: (url, resourcePath, context) => {
-              // `resourcePath` is original absolute path to asset
-              // `context` is directory where stored asset (`rootContext`) or `context` option
-
-              // To get relative path you can use
-              // const relativePath = path.relative(context, resourcePath);
-
-              // console.log('url', url);
-              // console.log('context', context);
-              // console.log('resourcePath', resourcePath);
-
-              if (/my-custom-image\.png/.test(resourcePath)) {
-                return `other_output_path/${url}`;
-              }
-
-              if (/images/.test(context)) {
-                return `image_output_path/${url}`;
-              }
-
-              return path.relative(`${context}/src`, resourcePath);
-            },
-            esModule: false,
-          },
-        }, ],
-      },
-      {
-        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [{
-          loader: "file-loader",
-          options: {
-            name: "[name].[ext]",
-            outputPath: (url, resourcePath, context) => {
-              // `resourcePath` is original absolute path to asset
-              // `context` is directory where stored asset (`rootContext`) or `context` option
-
-              // To get relative path you can use
-              // const relativePath = path.relative(context, resourcePath);
-
-              // console.log('url', url);
-              // console.log('context', context);
-              // console.log('resourcePath', resourcePath);
-
-              if (/my-custom-image\.png/.test(resourcePath)) {
-                return `other_output_path/${url}`;
-              }
-
-              if (/images/.test(context)) {
-                return `image_output_path/${url}`;
-              }
-
-              return path.relative(`${context}/src`, resourcePath);
-            },
-            esModule: false,
-          },
-        }, ],
-      },
-      {
-        test: /\.(svg|gif|png|eot|woff|ttf)$/,
-        loaders: ["url-loader"],
-      },
-      {
-        test: /\.(ts|js)x?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              "@babel/preset-env",
-              "@babel/preset-react",
-              "@babel/preset-typescript",
-            ],
-          },
-        },
-      },
-    ],
-  };
-};
-
-
-const webpackPluginsConfig = (env) => {
-  const isEnvDevelopment = env == "development";
-
-  const returnPlugins = [
-    new MiniCssExtractPlugin({
-      filename: "style.css",
-      chunkFilename: "[id].css",
-    }),
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-      filename: "index.html",
-    }),
-
-    new ForkTsCheckerWebpackPlugin({
-      typescript: resolve.sync("typescript", {
-        basedir: "./",
-      }),
-      async: env === "development",
-      checkSyntacticErrors: true,
-      tsconfig: "./tsconfig.json",
-      reportFiles: [
-        // This one is specifically to match during CI tests,
-        // as micromatch doesn't match
-        // '../cra-template-typescript/template/src/App.tsx'
-        // otherwise.
-        "../**/src/**/*.{ts,tsx}",
-        "**/src/**/*.{ts,tsx}",
-        "!**/src/**/__tests__/**",
-        "!**/src/**/?(*.)(spec|test).*",
-        "!**/src/setupProxy.*",
-        "!**/src/setupTests.*",
-      ],
-      silent: true,
-    }),
-
-    new webpack.ProvidePlugin({
-      _: "node_modules/lodash",
-    }),
-
-    new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
-      // Useful for determining whether we’re running in production mode.
-      // Most importantly, it switches React into the correct mode.
-      NODE_ENV: process.env.NODE_ENV || "development",
-      // Useful for resolving the correct path to static assets in `public`.
-      // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
-      // This should only be used as an escape hatch. Normally you would put
-      // images into the `src` and `import` them in code to get their paths.
-      PUBLIC_URL: "https://somecdn.com",
-    }),
-
-    new CopyPlugin([{
-        from: "./src/images",
-        to: "./images",
-      },
-      {
-        from: "./src/assets",
-        to: "./assets",
-      },
-    ]),
-
-    new webpack.DefinePlugin({
-      'process.env.ASSET_PATH': JSON.stringify(process.env.ASSET_PATH),
-    }),
-  ];
-  if (isEnvDevelopment) {
-    returnPlugins.concat([
-      new webpack.HotModuleReplacementPlugin(),
-      new ReactRefreshWebpackPlugin({
-        overlay: {
-          entry: webpackDevClientEntry,
-          // The expected exports are slightly different from what the overlay exports,
-          // so an interop is included here to enable feedback on module-level errors.
-          module: reactRefreshOverlayEntry,
-          // Since we ship a custom dev client and overlay integration,
-          // the bundled socket handling logic can be eliminated.
-          sockIntegration: false,
-        },
-        forceEnable: true,
-        include: path.resolve(__dirname, './src'),
-      }),
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'server',
-
-        /**
-         * Automatically open report in default browser.
-         * @default true
-         */
-        openAnalyzer: true,
-
-        /**
-         * If true, Webpack Stats JSON file will be generated in bundles output directory.
-         * @default false
-         */
-        generateStatsFile: true,
-      }),
-    ]);
-  } else {
-    returnPlugins.concat([new CleanWebpackPlugin(OUTPUT_DIR, {})]);
-  }
-
-  return returnPlugins;
-};
-
-const genWebpackConfig = (env, argv) => {
-  const webpackDevServerConfig = {
-    stats: {
-      children: false,
-      maxModules: 2,
-    },
-    historyApiFallback: true,
-    contentBase: "./",
-    hot: true,
-    port: 3001,
-  };
-
-  const isDevelopment = argv.mode === "development";
-  // console.log("[mode]", argv.mode, isDevelopment);
-
-  return {
-    mode: argv.mode,
-    devtool: isDevelopment ? "source-map" : "",
-    devServer: webpackDevServerConfig,
-  };
-};
-
-
-var appConfig = appCfg();
-
-// console.log("appConfig", appConfig.APP_VERSION);
-// console.log("webpackDevClientEntry", webpackDevClientEntry);
-
-
+const webpackDevClientEntry = require.resolve(
+	'react-dev-utils/webpackHotDevClient'
+);
+const env = require('dotenv').config().parsed;
 
 const {
-  merge
-} = require('webpack-merge');
+	NODE_ENV,
+	PORT,
+	WEBPACK_DEV_SERVER,
+	WEBPACK_MODE
+} = env;
 
+let webpackMode = process.env.NODE_ENV === 'development' ? process.env.NODE_ENV : 'production';
 
-module.exports = (env) => {
-  var isEnvDevelopment = env == "development";
+let isDev = webpackMode === 'development';
+// isDev = false;
+// webpackMode = 'production';
 
+module.exports = (opts = {}) => {
+	const {
+		mode,
+		scriptBuild
+	} = opts;
 
-  // change
-  var jsFiles = ["./src/app/index.tsx"];
-  var sassFiles = ["./src/sass/style.scss"];
-  var devDep = [];
+	let config = {
+		mode: webpackMode,
+		outputPath: path.join(__dirname, 'dist'),
+	};
 
-  const modules = {
-    outerStyle: sassFiles,
-    app: jsFiles,
-  };
+	if (!!scriptBuild) {
+		config = Object.assign(config, {
+			...opts
+		});
+	}
 
-  const returnModules = [].concat(Object.values(modules).map(e => e.toString()));
+	console.log('---config', config);
 
-  // console.log('returnModules', returnModules);
-  const shouldUseReactRefresh = env.FAST_REFRESH;
+	return [{
+		name: 'client',
+		context: SRC_DIR,
+		mode: config.mode,
+		cache: false,
+		target: 'web',
+		stats: {
+			all: true,
+			assets: false
+		},
+		entry: isDev ? [
+			'react-hot-loader/patch',
+			hotMiddlewareScript,
 
-
-  if (env == "development") {
-    // devDep.push(webpackDevClientEntry);
-    // devDep.push('webpack-hot-middleware/client');
-    // devDep.push(`webpack-hot-middleware/client?path=http://${'localhost'}:${3001}/__webpack_hmr`);
-  }
-
-  const hot = [
-    webpackDevClientEntry
-  ]
-
-  var appFiles = Object.assign({}, {
-    mode: env,
-    name: "app",
-    entry: [
-      // Include an alternative client for WebpackDevServer. A client's job is to
-      // connect to WebpackDevServer by a socket and get notified about changes.
-      // When you save a file, the client will either apply hot updates (in case
-      // of CSS changes), or refresh the page (in case of JS changes). When you
-      // make a syntax error, this client will display a syntax error overlay.
-      // Note: instead of the default WebpackDevServer client, we use a custom one
-      // to bring better experience for Create React App users. You can replace
-      // the line below with these two lines if you prefer the stock client:
-      //
-      // require.resolve('webpack-dev-server/client') + '?/',
-      // require.resolve('webpack/hot/dev-server'),
-      //
-      // When using the experimental react-refresh integration,
-      // the webpack plugin takes care of injecting the dev client for us.
-      webpackDevClientEntry,
-      // Finally, this is your app's code:
-      './src/app/index.tsx',
-      // We include the app code last so that if there is a runtime error during
-      // initialization, it doesn't blow up the WebpackDevServer client, and
-      // changing JS code would still trigger a refresh.
-    ],
-    target: "web",
-    devtool: isEnvDevelopment && "cheap-module-source-map",
-    output: {
-      path: !isEnvDevelopment ? path.resolve(__dirname, OUTPUT_DIR) : undefined,
-      filename: `[name]-[hash].${appConfig.APP_VERSION.slice(
-          0,
-          1
-        )}.bundle.js`,
-      sourceMapFilename: "[file].map",
-      jsonpFunction: "_[name]",
-      chunkFilename: !isEnvDevelopment ?
-        "[name].[contenthash:5].chunk.js" : `[name]-[contenthash:5].${appConfig.APP_VERSION.slice(
-                0,
-                1
-              )}.chunk.js`,
-      hashDigestLength: 5,
-    },
-    module: webpackModulesConfig(env),
-    plugins: webpackPluginsConfig('development'),
-    resolve: {
-      extensions: [".tsx", ".ts", ".js", ".scss"],
-      alias: {
-        ...(isEnvDevelopment && {
-          "react-dom$": "react-dom/profiling",
-          "scheduler/tracing": "scheduler/tracing-profiling",
-        }),
-      },
-    },
-    optimization: {
-      splitChunks: {
-        chunks: "all",
-        // minSize: 20000,
-        // minRemainingSize: 0,
-        minChunks: 1,
-        // maxAsyncRequests: 30,
-        maxInitialRequests: 30,
-        // enforceSizeThreshold: 50000,
-      },
-      minimize: true,
-      minimizer: [].concat(reactCFG.optimization.minimizer),
-    },
-  });
-  // stats: 'verbose',
-  console.log('returnModules', appFiles.entry);
-
-  const mergeConfig = Object.assign({}, appFiles, {
-    entry: appFiles.entry,
-    output: appFiles.output,
-    optimization: appFiles.optimization,
-    plugins: [].concat(reactCFG.plugins, appFiles.plugins),
-    module: Object.assign(reactCFG.module, appFiles.module),
-  });
-
-  const output = merge(appFiles);
-
-  return appFiles;
+			// webpackDevClientEntry,
+			'./client/index.js'
+		] : './client/index.js',
+		output: {
+			path: config.outputPath,
+			filename: '[name].js',
+			publicPath: "/",
+			libraryTarget: 'var',
+			hotUpdateChunkFilename: '.hot/[id].[hash].hot-update.js',
+			hotUpdateMainFilename: '.hot/[hash].hot-update.json',
+		},
+		devtool: 'source-map',
+		module: {
+			rules: [
+				...clientLoaders.rules,
+				babelLoader,
+				{
+					test: /\.(ts|js)x?$/,
+					exclude: /node_modules/,
+					use: {
+						loader: "babel-loader",
+						options: {
+							presets: [
+								"@babel/preset-env",
+								"@babel/preset-react",
+								"@babel/preset-typescript",
+							],
+						},
+					},
+				}
+			]
+		},
+		optimization: {
+			moduleIds: 'hashed',
+			runtimeChunk: {
+				name: (entrypoint) => `runtime~${entrypoint.name}`,
+			},
+			splitChunks: {
+				chunks: function(chunk) {
+					// exclude `my-excluded-chunk`
+					console.log('hiiiiiiiiiiiit', chunk);
+					return chunk.name !== 'my-excluded-chunk';
+				},
+				minChunks: 1,
+				maxAsyncRequests: 30,
+				enforceSizeThreshold: 50000,
+				chunks: 'all',
+				maxInitialRequests: Infinity,
+				minSize: 0,
+				cacheGroups: {
+					reactVendor: {
+						test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+						name: 'react~react-dom',
+						chunks: 'all',
+					},
+					bootstrap: {
+						test: /[\\/]node_modules[\\/]/,
+						chunks: "all",
+						name: "bootstrap",
+						enforce: true,
+						minChunks: Infinity
+					},
+				},
+			},
+		},
+		externals: {},
+		plugins: [
+			isDev ? new webpack.HotModuleReplacementPlugin() : null,
+			new StatsWebpackPlugin(`${'client'}-stats.json`, {
+				chunkModules: true
+			}),
+			// new webpack.optimize.SplitChunksPlugin({
+			// 	name: 'bootstrap',
+			// 	filename: 'bootstraps.js',
+			// 	minChunks: Infinity
+			// }),
+			new BundleAnalyzerPlugin({
+				openAnalyzer: false
+			})
+		].filter(Boolean),
+		node: {
+			// Prevents the `process.env` defined on the `window` in Html.js
+			// from being re-defined inside modules by https://github.com/webpack/node-libs-browser
+			process: true
+		},
+		resolve: {
+			modules: ['node_modules'],
+			extensions: [".tsx", ".ts", ".js", ".scss", "css"],
+			alias: {
+				...(isDev && {
+					// 'react-dom': '@hot-loader/react-dom',
+					// "scheduler/tracing": "scheduler/tracing-profiling",
+				}),
+			},
+		},
+	}, {
+		name: 'server',
+		context: SRC_DIR,
+		mode: config.mode,
+		target: 'node',
+		cache: false,
+		entry: {
+			server: './server/src/server.js'
+		},
+		output: {
+			path: config.outputPath,
+			filename: '[name].js',
+			libraryTarget: 'commonjs2',
+			publicPath: "/",
+		},
+		devtool: 'source-map',
+		optimization: {
+			moduleIds: 'named'
+		},
+		module: {
+			rules: [
+				...clientLoaders.rules,
+				{
+					test: /\.ts$/,
+					use: [
+						'ts-loader',
+					]
+				},
+				babelLoader,
+			]
+		},
+		node: {
+			// Prevents the `process.env` defined on the `window` in Html.js
+			// from being re-defined inside modules by https://github.com/webpack/node-libs-browser
+			process: false
+		},
+		externals: [
+			fs
+			.readdirSync('node_modules')
+			.filter(
+				// Bundle react-loadable to avoid having to define
+				// `serverSideRequirePath` as well as `webpackRequireWeakId`
+				// in Loadable HoCs.
+				x => !x.includes('.bin') && !x.includes('react-loadable')
+			)
+			.reduce((externals, mod) => {
+				externals[mod] = `commonjs ${mod}`;
+				return externals;
+			}, {}),
+			nodeExternals()
+		],
+		plugins: [
+			new webpack.NamedModulesPlugin()
+		],
+		resolve: {
+			extensions: [".tsx", ".ts", ".js", ".scss"],
+		},
+		bail: true
+	}]
 };

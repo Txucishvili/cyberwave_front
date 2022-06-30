@@ -27,16 +27,31 @@ const NavigationIcons = (props: any) => {
 
 const allList = Object.assign(NavigationIconList, SharedIconList)
 
-const SvgIcon = (props: any) => {
-  const { pack, name }:any = props;
+export interface SVGIconProps {
+  pack: string,
+  name: string,
+  noLoad?: boolean | null,
+  rotate?: number | string
+}
+
+const SvgIcon = (props: SVGIconProps) => {
+  const { pack, name, rotate }: SVGIconProps = props;
 
   // const IconPack = React.lazy(() => import(packPath + IconPackMap[props.pack] + '.tsx'));
   const IconPack = NavPack.default; // TODO: !!
+
+  const styles = {};
+  if (!!rotate) {
+    Object.assign(styles, {
+      transform: `rotate(${rotate}deg)`
+    })
+  }
+
   return (
     <div className="_icon">
 
       <Suspense fallback={props.noLoad ? null : <div className="svgIconLoad"></div>}>
-        <div className="_icon--wrap">
+        <div className="_icon--wrap s" style={styles}>
           {allList[name]}
         </div>
       </Suspense>

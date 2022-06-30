@@ -1,4 +1,5 @@
 {
-    "watch": ["webpack.config.js", "./config", "loader.js"],
-    "exec": "node --inspect start"
+    "watch": ["./config-overrides.js"],
+    "ignore": ["./src/*"],
+    "exec": "node --inspect node_modules/react-app-rewired/scripts/start"
  }

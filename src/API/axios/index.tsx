@@ -15,7 +15,7 @@ const apiConfig = {
 
 axios.interceptors.request.use(
   (config) => {
-    console.log('config', config);
+//     console.log('config', config);
     config.headers.Authorization = `Bearer ${'your_token'}`;
     config.baseURL = '/_api/';
     return config;

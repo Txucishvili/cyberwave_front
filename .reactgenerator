@@ -1,0 +1,18 @@
+{
+  "componentDestination": "./src/app/",
+  "styledComponentDestination": "./src/components/",
+  "tscomponentDestination": "./components/",
+  "viewDestination": "./src/view/",
+  "storeDestination": "./src/store/",
+  "pageDestination": "./pages/",
+  "tspageDestination": "./pages/",
+  "reduxDestination": "./src/",
+  "setupDestination": "./src/",
+  "reduxModuleDestination": "./src/store/",
+  "serviceModuleDestination": "./src/services/",
+  "servicesDestination": "./src/",
+  "configDestination": "./src/services/",
+  "requestDestination": "./src/services/config/",
+  "storageDestination": "./src/services/config/",
+  "templatePath": "_templates"
+}

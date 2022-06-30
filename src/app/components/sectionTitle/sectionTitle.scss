@@ -1,0 +1,28 @@
+@import 'sassync';
+.component-section-title{
+    
+}
+
+
+.section-title {
+  height: 37px;
+  @include flex;
+  padding-bottom: 22px;
+
+  
+  // font-family: FiraGO;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.07;
+  letter-spacing: normal;
+  text-align: left;
+  color: var(--steel);
+
+  &.pds {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 2px;
+  }
+}
